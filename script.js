@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
 
@@ -31,14 +31,18 @@ function loadAgenda(userId) {
                 const userID = row.c[0]?.v;
                 if (userID == userId) {
                     found = true;
-                    let day = row.c[2]?.v || "Other";  // Column "Day"
-                    let session = row.c[3]?.v || "TBD"; // Column "Breakout Session"
-                    let time = formatDate(row.c[4]?.v); // Column "Time"
-                    let room = row.c[5]?.v || "TBD";  // Column "Room"
-                    let table = row.c[6]?.v || "TBD";  // Column "Dinner Table"
-                    let notes = row.c[7]?.v || "-";  // Column "Notes"
+                    let day = row.c[2]?.v || "Other";  
+                    let session = row.c[3]?.v || "TBD"; 
+                    let time = formatDate(row.c[4]?.v); 
+                    let room = row.c[5]?.v ? row.c[5]?.v : "TBD";  
+                    let table = row.c[6]?.v ? row.c[6]?.v : "Not Assigned";  
+                    let notes = row.c[7]?.v ? row.c[7]?.v : "No Notes";  
 
-                    agendaData[day].push(`<p><strong>${session}</strong> at ${time}<br>📍 Room: ${room} | 🍽 Table: ${table}<br>📌 Notes: ${notes}</p>`);
+                    agendaData[day].push(
+                        `<p><strong>${session}</strong> at ${time}<br>
+                        📍 Room: ${room} | 🍽 Table: ${table}<br>
+                        📌 Notes: ${notes}</p>`
+                    );
                 }
             });
 
@@ -56,13 +60,17 @@ function loadAgenda(userId) {
         .catch(error => console.error("Error fetching data:", error));
 }
 
-// ✅ Function to fix date formatting
+// ✅ Updated function to correctly format Google Sheets date
 function formatDate(excelDate) {
-    if (!excelDate) return "TBD";  // If no date is available
-    let date = new Date((excelDate - 25569) * 86400000);  // Convert Google Sheets number to JS Date
+    if (!excelDate) return "TBD";  
+    if (typeof excelDate === "string") return excelDate; // If already a string, return it as-is
+    let date = new Date((excelDate - 25569) * 86400000);  
     return date.toLocaleString('en-US', { 
+        weekday: 'short', 
+        month: 'short', 
+        day: 'numeric', 
         hour: '2-digit', 
-        minute: '2-digit', 
+        minute: '2-digit',
         hour12: true 
     });
 }
