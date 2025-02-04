@@ -16,7 +16,7 @@ function loadAgenda(userId) {
         return;
     }
 
-    const sheetURL = "https://docs.google.com/spreadsheets/d/YOUR_SPREADSHEET_ID/gviz/tq?tqx=out:json";
+    const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
 
     fetch(sheetURL)
         .then(res => res.text())
