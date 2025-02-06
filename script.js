@@ -40,10 +40,11 @@ function loadAgenda(userId) {
                         let notes = row.c[7]?.v ? row.c[7]?.v : "No Notes";  
 
                         agendaData[day].push(
-                            `<p><strong>${session}</strong> at ${time}<br>
-                            📍 Room: ${room} | 🍽 Table: ${table}<br>
-                            📌 Notes: ${notes}</p>`
-                        );
+    `<p><strong>${session}</strong> at ${time}<br>
+    🏛 Room: ${room}  |  🍽 Table: ${table}  <br>
+    📝 Notes: ${notes}</p>`
+);
+
                     }
                 });
 
