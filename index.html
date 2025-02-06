@@ -3,18 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Event Agenda</title>
+    <title>2025 ACM/NSM Agenda</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
+    <header>
+        <img src="logo.png" alt="Company Logo" class="logo">
+        <h1>Welcome to Conagra 2025 ACM/NSM</h1>
+    </header>
+    
     <div class="container">
-         <img src="Swanson.png" alt="Company Logo" class="logo">
-        <h1>Welcome to Conagra's 2025 NSM!</h1>
         <p>Scan your QR code or enter your ID to see your agenda.</p>
-        <input type="text" id="userId" placeholder="Enter your ID">
-        <button onclick="loadAgenda()">View Agenda</button>
-        <div id="agenda"></div>
+        <div class="input-section">
+            <input type="text" id="userId" placeholder="Enter your ID">
+            <button onclick="loadAgenda()"><i class="fa-solid fa-magnifying-glass"></i> View Agenda</button>
+        </div>
+        <div id="agenda" class="agenda-container"></div>
     </div>
+    
+    <footer>
+        <p>&copy; 2025 Conagra Brands. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
