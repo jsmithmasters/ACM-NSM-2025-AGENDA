@@ -119,6 +119,24 @@ button:hover {
     font-size: 18px;
 }
 
+/* Highlight Next Event */
+.next-event {
+    background-color: #ffcc00; /* Gold for importance */
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
+    animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.05);
+    }
+}
+
 /* Footer */
 footer {
     background-color: #ffffff;
