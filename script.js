@@ -62,7 +62,7 @@ function loadAgenda(userId) {
                 if (!found) {
                     document.getElementById("agenda").innerHTML = "<p>No agenda found for this ID.</p>";
                 } else {
-                    document.getElementById("attendeeName").innerText = `Welcome, ${attendeeName}! We're glade to have you here. Your personalized agenda is ready.`;
+                    document.getElementById("attendeeName").innerText = `Welcome, ${attendeeName}! We're glad to have you here. Your personalized agenda is ready.`;
                     document.getElementById("day1-content").innerHTML = (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
