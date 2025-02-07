@@ -108,6 +108,23 @@ function toggleDarkMode() {
     localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
 }
 
+// ✅ Add Dark Mode Toggle Button
+window.onload = function() {
+    const darkModeButton = document.createElement("button");
+    darkModeButton.innerHTML = '<i class="fa-solid fa-moon"></i> Toggle Dark Mode';
+    darkModeButton.onclick = toggleDarkMode;
+    darkModeButton.style.position = "fixed";
+    darkModeButton.style.top = "20px";
+    darkModeButton.style.right = "20px";
+    darkModeButton.style.padding = "10px";
+    darkModeButton.style.border = "none";
+    darkModeButton.style.borderRadius = "5px";
+    darkModeButton.style.background = "#007bff";
+    darkModeButton.style.color = "#fff";
+    darkModeButton.style.cursor = "pointer";
+    document.body.appendChild(darkModeButton);
+}
+
 // ✅ Function to correctly format Google Sheets dates
 function formatDate(excelDate) {
     if (!excelDate) return "TBD";  
@@ -117,7 +134,7 @@ function formatDate(excelDate) {
         weekday: 'short', 
         month: 'short', 
         day: 'numeric', 
-        hour: '2-digit', 
+        hour: '2-digit", 
         minute: '2-digit',
         hour12: true 
     });
