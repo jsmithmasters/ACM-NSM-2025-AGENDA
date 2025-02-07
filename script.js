@@ -26,7 +26,7 @@ function loadAgenda(userId) {
                 const rows = jsonData.table.rows;
 
                 let found = false;
-                let agendaData = { "Day 1 - ACM": [], "Day 2 Process Proud": [], "Day 3 Market Proud": [], "Day 4 People Proud": [] };
+                let agendaData = { "Day 1": [], "Day 2": [], "Day 3 Market Proud": [], "Day 4 People Proud": [] };
 
                 rows.forEach(row => {
                     const userID = row.c[0]?.v;
