@@ -101,7 +101,7 @@ function highlightNextEvent() {
 
 // ✅ Countdown Timer for Event Start
 function startCountdown() {
-    const eventDate = new Date("2025-01-15T09:00:00").getTime();
+    const eventDate = new Date("2025-06-16T13:00:00").getTime();
     setInterval(() => {
         let now = new Date().getTime();
         let timeLeft = eventDate - now;
