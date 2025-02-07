@@ -1,4 +1,4 @@
- document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
 
@@ -39,27 +39,26 @@ function loadAgenda(userId) {
                         let table = row.c[6]?.v ? row.c[6]?.v : "Not Assigned";  
                         let notes = row.c[7]?.v ? row.c[7]?.v : "No Notes";  
 
-                        if (agendaData[day]) {
-                            agendaData[day].push(
-                                `<p><strong>${session}</strong> at ${time}<br>
-                                <img src="home.png" class="icon"> Room: ${room}  
-                                | <img src="table.png" class="icon"> Table: ${table}  
-                                | <img src="notes.png" class="icon"> Notes: ${notes}</p>`
-                            );
+                        if (!agendaData[day]) {  
+                            agendaData[day] = [];  
                         }
+                        
+                        agendaData[day].push(
+                            `<p><strong>${session}</strong> at ${time}<br>
+                            <img src="home.png" class="icon"> Room: ${room}  
+                            | <img src="table.png" class="icon"> Table: ${table}  
+                            | <img src="notes.png" class="icon"> Notes: ${notes}</p>`
+                        );
                     }
                 });
 
                 if (!found) {
                     document.getElementById("agenda").innerHTML = "<p>No agenda found for this ID.</p>";
                 } else {
-                    document.getElementById("agenda").innerHTML = `
-                        <h2>Agenda for ${rows.find(row => row.c[0]?.v == userId)?.c[1]?.v}</h2>
-                        <div class="day-section"><h3>Day 1 - Kickoff & Strategy</h3>${agendaData["Day 1"].join("") || "<p>No events scheduled.</p>"}</div>
-                        <div class="day-section"><h3>Day 2 - Workshops & Training</h3>${agendaData["Day 2"].join("") || "<p>No events scheduled.</p>"}</div>
-                        <div class="day-section"><h3>Day 3 - Collaboration & Execution</h3>${agendaData["Day 3"].join("") || "<p>No events scheduled.</p>"}</div>
-                        <div class="day-section"><h3>Day 4 - Wrap-up & Networking</h3>${agendaData["Day 4"].join("") || "<p>No events scheduled.</p>"}</div>
-                    `;
+                    document.getElementById("day1-content").innerHTML = (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("day4-content").innerHTML = (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
                 }
             } catch (error) {
                 console.error("Error processing JSON:", error);
