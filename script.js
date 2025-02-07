@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+ document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
 
@@ -26,7 +26,7 @@ function loadAgenda(userId) {
                 const rows = jsonData.table.rows;
 
                 let found = false;
-                let agendaData = { "Day 1": [], "Day 2": [], "Day 3 Market Proud": [], "Day 4 People Proud": [] };
+                let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
 
                 rows.forEach(row => {
                     const userID = row.c[0]?.v;
