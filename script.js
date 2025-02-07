@@ -26,7 +26,7 @@ function loadAgenda(userId) {
                 const rows = jsonData.table.rows;
 
                 let found = false;
-                let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [] };
+                let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
 
                 rows.forEach(row => {
                     const userID = row.c[0]?.v;
@@ -39,12 +39,14 @@ function loadAgenda(userId) {
                         let table = row.c[6]?.v ? row.c[6]?.v : "Not Assigned";  
                         let notes = row.c[7]?.v ? row.c[7]?.v : "No Notes";  
 
-                        agendaData[day].push(
-    `<p><strong>${session}</strong> at ${time}<br>
-    🏛 Room: ${room}  |  🍽 Table: ${table}  <br>
-    📝 Notes: ${notes}</p>`
-);
-
+                        if (agendaData[day]) {
+                            agendaData[day].push(
+                                `<p><strong>${session}</strong> at ${time}<br>
+                                <img src="home.png" class="icon"> Room: ${room}  
+                                | <img src="table.png" class="icon"> Table: ${table}  
+                                | <img src="notes.png" class="icon"> Notes: ${notes}</p>`
+                            );
+                        }
                     }
                 });
 
@@ -53,9 +55,10 @@ function loadAgenda(userId) {
                 } else {
                     document.getElementById("agenda").innerHTML = `
                         <h2>Agenda for ${rows.find(row => row.c[0]?.v == userId)?.c[1]?.v}</h2>
-                        <div class="day-section"><h3>Day 1</h3>${agendaData["Day 1"].join("") || "<p>No events scheduled.</p>"}</div>
-                        <div class="day-section"><h3>Day 2</h3>${agendaData["Day 2"].join("") || "<p>No events scheduled.</p>"}</div>
-                        <div class="day-section"><h3>Day 3</h3>${agendaData["Day 3"].join("") || "<p>No events scheduled.</p>"}</div>
+                        <div class="day-section"><h3>Day 1 - Kickoff & Strategy</h3>${agendaData["Day 1"].join("") || "<p>No events scheduled.</p>"}</div>
+                        <div class="day-section"><h3>Day 2 - Workshops & Training</h3>${agendaData["Day 2"].join("") || "<p>No events scheduled.</p>"}</div>
+                        <div class="day-section"><h3>Day 3 - Collaboration & Execution</h3>${agendaData["Day 3"].join("") || "<p>No events scheduled.</p>"}</div>
+                        <div class="day-section"><h3>Day 4 - Wrap-up & Networking</h3>${agendaData["Day 4"].join("") || "<p>No events scheduled.</p>"}</div>
                     `;
                 }
             } catch (error) {
