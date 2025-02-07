@@ -27,11 +27,13 @@ function loadAgenda(userId) {
 
                 let found = false;
                 let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
+                let attendeeName = "Unknown Attendee";
 
                 rows.forEach(row => {
                     const userID = row.c[0]?.v;
                     if (userID == userId) {
                         found = true;
+                        attendeeName = row.c[1]?.v || "Unknown Attendee";
                         let day = row.c[2]?.v || "Other";  
                         let session = row.c[3]?.v || "TBD"; 
                         let time = formatDate(row.c[4]?.v); 
@@ -55,6 +57,7 @@ function loadAgenda(userId) {
                 if (!found) {
                     document.getElementById("agenda").innerHTML = "<p>No agenda found for this ID.</p>";
                 } else {
+                    document.getElementById("agenda").innerHTML = `<h2>Agenda for ${attendeeName}</h2>`;
                     document.getElementById("day1-content").innerHTML = (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
