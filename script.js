@@ -5,6 +5,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (id) {
         loadAgenda(id);
     }
+
+    // Load Dark Mode Preference
+    if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark-mode");
+    }
 });
 
 function loadAgenda(userId) {
@@ -47,7 +52,7 @@ function loadAgenda(userId) {
                         
                         agendaData[day].push(
                             `<p><strong>${session}</strong> at ${time}<br>
-                          <i class="fa-solid fa-door-open"></i> Room: ${room}  
+                            <i class="fa-solid fa-door-open"></i> Room: ${room}  
                             | <i class="fa-solid fa-utensils"></i> Table: ${table}  
                             | <i class="fa-solid fa-sticky-note"></i> Notes: ${notes}</p>`
                         );
@@ -62,6 +67,8 @@ function loadAgenda(userId) {
                     document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day4-content").innerHTML = (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
+                    showAgendaSections();
+                    highlightNextEvent();
                 }
             } catch (error) {
                 console.error("Error processing JSON:", error);
@@ -72,6 +79,33 @@ function loadAgenda(userId) {
             console.error("Error fetching data:", error);
             document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
         });
+}
+
+function showAgendaSections() {
+    document.querySelectorAll(".day-section").forEach(section => {
+        section.classList.add("show");
+    });
+}
+
+function highlightNextEvent() {
+    let allEvents = document.querySelectorAll(".day-section p");
+    let now = new Date().getTime();
+
+    allEvents.forEach(event => {
+        let eventText = event.innerText.match(/\d{1,2}:\d{2} [APM]{2}/);
+        if (eventText) {
+            let eventTime = new Date("2025-01-15 " + eventText[0]).getTime();
+            if (eventTime > now) {
+                event.classList.add("next-event");
+                return;
+            }
+        }
+    });
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
 }
 
 // ✅ Function to correctly format Google Sheets dates
