@@ -5,11 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (id) {
         loadAgenda(id);
     }
-
-    // Load Dark Mode Preference
-    if (localStorage.getItem("darkMode") === "true") {
-        document.body.classList.add("dark-mode");
-    }
 });
 
 function loadAgenda(userId) {
@@ -69,6 +64,7 @@ function loadAgenda(userId) {
                     document.getElementById("day4-content").innerHTML = (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
                     showAgendaSections();
                     highlightNextEvent();
+                    startCountdown();
                 }
             } catch (error) {
                 console.error("Error processing JSON:", error);
@@ -103,39 +99,29 @@ function highlightNextEvent() {
     });
 }
 
-function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-    localStorage.setItem("darkMode", document.body.classList.contains("dark-mode"));
-}
+// ✅ Countdown Timer for Event Start
+function startCountdown() {
+    const eventDate = new Date("2025-01-15T09:00:00").getTime();
+    setInterval(() => {
+        let now = new Date().getTime();
+        let timeLeft = eventDate - now;
 
-// ✅ Add Dark Mode Toggle Button
-window.onload = function() {
-    const darkModeButton = document.createElement("button");
-    darkModeButton.innerHTML = '<i class="fa-solid fa-moon"></i> Toggle Dark Mode';
-    darkModeButton.onclick = toggleDarkMode;
-    darkModeButton.style.position = "fixed";
-    darkModeButton.style.top = "20px";
-    darkModeButton.style.right = "20px";
-    darkModeButton.style.padding = "10px";
-    darkModeButton.style.border = "none";
-    darkModeButton.style.borderRadius = "5px";
-    darkModeButton.style.background = "#007bff";
-    darkModeButton.style.color = "#fff";
-    darkModeButton.style.cursor = "pointer";
-    document.body.appendChild(darkModeButton);
+        let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML = `Event starts in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }, 1000);
 }
 
 // ✅ Function to correctly format Google Sheets dates
 function formatDate(excelDate) {
     if (!excelDate) return "TBD";  
-    if (typeof excelDate === "string") return excelDate; // If already a string, return it as-is
-    let date = new Date((excelDate - 25569) * 86400000);  
+    if (typeof excelDate === "string") return excelDate;
+    let date = new Date((excelDate - 25569) * 86400000);
     return date.toLocaleString('en-US', { 
-        weekday: 'short', 
-        month: 'short', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: true 
+        weekday: 'short', month: 'short', day: 'numeric', 
+        hour: '2-digit', minute: '2-digit', hour12: true 
     });
 }
