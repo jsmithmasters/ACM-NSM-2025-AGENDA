@@ -47,9 +47,9 @@ function loadAgenda(userId) {
                         
                         agendaData[day].push(
                             `<p><strong>${session}</strong> at ${time}<br>
-                            <img src="home.png" class="icon"> Room: ${room}  
-                            | <img src="table.png" class="icon"> Table: ${table}  
-                            | <img src="notes.png" class="icon"> Notes: ${notes}</p>`
+                          <i class="fa-solid fa-door-open"></i> Room: ${room}  
+                            | <i class="fa-solid fa-utensils"></i> Table: ${table}  
+                            | <i class="fa-solid fa-sticky-note"></i> Notes: ${notes}</p>`
                         );
                     }
                 });
