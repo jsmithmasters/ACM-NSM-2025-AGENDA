@@ -16,9 +16,10 @@
     <script>
         const validEmails = [
             "jesse.smith@conagra.com",
+            "user1@email.com",
             "user2@email.com",
             "user3@email.com"
-            // Add actual emails OR fetch dynamically from Google Sheets
+            // Add all allowed emails here OR fetch dynamically from Google Sheets
         ];
 
         function validateEmail() {
@@ -27,14 +28,12 @@
 
             if (validEmails.includes(email)) {
                 message.innerHTML = "Success! Redirecting...";
-                redirectToAgenda(email);
+                setTimeout(() => {
+                    window.location.href = `index.html`;
+                }, 1000);
             } else {
                 message.innerHTML = "Invalid email. Please try again.";
             }
-        }
-
-        function redirectToAgenda(email) {
-            window.location.href = `index.html?email=${encodeURIComponent(email)}`;
         }
     </script>
 
