@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Validation</title>
+    <script>
+        function validateEmail() {
+            const allowedEmails = [
+                "jesse.smith@conagra.com",
+                "user2@company.com",
+                "user3@company.com"
+            ]; // Replace with your list
+
+            const emailInput = document.getElementById("email").value.toLowerCase();
+            const agendaURL = "https://jsmithmasters.github.io/ACM-NSM-2025-AGENDA/index.html?email=" + encodeURIComponent(emailInput);
+
+            if (allowedEmails.includes(emailInput)) {
+                window.location.href = agendaURL; // Redirect to agenda page with email
+            } else {
+                document.getElementById("message").innerText = "Access Denied.";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Enter Your Email to Access Your Agenda</h2>
+    <input type="email" id="email" placeholder="Enter your email" required>
+    <button onclick="validateEmail()">Submit</button>
+    <p id="message"></p>
+</body>
+</html>
