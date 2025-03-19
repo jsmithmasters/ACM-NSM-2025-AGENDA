@@ -17,10 +17,9 @@
     <h2 id="countdown">Event starts in: Loading...</h2>
 
     <div class="container">
-        <h2 id="attendeeName">Enter your email to view your agenda</h2>
-        <input type="email" id="emailInput" placeholder="Enter your email">
-        <button onclick="loadAgenda()">View Agenda</button>
-
+        <h2 id="attendeeName">Welcome! Your personalized agenda is ready.</h2>
+        <input type="email" id="emailInput" placeholder="Enter your email" readonly>
+        
         <div id="agenda" class="agenda-container">
             <div class="day-section" id="day1">
                 <h3>Day 1 - All Company Meeting</h3>
@@ -44,5 +43,18 @@
     <footer>
         <p>&copy; All Rights Reserved.</p>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userEmail = urlParams.get("email");
+
+            if (userEmail) {
+                document.getElementById("emailInput").value = userEmail;
+                loadAgenda(userEmail);
+            }
+        });
+    </script>
+
 </body>
 </html>
