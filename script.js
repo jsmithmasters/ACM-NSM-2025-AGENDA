@@ -1,18 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
+    const userEmail = urlParams.get("email"); // ✅ Get email instead of ID
 
-    if (id) {
-        loadAgenda(id);
+    if (userEmail) {
+        loadAgenda(userEmail);
     }
 });
 
-function loadAgenda(userId) {
-    if (!userId) {
-        userId = document.getElementById("userId").value;
-    }
-    if (!userId) {
-        alert("Please enter a valid ID.");
+function loadAgenda(userEmail) {
+    if (!userEmail) {
+        alert("No email found. Please log in again.");
         return;
     }
 
@@ -30,10 +27,10 @@ function loadAgenda(userId) {
                 let attendeeName = "Unknown Attendee";
 
                 rows.forEach(row => {
-                    const userID = row.c[0]?.v;
-                    if (userID == userId) {
+                    const email = row.c[0]?.v; // ✅ Match by email instead of ID
+                    if (email === userEmail) {
                         found = true;
-                        attendeeName = row.c[1]?.v || "Unknown Attendee";
+                        attendeeName = row.c[1]?.v || "Unknown Attendee"; // ✅ Get attendee's name
                         let day = row.c[2]?.v || "Other";  
                         let session = row.c[3]?.v || "TBD"; 
                         let time = formatDate(row.c[4]?.v); 
@@ -55,16 +52,13 @@ function loadAgenda(userId) {
                 });
 
                 if (!found) {
-                    document.getElementById("agenda").innerHTML = "<p>No agenda found for this ID.</p>";
+                    document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
                 } else {
-                    document.getElementById("attendeeName").innerText = `Welcome, ${attendeeName}! We're glad to have you here. Your personalized agenda is ready.`;
+                    document.getElementById("attendeeName").innerText = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
                     document.getElementById("day1-content").innerHTML = (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day4-content").innerHTML = (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
-                    showAgendaSections();
-                    highlightNextEvent();
-                    startCountdown();
                 }
             } catch (error) {
                 console.error("Error processing JSON:", error);
@@ -75,53 +69,4 @@ function loadAgenda(userId) {
             console.error("Error fetching data:", error);
             document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
         });
-}
-
-function showAgendaSections() {
-    document.querySelectorAll(".day-section").forEach(section => {
-        section.classList.add("show");
-    });
-}
-
-function highlightNextEvent() {
-    let allEvents = document.querySelectorAll(".day-section p");
-    let now = new Date().getTime();
-
-    allEvents.forEach(event => {
-        let eventText = event.innerText.match(/\d{1,2}:\d{2} [APM]{2}/);
-        if (eventText) {
-            let eventTime = new Date("2025-01-15 " + eventText[0]).getTime();
-            if (eventTime > now) {
-                event.classList.add("next-event");
-                return;
-            }
-        }
-    });
-}
-
-// ✅ Countdown Timer for Event Start
-function startCountdown() {
-    const eventDate = new Date("2025-06-16T13:00:00").getTime();
-    setInterval(() => {
-        let now = new Date().getTime();
-        let timeLeft = eventDate - now;
-
-        let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-        document.getElementById("countdown").innerHTML = `Event starts in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }, 1000);
-}
-
-// ✅ Function to correctly format Google Sheets dates
-function formatDate(excelDate) {
-    if (!excelDate) return "TBD";  
-    if (typeof excelDate === "string") return excelDate;
-    let date = new Date((excelDate - 25569) * 86400000);
-    return date.toLocaleString('en-US', { 
-        weekday: 'short', month: 'short', day: 'numeric', 
-        hour: '2-digit', minute: '2-digit', hour12: true 
-    });
 }
