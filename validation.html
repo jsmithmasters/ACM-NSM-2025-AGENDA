@@ -19,7 +19,6 @@
             "user1@email.com",
             "user2@email.com",
             "user3@email.com"
-            // Add all allowed emails here OR fetch dynamically from Google Sheets
         ];
 
         function validateEmail() {
@@ -29,7 +28,7 @@
             if (validEmails.includes(email)) {
                 message.innerHTML = "Success! Redirecting...";
                 setTimeout(() => {
-                    window.location.href = `index.html`;
+                    window.location.href = `index.html?email=${encodeURIComponent(email)}`;
                 }, 1000);
             } else {
                 message.innerHTML = "Invalid email. Please try again.";
