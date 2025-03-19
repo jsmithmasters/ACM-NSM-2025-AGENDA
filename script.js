@@ -1,12 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const userEmail = urlParams.get("email"); // ✅ Get email instead of ID
-
-    if (userEmail) {
-        loadAgenda(userEmail);
-    }
-});
-
 function loadAgenda(userEmail) {
     if (!userEmail) {
         alert("No email found. Please log in again.");
@@ -27,13 +18,13 @@ function loadAgenda(userEmail) {
                 let attendeeName = "Unknown Attendee";
 
                 rows.forEach(row => {
-                    const email = row.c[0]?.v; // ✅ Match by email instead of ID
+                    const email = row.c[0]?.v; // ✅ Match by email
                     if (email === userEmail) {
                         found = true;
                         attendeeName = row.c[1]?.v || "Unknown Attendee"; // ✅ Get attendee's name
                         let day = row.c[2]?.v || "Other";  
                         let session = row.c[3]?.v || "TBD"; 
-                        let time = formatDate(row.c[4]?.v); 
+                        let time = row.c[4]?.v || "TBD"; 
                         let room = row.c[5]?.v ? row.c[5]?.v : "TBD";  
                         let table = row.c[6]?.v ? row.c[6]?.v : "Not Assigned";  
                         let notes = row.c[7]?.v ? row.c[7]?.v : "No Notes";  
