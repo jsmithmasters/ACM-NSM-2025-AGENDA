@@ -1,8 +1,6 @@
-function loadAgenda() {
-    const userEmail = document.getElementById("emailInput").value.trim().toLowerCase();
-    
+function loadAgenda(userEmail) {
     if (!userEmail) {
-        alert("Please enter your email.");
+        alert("No email found. Please log in again.");
         return;
     }
 
@@ -37,10 +35,12 @@ function loadAgenda() {
 
                         if (session.trim() !== "" && time.trim() !== "") {
                             agendaData[day].push(
-                                `<p><strong>${session}</strong> at ${time}<br>
-                                <i class="fa-solid fa-door-open"></i> Room: ${room}  
-                                | <i class="fa-solid fa-utensils"></i> Table: ${table}  
-                                | <i class="fa-solid fa-sticky-note"></i> Notes: ${notes}</p>`
+                                `<div class="agenda-item">
+                                    <p><strong>${session}</strong> at ${time}</p>
+                                    <p><i class="fa-solid fa-door-open"></i> Room: ${room}  
+                                    | <i class="fa-solid fa-utensils"></i> Table: ${table}  
+                                    | <i class="fa-solid fa-sticky-note"></i> Notes: ${notes}</p>
+                                </div>`
                             );
                         }
                     }
