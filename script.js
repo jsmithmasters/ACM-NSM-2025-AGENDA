@@ -1,6 +1,8 @@
-function loadAgenda(userEmail) {
+function loadAgenda() {
+    const userEmail = document.getElementById("emailInput").value.trim().toLowerCase();
+    
     if (!userEmail) {
-        alert("No email found. Please log in again.");
+        alert("Please enter your email.");
         return;
     }
 
@@ -18,10 +20,10 @@ function loadAgenda(userEmail) {
                 let attendeeName = "Unknown Attendee";
 
                 rows.forEach(row => {
-                    const email = row.c[0]?.v; // ✅ Match by email
+                    const email = row.c[0]?.v;
                     if (email === userEmail) {
                         found = true;
-                        attendeeName = row.c[1]?.v || "Unknown Attendee"; // ✅ Get attendee's name
+                        attendeeName = row.c[1]?.v || "Unknown Attendee";
                         let day = row.c[2]?.v || "Other";  
                         let session = row.c[3]?.v || "TBD"; 
                         let time = row.c[4]?.v || "TBD"; 
@@ -32,13 +34,15 @@ function loadAgenda(userEmail) {
                         if (!agendaData[day]) {  
                             agendaData[day] = [];  
                         }
-                        
-                        agendaData[day].push(
-                            `<p><strong>${session}</strong> at ${time}<br>
-                            <i class="fa-solid fa-door-open"></i> Room: ${room}  
-                            | <i class="fa-solid fa-utensils"></i> Table: ${table}  
-                            | <i class="fa-solid fa-sticky-note"></i> Notes: ${notes}</p>`
-                        );
+
+                        if (session.trim() !== "" && time.trim() !== "") {
+                            agendaData[day].push(
+                                `<p><strong>${session}</strong> at ${time}<br>
+                                <i class="fa-solid fa-door-open"></i> Room: ${room}  
+                                | <i class="fa-solid fa-utensils"></i> Table: ${table}  
+                                | <i class="fa-solid fa-sticky-note"></i> Notes: ${notes}</p>`
+                            );
+                        }
                     }
                 });
 
