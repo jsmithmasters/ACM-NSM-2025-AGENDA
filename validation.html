@@ -18,7 +18,7 @@
             "jesse.smith@conagra.com",
             "user2@email.com",
             "user3@email.com"
-            // Add all allowed emails here or fetch from an API if dynamic
+            // Add actual emails OR fetch dynamically from Google Sheets
         ];
 
         function validateEmail() {
@@ -34,7 +34,7 @@
         }
 
         function redirectToAgenda(email) {
-            window.location.href = `https://jsmithmasters.github.io/ACM-NSM-2025-AGENDA/agenda.html?email=${encodeURIComponent(email)}`;
+            window.location.href = `index.html?email=${encodeURIComponent(email)}`;
         }
     </script>
 
