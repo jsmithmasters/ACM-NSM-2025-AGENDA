@@ -1,152 +1,64 @@
 /* General Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f7fc;
-    color: #333;
-    margin: 0;
-    padding: 0;
+    background-color: #f4f4f4;
     text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Dark Mode */
-body.dark-mode {
-    background-color: #121212;
-    color: #ffffff;
-}
-
-.dark-mode .container {
-    background-color: #1e1e1e;
-    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
-}
-
-.dark-mode button {
-    background-color: #007bff;
-}
-
-/* Header */
-header {
-    background-color: #ffffff;
-    padding: 20px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
-}
-
-.dark-mode header {
-    background-color: #1e1e1e;
-}
-
-.logo {
-    width: 150px;
-    display: block;
-    margin: 0 auto 10px;
-}
-
-/* Container */
-.container {
-    background: white;
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.input-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-input[type="text"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-button:hover {
-    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.5);
-    transform: scale(1.05);
-}
-
+/* Agenda Styling */
 .agenda-container {
-    text-align: left;
-    margin-top: 20px;
-    padding: 10px;
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-}
-
-/* Day Sections */
-.day-section {
-    background: white;
-    border: 3px solid #007bff;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px 0;
-    box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.15);
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.day-section h3 {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    padding: 12px;
-    margin: -20px -20px 15px -20px;
-    border-radius: 10px 10px 0 0;
-    text-align: center;
-    font-size: 18px;
-}
-
-/* Highlight Next Event */
-.next-event {
-    background-color: #ffcc00; /* Gold for importance */
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 8px;
-    animation: pulse 1.5s infinite alternate;
-}
-
-@keyframes pulse {
-    from {
-        transform: scale(1);
-    }
-    to {
-        transform: scale(1.05);
-    }
-}
-
-/* Footer */
-footer {
-    background-color: #ffffff;
+    background: #ffffff;
     padding: 15px;
-    font-size: 14px;
-    color: #777;
-    box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
 }
 
-.dark-mode footer {
-    background-color: #1e1e1e;
+.day-section {
+    background: #0044cc;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
+
+.agenda-item {
+    background: #f8f8f8;
+    padding: 10px;
+    border-left: 4px solid #0044cc;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.agenda-item p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+i {
+    color: #0044cc;
+    margin-right: 5px;
+}
+
+/* Award Nominee Special Styling */
+.award-nominee {
+    border: 3px solid gold;
+    background: #fff8dc;
+    padding: 15px;
+}
+
+.nominee-title {
+    color: gold;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nominee-text {
+    color: #8a6d3b;
+    font-size: 16px;
+}
+
