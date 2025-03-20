@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (userEmail) {
         document.getElementById("emailInput").value = userEmail;
         loadAgenda(userEmail);
-        setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
     }
 });
 
@@ -27,6 +26,13 @@ function loadAgenda(userEmail) {
                 let found = false;
                 let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
                 let attendeeName = "Unknown Attendee";
+
+                // List of nominee emails (All nominees get the same video for now)
+                let nomineeEmails = {
+                    "jesse.smith@conagra.com": "Ov6OeEutv_Q",  // Your YouTube Video ID
+                    "nominee1@email.com": "Ov6OeEutv_Q",
+                    "nominee2@email.com": "Ov6OeEutv_Q"
+                };
 
                 rows.forEach(row => {
                     const email = row.c[0]?.v;
@@ -62,16 +68,26 @@ function loadAgenda(userEmail) {
                 if (!found) {
                     document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
                 } else {
-                    document.getElementById("attendeeName").innerHTML = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+                    let attendeeTitle = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+
+                    // Show YouTube Video for nominees
+                    if (nomineeEmails[userEmail]) {
+                        let videoID = nomineeEmails[userEmail];
+                        let videoSrc = `https://www.youtube.com/embed/${videoID}?autoplay=1`;
+
+                        attendeeTitle = `<h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
+                        <p class="nominee-text">You are a nominee for an award at this event!</p>
+                        <iframe id="nomineeVideo" width="500" height="280" src="${videoSrc}" 
+                            frameborder="0" allowfullscreen>
+                        </iframe>`;
+                        document.getElementById("agenda").classList.add("award-nominee");
+                    }
+
+                    document.getElementById("attendeeName").innerHTML = attendeeTitle;
                     document.getElementById("day1-content").innerHTML = (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day4-content").innerHTML = (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
-
-                    // Update last refreshed time
-                    const now = new Date();
-                    const formattedTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-                    document.getElementById("lastUpdated").innerHTML = `Last updated at: ${formattedTime}`;
                 }
             } catch (error) {
                 console.error("Error processing JSON:", error);
