@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (userEmail) {
         document.getElementById("emailInput").value = userEmail;
         loadAgenda(userEmail);
+        setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
     }
 });
 
@@ -27,7 +28,6 @@ function loadAgenda(userEmail) {
                 let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
                 let attendeeName = "Unknown Attendee";
 
-                // List of nominee emails (All nominees get the same video for now)
                 let nomineeEmails = {
                     "jesse.smith@conagra.com": "Ov6OeEutv_Q",  // Your YouTube Video ID
                     "nominee1@email.com": "Ov6OeEutv_Q",
@@ -70,7 +70,6 @@ function loadAgenda(userEmail) {
                 } else {
                     let attendeeTitle = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
 
-                    // Show YouTube Video for nominees
                     if (nomineeEmails[userEmail]) {
                         let videoID = nomineeEmails[userEmail];
                         let videoSrc = `https://www.youtube.com/embed/${videoID}?autoplay=1`;
@@ -88,6 +87,9 @@ function loadAgenda(userEmail) {
                     document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day4-content").innerHTML = (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
+
+                    const now = new Date();
+                    document.getElementById("lastUpdated").innerHTML = `Last updated at: ${now.toLocaleTimeString()}`;
                 }
             } catch (error) {
                 console.error("Error processing JSON:", error);
@@ -96,6 +98,4 @@ function loadAgenda(userEmail) {
         })
         .catch(error => {
             console.error("Error fetching data:", error);
-            document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
-        });
-}
+            document.getElementById("agenda").innerHTML = "<p>Er
