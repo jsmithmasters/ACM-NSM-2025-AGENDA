@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const userEmail = urlParams.get("email");
 
     if (userEmail) {
-        document.getElementById("emailInput").value = userEmail;
-        loadAgenda(userEmail);
-        setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
+        document.getElementById("emailInput").value = userEmail.toLowerCase(); // Convert input email to lowercase
+        loadAgenda(userEmail.toLowerCase());
+        setInterval(() => loadAgenda(userEmail.toLowerCase()), 30000); // Auto-refresh every 30 seconds
     }
 });
 
@@ -29,13 +29,13 @@ function loadAgenda(userEmail) {
                 let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
 
                 let nomineeEmails = {
-                    "jesse.smith@conagra.com": "Ov6OeEutv_Q",  // Your YouTube Video ID
+                    "jesse.smith@conagra.com": "Ov6OeEutv_Q",
                     "nominee1@email.com": "Ov6OeEutv_Q",
                     "nominee2@email.com": "Ov6OeEutv_Q"
                 };
 
                 rows.forEach(row => {
-                    const email = row.c[0]?.v;
+                    const email = row.c[0]?.v?.toLowerCase(); // Convert stored email to lowercase
                     if (email === userEmail) {
                         found = true;
                         attendeeName = row.c[1]?.v || "Unknown Attendee";
@@ -75,7 +75,7 @@ function loadAgenda(userEmail) {
                         let videoSrc = `https://www.youtube.com/embed/${videoID}?autoplay=1`;
 
                         attendeeTitle = `<h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
-                        <p class="nominee-text">You are a nominee for an award!</p>
+                        <p class="nominee-text">You are a nominee for an award at this event!</p>
                         <iframe id="nomineeVideo" width="500" height="280" src="${videoSrc}" 
                             frameborder="0" allowfullscreen>
                         </iframe>`;
