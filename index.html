@@ -20,6 +20,9 @@
         <h2 id="attendeeName">Welcome! Your personalized agenda is ready.</h2>
         <input type="email" id="emailInput" placeholder="Enter your email" readonly>
         
+        <!-- Live Update Timestamp -->
+        <p id="lastUpdated" style="font-size: 14px; color: gray; margin-top: 10px;">Last updated at: Loading...</p>
+
         <div id="agenda" class="agenda-container">
             <div class="day-section" id="day1">
                 <h3>Day 1 - All Company Meeting</h3>
@@ -52,6 +55,7 @@
             if (userEmail) {
                 document.getElementById("emailInput").value = userEmail;
                 loadAgenda(userEmail);
+                setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
             }
         });
     </script>
