@@ -75,7 +75,7 @@ function loadAgenda(userEmail) {
                         let videoSrc = `https://www.youtube.com/embed/${videoID}?autoplay=1`;
 
                         attendeeTitle = `<h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
-                        <p class="nominee-text">You are a nominee for an award at this event!</p>
+                        <p class="nominee-text">You are a nominee for an award!</p>
                         <iframe id="nomineeVideo" width="500" height="280" src="${videoSrc}" 
                             frameborder="0" allowfullscreen>
                         </iframe>`;
