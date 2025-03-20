@@ -14,14 +14,10 @@
         <h1>Welcome to the 2025 ACM/NSM</h1>
     </header>
 
-    <!-- Live Countdown Timer -->
-    <h2 id="countdown">🏆 Event starts in: Loading...</h2>
+    <h2 id="countdown">Event starts in: Loading...</h2>
 
     <div class="container">
-        <!-- Nominee Video Section -->
-        <div id="nomineeSection"></div>
-
-        <h2 id="attendeeName">Loading your personalized agenda...</h2>
+        <h2 id="attendeeName">Welcome! Your personalized agenda is ready.</h2>
         <input type="email" id="emailInput" placeholder="Enter your email" readonly>
         
         <!-- Live Update Timestamp -->
@@ -58,90 +54,10 @@
 
             if (userEmail) {
                 document.getElementById("emailInput").value = userEmail;
-                loadAgenda(userEmail); // Load agenda first
+                loadAgenda(userEmail);
                 setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
             }
-
-            startCountdown(); // Start the event countdown
         });
-
-        function startCountdown() {
-            const eventDate = new Date("2025-06-16T19:00:00").getTime(); // Set event date & time
-
-            function updateCountdown() {
-                const now = new Date().getTime();
-                const timeLeft = eventDate - now;
-
-                if (timeLeft <= 0) {
-                    document.getElementById("countdown").innerHTML = "🎉 The event has started! 🎉";
-                    return;
-                }
-
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-                document.getElementById("countdown").innerHTML = `🏆 Event starts in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-            }
-
-            updateCountdown(); // Run immediately
-            setInterval(updateCountdown, 1000); // Update every second
-        }
-
-        function showNomineeVideo(attendeeName, userEmail) {
-            let nomineeEmails = {
-                "jesse.smith@conagra.com": "Ov6OeEutv_Q",  // Your YouTube Video ID
-                "nominee1@email.com": "Ov6OeEutv_Q",
-                "nominee2@email.com": "Ov6OeEutv_Q"
-            };
-
-            if (nomineeEmails[userEmail]) {
-                let videoID = nomineeEmails[userEmail];
-                let videoSrc = `https://www.youtube.com/embed/${videoID}?autoplay=1`;
-
-                document.getElementById("nomineeSection").innerHTML = `
-                    <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
-                    <p class="nominee-text">You are a nominee for an award at this event!</p>
-                    <iframe id="nomineeVideo" width="500" height="280" src="${videoSrc}" 
-                        frameborder="0" allowfullscreen>
-                    </iframe>`;
-            }
-        }
-
-        function loadAgenda(userEmail) {
-            const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
-
-            fetch(sheetURL)
-                .then(res => res.text())
-                .then(data => {
-                    try {
-                        const jsonData = JSON.parse(data.substring(47).slice(0, -2));
-                        const rows = jsonData.table.rows;
-
-                        let attendeeName = "Guest";
-
-                        rows.forEach(row => {
-                            const email = row.c[0]?.v;
-                            if (email === userEmail) {
-                                attendeeName = row.c[1]?.v || "Guest";
-                            }
-                        });
-
-                        document.getElementById("attendeeName").innerHTML = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
-
-                        showNomineeVideo(attendeeName, userEmail); // Ensures correct name is passed
-
-                    } catch (error) {
-                        console.error("Error processing JSON:", error);
-                        document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
-                    }
-                })
-                .catch(error => {
-                    console.error("Error fetching data:", error);
-                    document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
-                });
-        }
     </script>
 
 </body>
