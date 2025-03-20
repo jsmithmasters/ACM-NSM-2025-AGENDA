@@ -5,6 +5,14 @@ body {
     text-align: center;
 }
 
+/* Header Image (Resized to 50% smaller) */
+header img {
+    width: 50%;
+    max-width: 400px;
+    display: block;
+    margin: 0 auto;
+}
+
 /* Agenda Styling */
 .agenda-container {
     background: #ffffff;
@@ -26,9 +34,9 @@ body {
 
 .agenda-item {
     background: #f8f8f8;
-    padding: 10px;
-    border-left: 4px solid #0044cc;
-    margin-bottom: 5px;
+    padding: 15px;
+    border-left: 5px solid #0044cc;
+    margin-bottom: 10px;
     border-radius: 5px;
     text-align: left;
 }
@@ -62,3 +70,10 @@ i {
     font-size: 16px;
 }
 
+/* Nominee Video Styling */
+#nomineeVideo {
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 15px auto;
+    display: block;
+}
