@@ -15,13 +15,13 @@
     </header>
 
     <!-- Live Countdown Timer -->
-    <h2 id="countdown">Event starts in: Loading...</h2>
+    <h2 id="countdown">🏆 Event starts in: Loading...</h2>
 
     <div class="container">
         <!-- Nominee Video Section -->
         <div id="nomineeSection"></div>
 
-        <h2 id="attendeeName">Welcome! Your personalized agenda is ready.</h2>
+        <h2 id="attendeeName">Loading your personalized agenda...</h2>
         <input type="email" id="emailInput" placeholder="Enter your email" readonly>
         
         <!-- Live Update Timestamp -->
@@ -58,7 +58,7 @@
 
             if (userEmail) {
                 document.getElementById("emailInput").value = userEmail;
-                loadAgenda(userEmail);
+                loadAgenda(userEmail); // Load agenda first
                 setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
             }
 
@@ -130,7 +130,7 @@
 
                         document.getElementById("attendeeName").innerHTML = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
 
-                        showNomineeVideo(attendeeName, userEmail); // Now passes the correct name
+                        showNomineeVideo(attendeeName, userEmail); // Ensures correct name is passed
 
                     } catch (error) {
                         console.error("Error processing JSON:", error);
