@@ -1,55 +1,72 @@
+/* Conagra-Themed Style Sheet */
+
 /* General Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #ffffff; /* clean white background */
+    color: #333333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styling */
+header {
+    background-color: #E31837; /* Conagra Red */
+    padding: 20px;
+    color: #ffffff;
     text-align: center;
 }
 
-/* Header Image (50% smaller) */
 header img {
-    width: 50%;
-    max-width: 400px;
+    width: 50%;            /* 50% smaller */
+    max-width: 200px;
     display: block;
     margin: 0 auto;
 }
 
-/* Agenda Styling */
-.agenda-container {
-    background: #ffffff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
+h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+/* Container for Content */
+.container {
     max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
 }
 
+/* Agenda Container Styling */
+.agenda-container {
+    background-color: #f7f7f7; /* light gray background for contrast */
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Day Section Styling */
 .day-section {
-    background: #0044cc;
-    color: white;
-    padding: 10px;
+    background-color: #E31837; /* Conagra Red for day headers */
+    color: #ffffff;
     border-radius: 5px;
-    margin-bottom: 10px;
-    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 15px;
+    text-align: left;
 }
 
+/* Agenda Item Styling */
 .agenda-item {
-    background: #f8f8f8;
-    padding: 15px;
-    border-left: 5px solid #0044cc;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    background-color: #ffffff;
+    border-left: 5px solid #E31837;
+    padding: 10px;
+    margin: 10px 0;
     text-align: left;
 }
 
 .agenda-item p {
     margin: 5px 0;
-    font-size: 14px;
-    color: #333;
-}
-
-i {
-    color: #0044cc;
-    margin-right: 5px;
 }
 
 /* Award Nominee Special Styling */
@@ -59,18 +76,6 @@ i {
     padding: 15px;
 }
 
-/* Nominee Video Styling */
-#nomineeVideo {
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    margin: 15px auto;
-    display: block;
-    width: 100%;
-    max-width: 500px;
-    height: 280px;
-}
-
-/* Nominee Header Text */
 .nominee-title {
     color: gold;
     font-size: 22px;
@@ -80,4 +85,23 @@ i {
 .nominee-text {
     color: #8a6d3b;
     font-size: 16px;
+}
+
+/* Email Input Field */
+input[type="email"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #333333;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    margin-top: 20px;
 }
