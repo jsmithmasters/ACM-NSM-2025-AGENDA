@@ -14,19 +14,82 @@
     <p id="message"></p>
 
     <script>
-        const validEmails = [
+        const validEmails = new Set([
+            "nick.abdo@conagra.com",
+            "shaun.andrade@conagra.com",
+            "santiago.ardila@conagra.com",
+            "nieko.arnini@conagra.com",
+            "julie.ball@conagra.com",
+            "christine.batke@conagra.com",
+            "william.cascone@conagra.com",
+            "josie.cats@conagra.com",
+            "spencer.chan@conagra.com",
+            "terence.chan@conagra.com",
+            "ryon.cheng@conagra.com",
+            "mackenzie.clark@conagra.com",
+            "tyler.collins@conagra.com",
+            "luvleen.cooke@conagra.com",
+            "christina.darby@conagra.com",
+            "david.dasilva@conagra.com",
+            "karen.demetriou@conagra.com",
+            "kanika.dhameja@conagra.com",
+            "catherine.dube@conagra.com",
+            "jonathan.dufresne@conagra.com",
+            "michael.fazio@conagra.com",
+            "reid.fenwick@conagra.com",
+            "giuseppe.franze@conagra.com",
+            "andrea.fung@conagra.com",
+            "mirela.gedja@conagra.com",
+            "lauren.gilpin@conagra.com",
+            "jeremy.griffin@conagra.com",
+            "jeffery.ha@conagra.com",
+            "barbara.harrison@conagra.com",
+            "jason.hoang@conagra.com",
+            "susan.hornsby@conagra.com",
+            "albert.hutton@conagra.com",
+            "cheikh.kamara@conagra.com",
+            "faizan.khan@conagra.com",
+            "aashna.khetani@conagra.com",
+            "shrirang.kumbhojkar@conagra.com",
+            "kevin.lamb@conagra.com",
+            "darren.lang@conagra.com",
+            "raymond.lau@conagra.com",
+            "nathan.lee@conagra.com",
+            "tim.lute@conagra.com",
+            "peter.mandarino@conagra.com",
+            "lisa.mann@conagra.com",
+            "melissa.martinmcgraw@conagra.com",
+            "kim.mcnaught@conagra.com",
+            "pooya.mozaffari@conagra.com",
+            "zmn3021@conagrafoods.com",
+            "sheikhjunaid.nayyer@conagra.com",
+            "jack.nicholl@conagra.com",
+            "elise.nicholson@conagra.com",
+            "giulliano.pappi@conagra.com",
+            "james.pickering@conagra.com",
+            "amanda.pitz@conagra.com",
+            "robin.poulain@conagra.com",
+            "anoopjitsingh.sahota@conagra.com",
+            "anthony.salvador@conagra.com",
+            "andrea.scott@conagra.com",
             "jesse.smith@conagra.com",
-            "user1@email.com",
-            "user2@email.com",
-            "user3@email.com"
-        ];
+            "michelle.squibb@conagra.com",
+            "humza.syed@conagra.com",
+            "sonia.tremblay@conagra.com",
+            "ray.vandenbossche@conagra.com",
+            "brian.vergeldedios@conagra.com",
+            "Elisa.Eskedjian@conagra.com",
+            "laura.campos1@conagra.com",
+            "Lisa.Cranstoun@conagra.com"
+            
+        ]);
 
         function validateEmail() {
             const email = document.getElementById("emailInput").value.trim().toLowerCase();
             const message = document.getElementById("message");
 
-            if (validEmails.includes(email)) {
-                message.innerHTML = "Success! Redirecting...";
+            if (validEmails.has(email)) {
+                message.innerHTML = "You're in luck, you made the cut! Redirecting...";
                 setTimeout(() => {
                     window.location.href = `index.html?email=${encodeURIComponent(email)}`;
                 }, 1000);
