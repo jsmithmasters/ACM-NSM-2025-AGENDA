@@ -1,10 +1,12 @@
-/* Conagra-Themed Style Sheet */
+/* =========================
+   Conagra-Themed Style Sheet
+   ========================= */
 
 /* General Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff; /* clean white background */
-    color: #333333;
+    background-color: #ffffff; /* White background */
+    color: #333333;            /* Default text color */
     text-align: center;
     margin: 0;
     padding: 0;
@@ -37,36 +39,69 @@ h1 {
     padding: 20px;
 }
 
+/* Email Input Field */
+input[type="email"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+/* Live Update Timestamp */
+#lastUpdated {
+    font-size: 14px;
+    color: gray;
+    margin-top: 10px;
+}
+
 /* Agenda Container Styling */
 .agenda-container {
-    background-color: #f7f7f7; /* light gray background for contrast */
+    background-color: #f7f7f7; /* Light gray background for contrast */
     border: 1px solid #dddddd;
     border-radius: 8px;
     padding: 20px;
     margin-top: 20px;
+    text-align: left;  /* So items align left by default */
 }
 
 /* Day Section Styling */
 .day-section {
-    background-color: #E31837; /* Conagra Red for day headers */
+    background-color: #E31837; /* Conagra Red */
     color: #ffffff;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 15px;
-    text-align: left;
+}
+
+/* The heading inside each day section (e.g., "Day 1") */
+.day-section h3 {
+    margin: 0;
+    color: #ffffff;
+}
+
+/* Content area for each day (e.g., #day1-content) */
+.day-section > div {
+    background-color: #ffffff; 
+    color: #333333; 
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
 }
 
 /* Agenda Item Styling */
 .agenda-item {
     background-color: #ffffff;
-    border-left: 5px solid #E31837;
+    border-left: 5px solid #E31837; /* Red bar for emphasis */
     padding: 10px;
     margin: 10px 0;
-    text-align: left;
+    border-radius: 5px;
 }
 
 .agenda-item p {
     margin: 5px 0;
+    color: #333333; /* Ensure text is dark */
 }
 
 /* Award Nominee Special Styling */
@@ -76,6 +111,7 @@ h1 {
     padding: 15px;
 }
 
+/* Nominee Header Text */
 .nominee-title {
     color: gold;
     font-size: 22px;
@@ -87,14 +123,15 @@ h1 {
     font-size: 16px;
 }
 
-/* Email Input Field */
-input[type="email"] {
+/* Nominee Video Styling */
+#nomineeVideo {
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    margin: 15px auto;
+    display: block;
     width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
+    max-width: 500px;
+    height: 280px;
 }
 
 /* Footer Styling */
