@@ -18,7 +18,7 @@
     <h2 id="countdown">Event starts in: Loading...</h2>
 
     <div class="container">
-        <!-- NOMINEE VIDEO SECTION -->
+        <!-- Nominee Video Section -->
         <div id="nomineeSection"></div>
 
         <h2 id="attendeeName">Welcome! Your personalized agenda is ready.</h2>
@@ -97,12 +97,15 @@
                 "nominee2@email.com": "Ov6OeEutv_Q"
             };
 
-            if (nomineeEmails[userEmail]) {
+            if (nomineeEmails[userEmail] && document.getElementById("attendeeName")) {
                 let videoID = nomineeEmails[userEmail];
                 let videoSrc = `https://www.youtube.com/embed/${videoID}?autoplay=1`;
 
+                // Extract attendee's name from the already loaded attendee name
+                let attendeeName = document.getElementById("attendeeName").innerText.replace("Welcome, ", "").replace("! Your personalized agenda is ready.", "");
+
                 document.getElementById("nomineeSection").innerHTML = `
-                    <h2 class="nominee-title">🌟 Congratulations, ${userEmail}! 🌟</h2>
+                    <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
                     <p class="nominee-text">You are a nominee for an award at this event!</p>
                     <iframe id="nomineeVideo" width="500" height="280" src="${videoSrc}" 
                         frameborder="0" allowfullscreen>
