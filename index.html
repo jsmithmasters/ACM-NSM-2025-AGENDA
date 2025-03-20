@@ -60,7 +60,6 @@
                 document.getElementById("emailInput").value = userEmail;
                 loadAgenda(userEmail);
                 setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
-                showNomineeVideo(userEmail); // Show nominee video if applicable
             }
 
             startCountdown(); // Start the event countdown
@@ -90,7 +89,7 @@
             setInterval(updateCountdown, 1000); // Update every second
         }
 
-        function showNomineeVideo(userEmail) {
+        function showNomineeVideo(attendeeName, userEmail) {
             let nomineeEmails = {
                 "jesse.smith@conagra.com": "Ov6OeEutv_Q",  // Your YouTube Video ID
                 "nominee1@email.com": "Ov6OeEutv_Q",
@@ -101,18 +100,47 @@
                 let videoID = nomineeEmails[userEmail];
                 let videoSrc = `https://www.youtube.com/embed/${videoID}?autoplay=1`;
 
-                // Wait until the agenda loads to extract the correct name
-                setTimeout(() => {
-                    let attendeeName = document.getElementById("attendeeName").innerText.replace("Welcome, ", "").replace("! Your personalized agenda is ready.", "");
-
-                    document.getElementById("nomineeSection").innerHTML = `
-                        <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
-                        <p class="nominee-text">You are a nominee for an award at this event!</p>
-                        <iframe id="nomineeVideo" width="500" height="280" src="${videoSrc}" 
-                            frameborder="0" allowfullscreen>
-                        </iframe>`;
-                }, 100); // Small delay to ensure name is fully loaded
+                document.getElementById("nomineeSection").innerHTML = `
+                    <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
+                    <p class="nominee-text">You are a nominee for an award at this event!</p>
+                    <iframe id="nomineeVideo" width="500" height="280" src="${videoSrc}" 
+                        frameborder="0" allowfullscreen>
+                    </iframe>`;
             }
+        }
+
+        function loadAgenda(userEmail) {
+            const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
+
+            fetch(sheetURL)
+                .then(res => res.text())
+                .then(data => {
+                    try {
+                        const jsonData = JSON.parse(data.substring(47).slice(0, -2));
+                        const rows = jsonData.table.rows;
+
+                        let attendeeName = "Guest";
+
+                        rows.forEach(row => {
+                            const email = row.c[0]?.v;
+                            if (email === userEmail) {
+                                attendeeName = row.c[1]?.v || "Guest";
+                            }
+                        });
+
+                        document.getElementById("attendeeName").innerHTML = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+
+                        showNomineeVideo(attendeeName, userEmail); // Now passes the correct name
+
+                    } catch (error) {
+                        console.error("Error processing JSON:", error);
+                        document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
+                });
         }
     </script>
 
