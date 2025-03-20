@@ -27,12 +27,12 @@ function loadAgenda(userEmail) {
                 let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
                 let attendeeName = "Unknown Attendee";
 
-                let nomineeEmails = [
-                    "jesse.smith@conagra.com",
-                    "nominee1@email.com",
-                    "nominee2@email.com"
-                    // Add all nominees here
-                ];
+                // List of nominee emails
+                let nomineeEmails = {
+                    "jesse.smith@conagra.com": "nominee-welcome.mp4",
+                    "nominee1@email.com": "nominee1-welcome.mp4",
+                    "nominee2@email.com": "nominee2-welcome.mp4"
+                };
 
                 rows.forEach(row => {
                     const email = row.c[0]?.v;
@@ -70,10 +70,15 @@ function loadAgenda(userEmail) {
                 } else {
                     let attendeeTitle = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
 
-                    // Highlight nominee special message
-                    if (nomineeEmails.includes(userEmail)) {
+                    // Show video for nominees
+                    if (nomineeEmails[userEmail]) {
+                        let videoSrc = nomineeEmails[userEmail];
                         attendeeTitle = `<h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
-                        <p class="nominee-text">You are a nominee for an award at this event!</p>`;
+                        <p class="nominee-text">You are a nominee for an award at this event!</p>
+                        <video id="nomineeVideo" width="320" height="180" controls autoplay>
+                            <source src="${videoSrc}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>`;
                         document.getElementById("agenda").classList.add("award-nominee");
                     }
 
