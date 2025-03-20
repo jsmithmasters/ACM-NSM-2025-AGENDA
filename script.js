@@ -1,3 +1,13 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userEmail = urlParams.get("email");
+
+    if (userEmail) {
+        document.getElementById("emailInput").value = userEmail;
+        loadAgenda(userEmail);
+    }
+});
+
 function loadAgenda(userEmail) {
     if (!userEmail) {
         alert("No email found. Please log in again.");
@@ -16,6 +26,13 @@ function loadAgenda(userEmail) {
                 let found = false;
                 let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
                 let attendeeName = "Unknown Attendee";
+
+                let nomineeEmails = [
+                    "jesse.smith@conagra.com",
+                    "nominee1@email.com",
+                    "nominee2@email.com"
+                    // Add all nominees here
+                ];
 
                 rows.forEach(row => {
                     const email = row.c[0]?.v;
@@ -37,9 +54,11 @@ function loadAgenda(userEmail) {
                             agendaData[day].push(
                                 `<div class="agenda-item">
                                     <p><strong>${session}</strong> at ${time}</p>
-                                    <p><i class="fa-solid fa-door-open"></i> Room: ${room}  
-                                    | <i class="fa-solid fa-utensils"></i> Table: ${table}  
-                                    | <i class="fa-solid fa-sticky-note"></i> Notes: ${notes}</p>
+                                    <p>
+                                        <i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}  
+                                        | <i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}  
+                                        | <i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}
+                                    </p>
                                 </div>`
                             );
                         }
@@ -49,7 +68,16 @@ function loadAgenda(userEmail) {
                 if (!found) {
                     document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
                 } else {
-                    document.getElementById("attendeeName").innerText = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+                    let attendeeTitle = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+
+                    // Highlight nominee special message
+                    if (nomineeEmails.includes(userEmail)) {
+                        attendeeTitle = `<h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
+                        <p class="nominee-text">You are a nominee for an award at this event!</p>`;
+                        document.getElementById("agenda").classList.add("award-nominee");
+                    }
+
+                    document.getElementById("attendeeName").innerHTML = attendeeTitle;
                     document.getElementById("day1-content").innerHTML = (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
                     document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
