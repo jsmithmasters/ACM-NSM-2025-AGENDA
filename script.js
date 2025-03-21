@@ -116,6 +116,25 @@ function checkQASession(userEmail) {
         });
 }
 
+// ✅ Ensure Nominee Message & Video Displays
+function showNomineeMessage(attendeeName, userEmail) {
+    const nomineeEmails = {
+        "jesse.smith@conagra.com": "Ov6OeEutv_Q"
+    };
+
+    if (nomineeEmails[userEmail]) {
+        let videoID = nomineeEmails[userEmail];
+        let videoSrc = `https://www.youtube.com/embed/${videoID}?autoplay=1`;
+
+        document.getElementById("nomineeSection").innerHTML = `
+            <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
+            <p class="nominee-text">You are a nominee for an award at this event!</p>
+            <iframe id="nomineeVideo" width="500" height="280" src="${videoSrc}" 
+                frameborder="0" allowfullscreen></iframe>
+        `;
+    }
+}
+
 // ✅ Submit Question to Google Sheets
 function submitQuestion() {
     const question = document.getElementById("questionInput").value.trim();
