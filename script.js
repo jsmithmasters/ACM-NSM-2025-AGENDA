@@ -4,13 +4,79 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (userEmail) {
         document.getElementById("emailInput").value = userEmail;
-        loadAgenda(userEmail);
-        checkQASession(userEmail); // Only enable Q&A if the session allows it
-        setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
+        loadAgenda(userEmail.toLowerCase());
+        checkQASession(userEmail.toLowerCase());
+        setInterval(() => loadAgenda(userEmail.toLowerCase()), 30000); // Auto-refresh every 30 seconds
     }
 });
 
-// ✅ Check Google Sheets for which sessions have Q&A enabled
+function loadAgenda(userEmail) {
+    const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
+
+    fetch(sheetURL)
+        .then(res => res.text())
+        .then(data => {
+            try {
+                const jsonData = JSON.parse(data.substring(47).slice(0, -2));
+                const rows = jsonData.table.rows;
+
+                let found = false;
+                let attendeeName = "Unknown Attendee";
+                let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
+
+                rows.forEach(row => {
+                    const email = row.c[0]?.v?.toLowerCase();
+                    if (email === userEmail) {
+                        found = true;
+                        attendeeName = row.c[1]?.v || "Unknown Attendee";
+                        let day = row.c[2]?.v || "Other";
+                        let session = row.c[3]?.v || "TBD";
+                        let time = row.c[4]?.v || "TBD";
+                        let room = row.c[5]?.v || "TBD";
+                        let table = row.c[6]?.v || "Not Assigned";
+                        let notes = row.c[7]?.v || "No Notes";
+
+                        if (!agendaData[day]) {
+                            agendaData[day] = [];
+                        }
+
+                        agendaData[day].push(
+                            `<div class="agenda-item">
+                                <p><strong>${session}</strong> at ${time}</p>
+                                <p>
+                                    <i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}  
+                                    | <i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}  
+                                    | <i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}
+                                </p>
+                            </div>`
+                        );
+                    }
+                });
+
+                if (!found) {
+                    document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
+                } else {
+                    document.getElementById("attendeeName").innerHTML = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+                    document.getElementById("day1-content").innerHTML = (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("day4-content").innerHTML = (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
+
+                    const now = new Date();
+                    document.getElementById("lastUpdated").innerHTML = `Last updated at: ${now.toLocaleTimeString()}`;
+                }
+            } catch (error) {
+                console.error("Error processing agenda:", error);
+                document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching agenda data:", error);
+            document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
+        });
+}
+
+// ✅ Q&A Control: Enable or Hide Question Form Based on Google Sheets
 function checkQASession(userEmail) {
     const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
 
@@ -27,24 +93,26 @@ function checkQASession(userEmail) {
             rows.forEach(row => {
                 const email = row.c[0]?.v?.toLowerCase();
                 if (email === userEmail) {
-                    userSession = row.c[3]?.v || "Unknown Session"; // Breakout Session Name
-                    speakerEmail = row.c[10]?.v || "No Speaker"; // Speaker Email
-                    questionsEnabled = row.c[9]?.v || "NO"; // YES/NO for Q&A
+                    userSession = row.c[3]?.v || "Unknown Session";  // Breakout Session
+                    speakerEmail = row.c[10]?.v || "No Speaker";
+                    questionsEnabled = row.c[9]?.v || "NO"; // Q&A Enabled
                 }
             });
 
             if (questionsEnabled === "YES") {
-                document.getElementById("questionSection").style.display = "block"; // Show form
+                document.getElementById("questionSection").style.display = "block";
                 document.getElementById("questionSessionName").innerText = userSession;
                 document.getElementById("questionSpeaker").innerText = speakerEmail;
             } else {
-                document.getElementById("questionSection").style.display = "none"; // Hide form
+                document.getElementById("questionSection").style.display = "none";
             }
         })
-        .catch(error => console.error("Error checking Q&A status:", error));
+        .catch(error => {
+            console.error("Error checking Q&A toggle:", error);
+        });
 }
 
-// ✅ Submit Question to Google Sheets (Only for Enabled Sessions)
+// ✅ Submit Question to Google Apps Script Web App
 function submitQuestion() {
     const question = document.getElementById("questionInput").value.trim();
     const userEmail = document.getElementById("emailInput").value;
@@ -56,9 +124,9 @@ function submitQuestion() {
         return;
     }
 
-    const sheetURL = "https://script.google.com/macros/s/AKfycby2FVlQuGEfCzFLaS8SK9giwWtIbVqg_seCR_p7FLmRJWQmo1_d7eTmcKn6KiumiGWzpQ/exec";
-    
-    fetch(sheetURL, {
+    const scriptURL = "https://script.google.com/macros/s/AKfycby2FVlQuGEfCzFLaS8SK9giwWtIbVqg_seCR_p7FLmRJWQmo1_d7eTmcKn6KiumiGWzpQ/exec";
+
+    fetch(scriptURL, {
         method: "POST",
         body: JSON.stringify({ email: userEmail, session: sessionName, speaker: speakerEmail, question: question }),
         headers: { "Content-Type": "application/json" }
@@ -72,5 +140,8 @@ function submitQuestion() {
             document.getElementById("questionMessage").innerHTML = "❌ Error submitting question.";
         }
     })
-    .catch(error => console.error("Error submitting question:", error));
+    .catch(error => {
+        console.error("Error submitting question:", error);
+        document.getElementById("questionMessage").innerHTML = "❌ Error submitting question.";
+    });
 }
