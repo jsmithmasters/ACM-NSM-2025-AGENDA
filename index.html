@@ -15,9 +15,12 @@
     </header>
 
     <div class="container">
+        <!-- Nominee Message Section -->
+        <div id="nomineeSection"></div>
+
         <h2 id="attendeeName">Welcome! Your personalized agenda is ready.</h2>
         <input type="email" id="emailInput" placeholder="Enter your email" readonly>
-        
+
         <!-- Live Update Timestamp -->
         <p id="lastUpdated" style="font-size: 14px; color: gray; margin-top: 10px;">Last updated at: Loading...</p>
 
@@ -61,9 +64,9 @@
 
             if (userEmail) {
                 document.getElementById("emailInput").value = userEmail;
-                loadAgenda(userEmail);
-                checkQASession(userEmail); // Only enable Q&A if the session allows it
-                setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
+                loadAgenda(userEmail.toLowerCase());
+                checkQASession(userEmail.toLowerCase());
+                setInterval(() => loadAgenda(userEmail.toLowerCase()), 30000); // Auto-refresh every 30 seconds
             }
         });
     </script>
