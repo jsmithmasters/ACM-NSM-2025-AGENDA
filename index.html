@@ -39,6 +39,15 @@
                 <div id="day4-content"></div>
             </div>
         </div>
+
+        <!-- Question Submission Section (Hidden by Default) -->
+        <div id="questionSection" style="display: none;">
+            <h3>Submit a Question for <span id="questionSessionName"></span></h3>
+            <p>Speaker: <span id="questionSpeaker"></span></p>
+            <input type="text" id="questionInput" placeholder="Type your question here...">
+            <button onclick="submitQuestion()">Submit Question</button>
+            <p id="questionMessage"></p>
+        </div>
     </div>
 
     <footer>
@@ -53,6 +62,7 @@
             if (userEmail) {
                 document.getElementById("emailInput").value = userEmail;
                 loadAgenda(userEmail);
+                checkQASession(userEmail); // Only enable Q&A if the session allows it
                 setInterval(() => loadAgenda(userEmail), 30000); // Auto-refresh every 30 seconds
             }
         });
