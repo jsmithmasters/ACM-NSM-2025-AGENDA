@@ -1,284 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Event Agenda</title>
-  <style>
-    /* =========================
-       Conagra-Themed Style Sheet
-       ========================= */
-
-    /* General Styling */
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #ffffff; /* White background */
-        color: #333333;            /* Default text color */
-        text-align: center;
-        margin: 0;
-        padding: 0;
-    }
-
-    /* Header Styling */
-    header {
-        background-color: #E31837; /* Conagra Red */
-        padding: 20px;
-        color: #ffffff;
-        text-align: center;
-    }
-
-    header img {
-        width: 50%;
-        max-width: 200px;
-        display: block;
-        margin: 0 auto;
-    }
-
-    h1 {
-        margin: 0;
-        font-size: 2em;
-    }
-
-    /* Container for Content */
-    .container {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-    }
-
-    /* Email Input Field */
-    input[type="email"] {
-        width: 100%;
-        max-width: 400px;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #cccccc;
-        border-radius: 4px;
-    }
-
-    /* Live Update Timestamp */
-    #lastUpdated {
-        font-size: 14px;
-        color: gray;
-        margin-top: 10px;
-    }
-
-    /* Agenda Container Styling */
-    .agenda-container {
-        background-color: #f7f7f7; /* Light gray background for contrast */
-        border: 1px solid #dddddd;
-        border-radius: 8px;
-        padding: 20px;
-        margin-top: 20px;
-        text-align: left;
-    }
-
-    /* Day Section Styling */
-    .day-section {
-        background-color: #f9f9f9; /* Lighter background to reduce heaviness */
-        color: #E31837;           /* Conagra Red for text */
-        border-left: 5px solid #E31837; /* Red accent */
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 15px;
-    }
-
-    .day-section h3 {
-        margin: 0;
-        color: #E31837;
-    }
-
-    .day-section > div {
-        background-color: #ffffff; 
-        color: #333333; 
-        margin-top: 10px;
-        padding: 10px;
-        border-radius: 4px;
-    }
-
-    /* Enhanced Agenda Item Styling with Card-Based Layout & Depth */
-    .agenda-item {
-        background-color: #ffffff;
-        /* Red accent as left border */
-        border-left: 5px solid #E31837;
-        border: 1px solid #dddddd;
-        border-radius: 8px;
-        padding: 15px;
-        margin: 10px 0;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Depth effect */
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        cursor: pointer;
-    }
-
-    .agenda-item:hover {
-        transform: scale(1.02);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .agenda-item p {
-        margin: 5px 0;
-        color: #333333;
-    }
-
-    /* Agenda Header for Iconography */
-    .agenda-header {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 8px;
-    }
-
-    .agenda-icon {
-        width: 24px;
-        height: 24px;
-        flex-shrink: 0;
-    }
-
-    .agenda-icon img {
-        width: 100%;
-        height: auto;
-    }
-
-    /* Award Nominee Special Styling */
-    .award-nominee {
-        border: 3px solid gold;
-        background: #fff8dc;
-        padding: 15px;
-    }
-
-    .nominee-title {
-        color: gold;
-        font-size: 22px;
-        font-weight: bold;
-    }
-
-    .nominee-text {
-        color: #8a6d3b;
-        font-size: 16px;
-    }
-
-    /* Nominee Video Styling */
-    #nomineeVideo {
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        margin: 15px auto;
-        display: block;
-        width: 100%;
-        max-width: 500px;
-        height: 280px;
-    }
-
-    /* Footer Styling */
-    footer {
-        background-color: #333333;
-        color: #ffffff;
-        padding: 10px;
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    /* =========================
-       Mobile-Specific Enhancements
-       ========================= */
-    @media (max-width: 600px) {
-        .container {
-            max-width: 95%;
-            padding: 10px;
-        }
-        
-        header {
-            padding: 15px;
-        }
-        
-        header img {
-            width: 80%;
-            max-width: none;
-        }
-        
-        h1 {
-            font-size: 1.5em;
-        }
-        
-        input[type="email"] {
-            padding: 8px;
-        }
-        
-        .agenda-container {
-            padding: 15px;
-        }
-        
-        .day-section {
-            padding: 8px;
-        }
-        
-        .agenda-item {
-            padding: 10px;
-            margin: 8px 0;
-        }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 ACM/NSM Agenda</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+    <!-- Font Awesome for iconography -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-  <header>
-    <!-- Update the logo source as needed -->
-    <img src="logo.png" alt="Event Logo">
-    <h1>Event Agenda</h1>
-  </header>
-  
-  <div class="container">
-    <div class="agenda-container">
-      
-      <!-- Day Section 1 -->
-      <div class="day-section">
-        <h3>Day 1</h3>
-        <div id="day1-content">
-          <div class="agenda-item">
-            <div class="agenda-header">
-              <div class="agenda-icon">
-                <!-- Replace with your icon path -->
-                <img src="icon-clock.svg" alt="Time Icon">
-              </div>
-              <h4>Opening Keynote</h4>
+    <header>
+        <img src="otp.png" alt="Company Logo" class="logo">
+        <h1>Welcome to the 2025 ACM/NSM</h1>
+    </header>
+
+    <div class="container">
+        <!-- Nominee Message Section -->
+        <div id="nomineeSection"></div>
+
+        <h2 id="attendeeName">Welcome! Your personalized agenda is ready.</h2>
+        <input type="email" id="emailInput" placeholder="Enter your email" readonly>
+
+        <!-- Live Update Timestamp -->
+        <p id="lastUpdated" style="font-size: 14px; color: gray; margin-top: 10px;">Last updated at: Loading...</p>
+
+        <div id="agenda" class="agenda-container">
+            <!-- Day Section 1 -->
+            <div class="day-section" id="day1">
+                <h3>Day 1 - All Company Meeting</h3>
+                <div id="day1-content">
+                    <!-- Sample Agenda Item -->
+                    <div class="agenda-item">
+                        <div class="agenda-header">
+                            <div class="agenda-icon">
+                                <!-- Using Font Awesome icon for time -->
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <h4>Opening Keynote</h4>
+                        </div>
+                        <p><strong>Time:</strong> 9:00 AM - 10:00 AM</p>
+                        <p><strong>Location:</strong> Main Hall</p>
+                    </div>
+                </div>
             </div>
-            <p><strong>Time:</strong> 9:00 AM - 10:00 AM</p>
-            <p><strong>Location:</strong> Main Hall</p>
-          </div>
-          
-          <div class="agenda-item">
-            <div class="agenda-header">
-              <div class="agenda-icon">
-                <img src="icon-clock.svg" alt="Time Icon">
-              </div>
-              <h4>Panel Discussion</h4>
+
+            <!-- Day Section 2 -->
+            <div class="day-section" id="day2">
+                <h3>Day 2 - Marketing Breakouts - Process Proud</h3>
+                <div id="day2-content">
+                    <!-- Sample Agenda Item -->
+                    <div class="agenda-item">
+                        <div class="agenda-header">
+                            <div class="agenda-icon">
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <h4>Panel Discussion</h4>
+                        </div>
+                        <p><strong>Time:</strong> 10:30 AM - 11:30 AM</p>
+                        <p><strong>Location:</strong> Conference Room B</p>
+                    </div>
+                </div>
             </div>
-            <p><strong>Time:</strong> 10:30 AM - 11:30 AM</p>
-            <p><strong>Location:</strong> Conference Room B</p>
-          </div>
+
+            <!-- Day Section 3 -->
+            <div class="day-section" id="day3">
+                <h3>Day 3 - Strategy &amp; Customer - Market Proud</h3>
+                <div id="day3-content">
+                    <!-- Sample Agenda Item -->
+                    <div class="agenda-item">
+                        <div class="agenda-header">
+                            <div class="agenda-icon">
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <h4>Strategy Session</h4>
+                        </div>
+                        <p><strong>Time:</strong> 1:00 PM - 2:30 PM</p>
+                        <p><strong>Location:</strong> Meeting Room C</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day Section 4 -->
+            <div class="day-section" id="day4">
+                <h3>Day 4 - Workshops - People Proud</h3>
+                <div id="day4-content">
+                    <!-- Sample Agenda Item -->
+                    <div class="agenda-item">
+                        <div class="agenda-header">
+                            <div class="agenda-icon">
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <h4>Workshop Session</h4>
+                        </div>
+                        <p><strong>Time:</strong> 2:00 PM - 3:30 PM</p>
+                        <p><strong>Location:</strong> Workshop Room D</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      
-      <!-- Day Section 2 -->
-      <div class="day-section">
-        <h3>Day 2</h3>
-        <div id="day2-content">
-          <div class="agenda-item">
-            <div class="agenda-header">
-              <div class="agenda-icon">
-                <img src="icon-clock.svg" alt="Time Icon">
-              </div>
-              <h4>Workshop Session</h4>
-            </div>
-            <p><strong>Time:</strong> 9:00 AM - 10:30 AM</p>
-            <p><strong>Location:</strong> Workshop Room 1</p>
-          </div>
+
+        <!-- Question Submission Section (Hidden by Default) -->
+        <div id="questionSection" style="display: none;">
+            <h3>Submit a Question for <span id="questionSessionName"></span></h3>
+            <p>Speaker: <span id="questionSpeaker"></span></p>
+            <input type="text" id="questionInput" placeholder="Type your question here...">
+            <button onclick="submitQuestion()">Submit Question</button>
+            <p id="questionMessage"></p>
         </div>
-      </div>
-      
     </div>
-  </div>
-  
-  <footer>
-    <p>© 2025 Event Name. All rights reserved.</p>
-  </footer>
+
+    <footer>
+        <p>&copy; All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userEmail = urlParams.get("email");
+
+            if (userEmail) {
+                document.getElementById("emailInput").value = userEmail;
+                loadAgenda(userEmail.toLowerCase());
+                checkQASession(userEmail.toLowerCase());
+                setInterval(() => loadAgenda(userEmail.toLowerCase()), 30000); // Auto-refresh every 30 seconds
+            }
+        });
+    </script>
 </body>
 </html>
