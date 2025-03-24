@@ -21,7 +21,7 @@ header {
 }
 
 header img {
-    width: 50%;            /* 50% smaller */
+    width: 50%;
     max-width: 200px;
     display: block;
     margin: 0 auto;
@@ -63,20 +63,19 @@ input[type="email"] {
     border-radius: 8px;
     padding: 20px;
     margin-top: 20px;
-    text-align: left;  /* So items align left by default */
+    text-align: left;
 }
 
 /* Day Section Styling */
 .day-section {
-    background-color: #f9f9f9; /* Lighter background to reduce the heavy red feel */
-    color: #E31837;            /* Conagra Red for text */
+    background-color: #f9f9f9; /* Lighter background to reduce heaviness */
+    color: #E31837;           /* Conagra Red for text */
     border-left: 5px solid #E31837; /* Red accent */
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 15px;
 }
 
-/* The heading inside each day section (e.g., "Day 1") */
 .day-section h3 {
     margin: 0;
     color: #E31837;
@@ -91,19 +90,26 @@ input[type="email"] {
     border-radius: 4px;
 }
 
-/* Updated Agenda Item Styling */
+/* Enhanced Agenda Item Styling */
 .agenda-item {
     background-color: #ffffff;
     border: 1px solid #dddddd;       /* Full border for clear separation */
     border-left: 5px solid #E31837;    /* Red accent for branding */
-    padding: 10px;
+    padding: 15px;
     margin: 10px 0;
     border-radius: 5px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.agenda-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .agenda-item p {
     margin: 5px 0;
-    color: #333333; /* Ensure text is dark for readability */
+    color: #333333;
 }
 
 /* Award Nominee Special Styling */
@@ -113,7 +119,6 @@ input[type="email"] {
     padding: 15px;
 }
 
-/* Nominee Header Text */
 .nominee-title {
     color: gold;
     font-size: 22px;
@@ -143,4 +148,49 @@ footer {
     padding: 10px;
     text-align: center;
     margin-top: 20px;
+}
+
+/* =========================
+   Mobile-Specific Enhancements
+   ========================= */
+@media (max-width: 600px) {
+    /* Adjust container to use more screen width */
+    .container {
+        max-width: 95%;
+        padding: 10px;
+    }
+    
+    /* Header tweaks */
+    header {
+        padding: 15px;
+    }
+    
+    header img {
+        width: 80%;
+        max-width: none;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    /* Input adjustments */
+    input[type="email"] {
+        padding: 8px;
+    }
+    
+    /* Agenda container and day section adjustments */
+    .agenda-container {
+        padding: 15px;
+    }
+    
+    .day-section {
+        padding: 8px;
+    }
+    
+    /* Agenda item adjustments */
+    .agenda-item {
+        padding: 10px;
+        margin: 8px 0;
+    }
 }
