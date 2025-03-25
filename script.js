@@ -6,11 +6,82 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("emailInput").value = userEmail;
         loadAgenda(userEmail.toLowerCase());
         checkQASession(userEmail.toLowerCase());
-        setInterval(() => loadAgenda(userEmail.toLowerCase()), 30000); // Auto-refresh every 30 seconds
+        // Auto-refresh agenda every 30 seconds
+        setInterval(() => loadAgenda(userEmail.toLowerCase()), 30000);
+        // Update current event highlight every 30 seconds
+        setInterval(updateCurrentEventHighlight, 30000);
     }
 });
 
-// ✅ Load Agenda from Google Sheets
+// Helper function: Parses a time string like "9:00 AM" and returns a Date object for today.
+function parseTime(timeStr) {
+    let now = new Date();
+    let [time, modifier] = timeStr.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+    if (modifier.toUpperCase() === 'PM' && hours !== 12) {
+        hours += 12;
+    }
+    if (modifier.toUpperCase() === 'AM' && hours === 12) {
+        hours = 0;
+    }
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+}
+
+// Update the current event highlight based on current time.
+function updateCurrentEventHighlight() {
+    const now = new Date();
+    const agendaItems = document.querySelectorAll('.agenda-item');
+    
+    // Remove any existing highlight
+    agendaItems.forEach(item => item.classList.remove('current'));
+    
+    // Create an array of events with their adjusted start time (5 minutes prior) and end time.
+    let events = [];
+    agendaItems.forEach(item => {
+        let startStr = item.getAttribute('data-start'); // e.g., "9:00 AM"
+        let endStr = item.getAttribute('data-end');     // e.g., "10:00 AM"
+        if (!startStr || !endStr) return;
+        
+        let startDate = parseTime(startStr);
+        let endDate = parseTime(endStr);
+        // Adjust start time by subtracting 5 minutes (in milliseconds)
+        let adjustedStart = new Date(startDate.getTime() - 5 * 60000);
+        events.push({ adjustedStart, endDate, element: item });
+    });
+    
+    // Sort events by their adjusted start times.
+    events.sort((a, b) => a.adjustedStart - b.adjustedStart);
+    
+    // Determine the current event.
+    let currentEvent = null;
+    for (let i = 0; i < events.length; i++) {
+        let event = events[i];
+        let nextEvent = events[i + 1];
+        // If current time is after the adjusted start...
+        if (now >= event.adjustedStart) {
+            if (nextEvent) {
+                // And if current time is before the next event's adjusted start, use this event.
+                if (now < nextEvent.adjustedStart) {
+                    currentEvent = event;
+                    break;
+                }
+            } else {
+                // Last event: highlight if current time is before its end.
+                if (now < event.endDate) {
+                    currentEvent = event;
+                    break;
+                }
+            }
+        }
+    }
+    
+    // If a current event is found, add the "current" class.
+    if (currentEvent) {
+        currentEvent.element.classList.add('current');
+    }
+}
+
+// Load Agenda from Google Sheets
 function loadAgenda(userEmail) {
     const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
 
@@ -32,18 +103,23 @@ function loadAgenda(userEmail) {
                         attendeeName = row.c[1]?.v || "Unknown Attendee";
                         let day = row.c[2]?.v || "Other";
                         let session = row.c[3]?.v || "TBD";
-                        let time = row.c[4]?.v || "TBD";
+                        let time = row.c[4]?.v || "TBD"; // Expected format: "9:00 AM - 10:00 AM"
                         let room = row.c[5]?.v || "TBD";
                         let table = row.c[6]?.v || "Not Assigned";
                         let notes = row.c[7]?.v || "No Notes";
 
-                        // Push each detail as its own paragraph for clear separation
+                        // Split time into start and end times.
+                        let timeParts = time.split("-");
+                        let startTime = timeParts[0].trim();
+                        let endTime = timeParts[1] ? timeParts[1].trim() : "TBD";
+
                         if (!agendaData[day]) {
                             agendaData[day] = [];
                         }
                         
+                        // Build the agenda item with data attributes for start and end times.
                         agendaData[day].push(`
-                            <div class="agenda-item">
+                            <div class="agenda-item" data-start="${startTime}" data-end="${endTime}">
                                 <p><strong>Session:</strong> ${session}</p>
                                 <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
                                 <p><i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}</p>
@@ -70,6 +146,8 @@ function loadAgenda(userEmail) {
                         (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
 
                     showNomineeMessage(attendeeName, userEmail);
+                    // Immediately update the current event highlight after loading.
+                    updateCurrentEventHighlight();
                 }
             } catch (error) {
                 console.error("Error processing agenda:", error);
@@ -84,7 +162,7 @@ function loadAgenda(userEmail) {
         });
 }
 
-// ✅ Q&A Control: Enable or Hide Question Form Based on Google Sheets
+// Q&A Control: Enable or Hide Question Form Based on Google Sheets
 function checkQASession(userEmail) {
     const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
 
@@ -102,9 +180,9 @@ function checkQASession(userEmail) {
                 rows.forEach(row => {
                     const email = row.c[0]?.v?.toLowerCase();
                     if (email === userEmail) {
-                        userSession = row.c[3]?.v || "Unknown Session";  // Breakout Session
+                        userSession = row.c[3]?.v || "Unknown Session";
                         speakerEmail = row.c[10]?.v || "No Speaker";
-                        questionsEnabled = row.c[9]?.v || "NO"; // Q&A Enabled
+                        questionsEnabled = row.c[9]?.v || "NO";
                     }
                 });
 
@@ -124,7 +202,7 @@ function checkQASession(userEmail) {
         });
 }
 
-// ✅ Ensure Nominee Message & Video Displays
+// Nominee Message & Video Display
 function showNomineeMessage(attendeeName, userEmail) {
     const nomineeEmails = {
         "jesse.smith@conagra.com": "Ov6OeEutv_Q"
@@ -143,7 +221,7 @@ function showNomineeMessage(attendeeName, userEmail) {
     }
 }
 
-// ✅ Submit Question to Google Sheets
+// Submit Question to Google Sheets
 function submitQuestion() {
     const question = document.getElementById("questionInput").value.trim();
     const userEmail = document.getElementById("emailInput").value;
