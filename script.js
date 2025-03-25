@@ -200,7 +200,7 @@ function showNomineeMessage(attendeeName, userEmail) {
         // Adjusted video styling: width is 100% up to a max of 600px, with a 16:9 ratio.
         document.getElementById("nomineeSection").innerHTML = `
             <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
-            <p class="nominee-text">You are a nominee for an award at this event!</p>
+            <p class="nominee-text">You are a nominee for an award!</p>
             <div style="max-width:600px; margin: 0 auto;">
                 <iframe id="nomineeVideo" style="width:100%; aspect-ratio:16/9;" src="${videoSrc}" 
                     frameborder="0" allowfullscreen></iframe>
