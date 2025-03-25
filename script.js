@@ -91,6 +91,8 @@ function loadAgenda(userEmail) {
     fetch(sheetURL)
         .then(res => res.text())
         .then(data => {
+            // Debug: Log the raw data from Google Sheets.
+            console.log("Raw data from Sheets:", data);
             try {
                 const jsonData = JSON.parse(data.substring(47).slice(0, -2));
                 const rows = jsonData.table.rows;
@@ -120,7 +122,7 @@ function loadAgenda(userEmail) {
                             agendaData[day] = [];
                         }
 
-                        // Build the agenda item with data attributes.
+                        // Build the agenda item with data attributes for start and end times.
                         agendaData[day].push(`
                             <div class="agenda-item" data-start="${startTime}" data-end="${endTime}">
                                 <p><strong>Session:</strong> ${session}</p>
@@ -149,7 +151,7 @@ function loadAgenda(userEmail) {
                         (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
 
                     showNomineeMessage(attendeeName, userEmail);
-                    // Immediately update the current event highlight.
+                    // Immediately update the current event highlight after loading.
                     updateCurrentEventHighlight();
                 }
             } catch (error) {
