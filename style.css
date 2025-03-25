@@ -5,8 +5,8 @@
 /* General Styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff; /* White background */
-    color: #333333;            /* Default text color */
+    background-color: #ffffff;
+    color: #333333;
     text-align: center;
     margin: 0;
     padding: 0;
@@ -14,7 +14,7 @@ body {
 
 /* Header Styling */
 header {
-    background-color: #E31837; /* Conagra Red */
+    background-color: #E31837;
     padding: 20px;
     color: #ffffff;
     text-align: center;
@@ -56,9 +56,9 @@ input[type="email"] {
     margin-top: 10px;
 }
 
-/* Agenda Container Styling - Increased contrast by darkening background */
+/* Agenda Container Styling - increased contrast */
 .agenda-container {
-    background-color: #e0e0e0; /* Darker gray background */
+    background-color: #e0e0e0; /* Darker gray to make white cards pop */
     border: 1px solid #cccccc;
     border-radius: 8px;
     padding: 20px;
@@ -68,9 +68,9 @@ input[type="email"] {
 
 /* Day Section Styling */
 .day-section {
-    background-color: #f9f9f9; /* Light background for day sections */
-    color: #E31837;           /* Conagra Red for text */
-    border-left: 5px solid #E31837; /* Red accent */
+    background-color: #f9f9f9;
+    color: #E31837;
+    border-left: 5px solid #E31837;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 15px;
@@ -82,14 +82,14 @@ input[type="email"] {
 }
 
 .day-section > div {
-    background-color: #ffffff; 
-    color: #333333; 
+    background-color: #ffffff;
+    color: #333333;
     margin-top: 10px;
     padding: 10px;
     border-radius: 4px;
 }
 
-/* Enhanced Agenda Item Styling with Card-Based Layout & Depth */
+/* Agenda Item (Card) Styling */
 .agenda-item {
     background-color: #ffffff;
     border-left: 5px solid #E31837;
@@ -98,7 +98,7 @@ input[type="email"] {
     padding: 15px;
     margin: 10px 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s, border 0.3s;
     cursor: pointer;
 }
 
@@ -107,21 +107,25 @@ input[type="email"] {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Separate each detail line in the agenda item with a divider */
+/* Spacing for each detail line */
 .agenda-item p {
-    margin: 5px 0;
+    margin: 10px 0;
     color: #333333;
-    /* Add divider to all but the last paragraph */
-    border-bottom: 1px solid transparent;
 }
 
-.agenda-item p:not(:last-child) {
-    border-bottom: 1px solid #dddddd;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
+/* Highlight (Current) Event Styling */
+.agenda-item.current {
+    background-color: #e6f7ff; /* Light blue background */
+    transform: scale(1.03);
+    border: 2px solid #007acc; /* Stronger blue border */
+    /* Transitions inherited from .agenda-item */
 }
 
-/* Agenda Header for Iconography (if used) */
+.agenda-item.current h4 {
+    font-size: 1.1em;
+}
+
+/* (Optional) Agenda Header if you keep any icon markup */
 .agenda-header {
     display: flex;
     align-items: center;
@@ -129,7 +133,6 @@ input[type="email"] {
     margin-bottom: 8px;
 }
 
-/* If you decide to keep icons, these styles apply; otherwise, they can be removed */
 .agenda-icon {
     width: 24px;
     height: 24px;
@@ -141,35 +144,6 @@ input[type="email"] {
     height: auto;
 }
 
-/* Award Nominee Special Styling */
-.award-nominee {
-    border: 3px solid gold;
-    background: #fff8dc;
-    padding: 15px;
-}
-
-.nominee-title {
-    color: gold;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.nominee-text {
-    color: #8a6d3b;
-    font-size: 16px;
-}
-
-/* Nominee Video Styling */
-#nomineeVideo {
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    margin: 15px auto;
-    display: block;
-    width: 100%;
-    max-width: 500px;
-    height: 280px;
-}
-
 /* Footer Styling */
 footer {
     background-color: #333333;
@@ -179,9 +153,7 @@ footer {
     margin-top: 20px;
 }
 
-/* =========================
-   Mobile-Specific Enhancements
-   ========================= */
+/* Mobile-Specific Enhancements */
 @media (max-width: 600px) {
     .container {
         max-width: 95%;
