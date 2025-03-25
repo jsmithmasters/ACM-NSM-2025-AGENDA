@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (userEmail) {
         document.getElementById("emailInput").value = userEmail;
         loadAgenda(userEmail.toLowerCase());
-        checkQASession(userEmail.toLowerCase());
+        // Removed: checkQASession(userEmail.toLowerCase());
         // Auto-refresh agenda every 30 seconds
         setInterval(() => loadAgenda(userEmail.toLowerCase()), 30000);
         // Update current event highlight every 30 seconds
@@ -18,13 +18,13 @@ function parseTime(timeStr) {
     let now = new Date();
     let [time, modifier] = timeStr.split(' ');
     let [hours, minutes] = time.split(':').map(Number);
-    if (modifier.toUpperCase() === 'PM' && hours !== 12) {
+    if (modifier?.toUpperCase() === 'PM' && hours !== 12) {
         hours += 12;
     }
-    if (modifier.toUpperCase() === 'AM' && hours === 12) {
+    if (modifier?.toUpperCase() === 'AM' && hours === 12) {
         hours = 0;
     }
-    const parsedTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+    const parsedTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes || 0);
     console.log(`Parsed time for "${timeStr}":`, parsedTime);
     return parsedTime;
 }
@@ -49,7 +49,13 @@ function updateCurrentEventHighlight() {
         let endDate = parseTime(endStr);
         // Adjust the start time: subtract 5 minutes.
         let adjustedStart = new Date(startDate.getTime() - 5 * 60000);
-        console.log(`For event "${item.innerText.trim().slice(0, 20)}...", adjusted start is:`, adjustedStart, "and end time is:", endDate);
+        console.log(
+            `For event "${item.innerText.trim().slice(0, 20)}...", 
+            adjusted start is:`, 
+            adjustedStart, 
+            "and end time is:", 
+            endDate
+        );
         events.push({ adjustedStart, endDate, element: item });
     });
 
@@ -91,7 +97,6 @@ function loadAgenda(userEmail) {
     fetch(sheetURL)
         .then(res => res.text())
         .then(data => {
-            // Debug: Log the raw data from Google Sheets.
             console.log("Raw data from Sheets:", data);
             try {
                 const jsonData = JSON.parse(data.substring(47).slice(0, -2));
@@ -115,7 +120,7 @@ function loadAgenda(userEmail) {
 
                         // Split time into start and end times.
                         let timeParts = time.split("-");
-                        let startTime = timeParts[0].trim();
+                        let startTime = timeParts[0]?.trim() || "TBD";
                         let endTime = timeParts[1] ? timeParts[1].trim() : "TBD";
 
                         if (!agendaData[day]) {
@@ -167,46 +172,6 @@ function loadAgenda(userEmail) {
         });
 }
 
-// Q&A Control: Enable or Hide Question Form Based on Google Sheets.
-function checkQASession(userEmail) {
-    const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
-
-    fetch(sheetURL)
-        .then(res => res.text())
-        .then(data => {
-            try {
-                const jsonData = JSON.parse(data.substring(47).slice(0, -2));
-                const rows = jsonData.table.rows;
-
-                let userSession = null;
-                let speakerEmail = null;
-                let questionsEnabled = "NO";
-
-                rows.forEach(row => {
-                    const email = row.c[0]?.v?.toLowerCase();
-                    if (email === userEmail) {
-                        userSession = row.c[3]?.v || "Unknown Session";  // Breakout Session
-                        speakerEmail = row.c[10]?.v || "No Speaker";
-                        questionsEnabled = row.c[9]?.v || "NO"; // Q&A Enabled
-                    }
-                });
-
-                if (questionsEnabled.trim().toUpperCase() === "YES") {
-                    document.getElementById("questionSection").style.display = "block";
-                    document.getElementById("questionSessionName").innerText = userSession;
-                    document.getElementById("questionSpeaker").innerText = speakerEmail;
-                } else {
-                    document.getElementById("questionSection").style.display = "none";
-                }
-            } catch (error) {
-                console.error("Error checking Q&A toggle:", error);
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching Q&A status:", error);
-        });
-}
-
 // Nominee Message & Video Display.
 function showNomineeMessage(attendeeName, userEmail) {
     const nomineeEmails = {
@@ -227,14 +192,17 @@ function showNomineeMessage(attendeeName, userEmail) {
 }
 
 // Submit Question to Google Sheets.
+// If you also want to remove the "submitQuestion" function, you can comment it out entirely.
 function submitQuestion() {
-    const question = document.getElementById("questionInput").value.trim();
-    const userEmail = document.getElementById("emailInput").value;
-    const sessionName = document.getElementById("questionSessionName").innerText;
-    const speakerEmail = document.getElementById("questionSpeaker").innerText;
+    const question = document.getElementById("questionInput")?.value.trim();
+    const userEmail = document.getElementById("emailInput")?.value;
+    const sessionName = document.getElementById("questionSessionName")?.innerText;
+    const speakerEmail = document.getElementById("questionSpeaker")?.innerText;
 
-    if (question === "") {
-        document.getElementById("questionMessage").innerHTML = "⚠️ Please enter a question!";
+    if (!question) {
+        if (document.getElementById("questionMessage")) {
+            document.getElementById("questionMessage").innerHTML = "⚠️ Please enter a question!";
+        }
         return;
     }
 
@@ -252,15 +220,19 @@ function submitQuestion() {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
+        if (data.success && document.getElementById("questionMessage")) {
             document.getElementById("questionMessage").innerHTML = "✅ Question submitted!";
-            document.getElementById("questionInput").value = "";
-        } else {
+            if (document.getElementById("questionInput")) {
+                document.getElementById("questionInput").value = "";
+            }
+        } else if (document.getElementById("questionMessage")) {
             document.getElementById("questionMessage").innerHTML = "❌ Error submitting question.";
         }
     })
     .catch(error => {
         console.error("Error submitting question:", error);
-        document.getElementById("questionMessage").innerHTML = "❌ Error submitting question.";
+        if (document.getElementById("questionMessage")) {
+            document.getElementById("questionMessage").innerHTML = "❌ Error submitting question.";
+        }
     });
 }
