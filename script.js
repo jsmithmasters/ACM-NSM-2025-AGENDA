@@ -37,42 +37,50 @@ function loadAgenda(userEmail) {
                         let table = row.c[6]?.v || "Not Assigned";
                         let notes = row.c[7]?.v || "No Notes";
 
+                        // Push each detail as its own paragraph for clear separation
                         if (!agendaData[day]) {
                             agendaData[day] = [];
                         }
-
-                        agendaData[day].push(
-                            `<div class="agenda-item">
-                                <p><strong>${session}</strong> at ${time}</p>
-                                <p>
-                                    <i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}  
-                                    | <i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}  
-                                    | <i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}
-                                </p>
-                            </div>`
-                        );
+                        
+                        agendaData[day].push(`
+                            <div class="agenda-item">
+                                <p><strong>Session:</strong> ${session}</p>
+                                <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
+                                <p><i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}</p>
+                                <p><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>
+                                <p><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>
+                            </div>
+                        `);
                     }
                 });
 
                 if (!found) {
                     document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
                 } else {
-                    document.getElementById("attendeeName").innerHTML = `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
-                    document.getElementById("day1-content").innerHTML = (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
-                    document.getElementById("day2-content").innerHTML = (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
-                    document.getElementById("day3-content").innerHTML = (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
-                    document.getElementById("day4-content").innerHTML = (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("attendeeName").innerHTML =
+                        `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+
+                    document.getElementById("day1-content").innerHTML =
+                        (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("day2-content").innerHTML =
+                        (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("day3-content").innerHTML =
+                        (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
+                    document.getElementById("day4-content").innerHTML =
+                        (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
 
                     showNomineeMessage(attendeeName, userEmail);
                 }
             } catch (error) {
                 console.error("Error processing agenda:", error);
-                document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
+                document.getElementById("agenda").innerHTML =
+                    "<p>Error loading agenda. Please try again.</p>";
             }
         })
         .catch(error => {
             console.error("Error fetching agenda:", error);
-            document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
+            document.getElementById("agenda").innerHTML =
+                "<p>Error loading agenda. Please try again.</p>";
         });
 }
 
@@ -151,7 +159,12 @@ function submitQuestion() {
 
     fetch(scriptURL, {
         method: "POST",
-        body: JSON.stringify({ email: userEmail, session: sessionName, speaker: speakerEmail, question: question }),
+        body: JSON.stringify({
+            email: userEmail,
+            session: sessionName,
+            speaker: speakerEmail,
+            question: question
+        }),
         headers: { "Content-Type": "application/json" }
     })
     .then(response => response.json())
