@@ -56,10 +56,10 @@ input[type="email"] {
     margin-top: 10px;
 }
 
-/* Agenda Container Styling */
+/* Agenda Container Styling - Increased contrast by darkening background */
 .agenda-container {
-    background-color: #f7f7f7; /* Light gray background for contrast */
-    border: 1px solid #dddddd;
+    background-color: #e0e0e0; /* Darker gray background */
+    border: 1px solid #cccccc;
     border-radius: 8px;
     padding: 20px;
     margin-top: 20px;
@@ -68,7 +68,7 @@ input[type="email"] {
 
 /* Day Section Styling */
 .day-section {
-    background-color: #f9f9f9; /* Lighter background to reduce heaviness */
+    background-color: #f9f9f9; /* Light background for day sections */
     color: #E31837;           /* Conagra Red for text */
     border-left: 5px solid #E31837; /* Red accent */
     border-radius: 5px;
@@ -92,13 +92,12 @@ input[type="email"] {
 /* Enhanced Agenda Item Styling with Card-Based Layout & Depth */
 .agenda-item {
     background-color: #ffffff;
-    /* Red accent as left border */
     border-left: 5px solid #E31837;
     border: 1px solid #dddddd;
     border-radius: 8px;
     padding: 15px;
     margin: 10px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Depth effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
 }
@@ -108,12 +107,21 @@ input[type="email"] {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Separate each detail line in the agenda item with a divider */
 .agenda-item p {
     margin: 5px 0;
     color: #333333;
+    /* Add divider to all but the last paragraph */
+    border-bottom: 1px solid transparent;
 }
 
-/* Agenda Header for Iconography */
+.agenda-item p:not(:last-child) {
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+/* Agenda Header for Iconography (if used) */
 .agenda-header {
     display: flex;
     align-items: center;
@@ -121,6 +129,7 @@ input[type="email"] {
     margin-bottom: 8px;
 }
 
+/* If you decide to keep icons, these styles apply; otherwise, they can be removed */
 .agenda-icon {
     width: 24px;
     height: 24px;
