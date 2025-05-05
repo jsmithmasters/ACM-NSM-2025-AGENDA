@@ -206,5 +206,15 @@ function showNomineeMessage(attendeeName, userEmail) {
                     frameborder="0" allowfullscreen></iframe>
             </div>
         `;
+  .watermark-logo {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 80px;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 10;
+}
+
     }
 }
