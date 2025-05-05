@@ -174,4 +174,15 @@ footer {
         padding: 10px;
         margin: 6px 0;
     }
+   .watermark-logo {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 80px;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 10;
 }
+
+}
+
