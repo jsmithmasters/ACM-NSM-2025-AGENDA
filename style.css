@@ -144,10 +144,10 @@ footer {
 /* Watermark Logo Styling */
 .watermark-logo {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 10px;
+    right: 10px;
     width: 400px;
-    opacity: 1.5;
+    opacity: 1.0;
     pointer-events: none;
     z-index: 1000;
 }
