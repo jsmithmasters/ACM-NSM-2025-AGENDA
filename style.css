@@ -1,5 +1,5 @@
 /* =========================
-   Conagra-Themed Style Sheet (Updated for PheedLoop-like layout)
+   Conagra-Themed Style Sheet (With Watermark Support)
    ========================= */
 
 /* General Styling */
@@ -97,7 +97,6 @@ input[type="email"] {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* Spacing for each detail line */
 .agenda-item p {
     margin: 8px 0;
     color: #333333;
@@ -142,6 +141,17 @@ footer {
     margin-top: 20px;
 }
 
+/* Watermark Logo Styling */
+.watermark-logo {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 80px;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 10;
+}
+
 /* Mobile-Specific Enhancements */
 @media (max-width: 600px) {
     .container {
@@ -174,15 +184,4 @@ footer {
         padding: 10px;
         margin: 6px 0;
     }
-   .watermark-logo {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    width: 80px;
-    opacity: 0.1;
-    pointer-events: none;
-    z-index: 10;
 }
-
-}
-
