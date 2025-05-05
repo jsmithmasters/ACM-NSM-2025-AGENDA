@@ -1,5 +1,5 @@
 /* =========================
-   Conagra-Themed Style Sheet
+   Conagra-Themed Style Sheet (Updated for PheedLoop-like layout)
    ========================= */
 
 /* General Styling */
@@ -56,76 +56,65 @@ input[type="email"] {
     margin-top: 10px;
 }
 
-/* Agenda Container Styling - increased contrast */
+/* Agenda Container Styling */
 .agenda-container {
-    background-color: #e0e0e0; /* Darker gray to make white cards pop */
-    border: 1px solid #cccccc;
-    border-radius: 8px;
-    padding: 20px;
+    padding: 0;
     margin-top: 20px;
     text-align: left;
+    background-color: transparent;
+    border: none;
 }
 
 /* Day Section Styling */
 .day-section {
-    background-color: #f9f9f9;
-    color: #E31837;
-    border-left: 5px solid #E31837;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 15px;
+    margin: 30px 0 10px;
+    padding: 0;
 }
 
 .day-section h3 {
-    margin: 0;
     color: #E31837;
-}
-
-.day-section > div {
-    background-color: #ffffff;
-    color: #333333;
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 4px;
+    font-size: 1.2em;
+    border-bottom: 2px solid #E31837;
+    padding-bottom: 4px;
+    margin: 0 0 10px;
 }
 
 /* Agenda Item (Card) Styling */
 .agenda-item {
     background-color: #ffffff;
-    border-left: 5px solid #E31837;
+    border-left: 4px solid #E31837;
     border: 1px solid #dddddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin: 10px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s, border 0.3s;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 8px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
 }
 
 .agenda-item:hover {
     transform: scale(1.02);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
 /* Spacing for each detail line */
 .agenda-item p {
-    margin: 10px 0;
+    margin: 8px 0;
     color: #333333;
 }
 
 /* Highlight (Current) Event Styling */
 .agenda-item.current {
-    background-color: #e6f7ff; /* Light blue background */
+    background-color: #e6f7ff;
     transform: scale(1.03);
-    border: 2px solid #007acc; /* Stronger blue border */
-    /* Transitions inherited from .agenda-item */
+    border: 2px solid #007acc;
 }
 
 .agenda-item.current h4 {
     font-size: 1.1em;
 }
 
-/* (Optional) Agenda Header if you keep any icon markup */
+/* Agenda Header Icons (optional) */
 .agenda-header {
     display: flex;
     align-items: center;
@@ -159,34 +148,30 @@ footer {
         max-width: 95%;
         padding: 10px;
     }
-    
+
     header {
         padding: 15px;
     }
-    
+
     header img {
         width: 80%;
         max-width: none;
     }
-    
+
     h1 {
         font-size: 1.5em;
     }
-    
+
     input[type="email"] {
         padding: 8px;
     }
-    
-    .agenda-container {
-        padding: 15px;
+
+    .day-section h3 {
+        font-size: 1.1em;
     }
-    
-    .day-section {
-        padding: 8px;
-    }
-    
+
     .agenda-item {
         padding: 10px;
-        margin: 8px 0;
+        margin: 6px 0;
     }
 }
