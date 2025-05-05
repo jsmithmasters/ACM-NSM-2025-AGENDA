@@ -149,7 +149,7 @@ footer {
     width: 80px;
     opacity: 0.1;
     pointer-events: none;
-    z-index: 10;
+    z-index: 1000;
 }
 
 /* Mobile-Specific Enhancements */
@@ -185,3 +185,4 @@ footer {
         margin: 6px 0;
     }
 }
+
