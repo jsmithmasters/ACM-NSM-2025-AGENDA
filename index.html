@@ -15,7 +15,7 @@
   </header>
 
   <div class="container">
-    <!-- Theme Tagline (injected dynamically) -->
+    <!-- Theme Tagline (inserted via JS) -->
     <div id="themeTagline"></div>
 
     <!-- Nominee Message Section -->
@@ -33,21 +33,24 @@
         <h3>Day 1 – All Company Meeting</h3>
         <div id="day1-content"></div>
       </div>
+
       <div class="day-section" id="day2">
         <h3>Day 2 – Marketing Breakouts – Process Proud</h3>
         <div id="day2-content"></div>
       </div>
+
       <div class="day-section" id="day3">
         <h3>Day 3 – Strategy &amp; Customer – Market Proud</h3>
         <div id="day3-content"></div>
       </div>
+
       <div class="day-section" id="day4">
         <h3>Day 4 – Workshops – People Proud</h3>
         <div id="day4-content"></div>
       </div>
     </div>
 
-    <!-- Question Submission Section -->
+    <!-- Question Submission Section (Hidden by Default) -->
     <div id="questionSection" style="display: none;">
       <h3>Submit a Question for <span id="questionSessionName"></span></h3>
       <p>Speaker: <span id="questionSpeaker"></span></p>
@@ -62,53 +65,5 @@
   </footer>
 
   <img src="logo2.png" alt="Secondary Logo" class="watermark-logo" />
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const userEmail = urlParams.get("email");
-      const previewParam = urlParams.get("previewDate");
-      const now = previewParam ? new Date(previewParam + "T12:00:00") : new Date();
-
-      if (userEmail) {
-        document.getElementById("emailInput").value = userEmail;
-        loadAgenda(userEmail.toLowerCase());
-        checkQASession(userEmail.toLowerCase());
-        setInterval(() => loadAgenda(userEmail.toLowerCase()), 30000);
-      }
-
-      // === THEME + COLOR HANDLING ===
-      const themeTagline = document.getElementById("themeTagline");
-      const body = document.body;
-      const header = document.querySelector("header");
-      const headerImg = document.querySelector("header img");
-
-      function applyTheme(name, colorClass, headline, imgSrc) {
-        body.classList.add(colorClass);
-        header.classList.add(colorClass);
-        themeTagline.innerHTML = `<h2 class=\"daily-theme\">Today we're... <span>${headline}</span></h2>`;
-        headerImg.src = imgSrc;
-      }
-
-      const themeSchedule = [
-        { start: new Date("2025-06-17T12:00:00"), end: new Date("2025-06-18T00:00:00"), name: "Process Proud", class: "theme-process", img: "OTP1.png" },
-        { start: new Date("2025-06-18T00:00:00"), end: new Date("2025-06-19T00:00:00"), name: "Market Proud", class: "theme-market", img: "OTP2.png" },
-        { start: new Date("2025-06-19T00:00:00"), end: new Date("2025-06-20T00:00:00"), name: "People Proud", class: "theme-people", img: "OTP3.png" },
-      ];
-
-      let themeApplied = false;
-      for (let t of themeSchedule) {
-        if (now >= t.start && now < t.end) {
-          applyTheme(t.name, t.class, t.name, t.img);
-          themeApplied = true;
-          break;
-        }
-      }
-
-      if (!themeApplied) {
-        headerImg.src = "ACM.png";
-      }
-    });
-  </script>
 </body>
 </html>
