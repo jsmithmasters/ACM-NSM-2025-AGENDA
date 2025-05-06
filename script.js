@@ -9,8 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const body = document.body;
   const header = document.querySelector("header");
   const headerImg = document.querySelector("header img");
+  const secondaryImageContainer = document.getElementById("secondaryImageContainer");
 
-  function applyTheme(name, colorClass, headline, imgSrc) {
+  function applyTheme(name, colorClass, headline, imgSrc, secondaryImg) {
     body.classList.add(colorClass);
     header.classList.add(colorClass);
     if (themeTagline) {
@@ -18,6 +19,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     if (headerImg) {
       headerImg.src = imgSrc;
+    }
+    if (secondaryImageContainer) {
+      secondaryImageContainer.innerHTML = `<img src="${secondaryImg}" class="secondary-header" alt="Theme Visual">`;
     }
   }
 
@@ -27,28 +31,31 @@ document.addEventListener("DOMContentLoaded", function () {
       end: new Date("2025-06-18T00:00:00"),
       name: "Process Proud",
       class: "theme-process",
-      img: "OTP1.png"
+      img: "OTP1.png",
+      secondary: "OTP1.png"
     },
     {
       start: new Date("2025-06-18T00:00:00"),
       end: new Date("2025-06-19T00:00:00"),
       name: "Market Proud",
       class: "theme-market",
-      img: "OTP2.png"
+      img: "OTP2.png",
+      secondary: "OTP2.png"
     },
     {
       start: new Date("2025-06-19T00:00:00"),
       end: new Date("2025-06-20T00:00:00"),
       name: "People Proud",
       class: "theme-people",
-      img: "OTP3.png"
+      img: "OTP3.png",
+      secondary: "OTP3.png"
     }
   ];
 
   let themeApplied = false;
   for (let t of themeSchedule) {
     if (now >= t.start && now < t.end) {
-      applyTheme(t.name, t.class, t.name, t.img);
+      applyTheme(t.name, t.class, t.name, t.img, t.secondary);
       themeApplied = true;
       break;
     }
@@ -56,7 +63,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!themeApplied && headerImg) {
     headerImg.src = "ACM.png";
+    if (secondaryImageContainer) secondaryImageContainer.innerHTML = "";
   }
+
+  // === HIDE PAST DAY SECTIONS ===
+  const daySections = {
+    "day1": new Date(2025, 5, 16),
+    "day2": new Date(2025, 5, 17),
+    "day3": new Date(2025, 5, 18),
+    "day4": new Date(2025, 5, 19)
+  };
+
+  Object.entries(daySections).forEach(([id, date]) => {
+    if (now > date) {
+      const section = document.getElementById(id);
+      if (section) section.style.display = "none";
+    }
+  });
 
   if (userEmail) {
     userEmail = userEmail.toLowerCase();
@@ -146,7 +169,7 @@ function updateCurrentEventHighlight() {
         currentEvent = thisEvent;
         break;
       } else if (!nextEvent) {
-        currentEvent = thisEvent; // last event of the day
+        currentEvent = thisEvent;
         break;
       }
     }
