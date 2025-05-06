@@ -10,7 +10,7 @@
 </head>
 <body>
   <header>
-    <img src="otp.png" alt="Company Logo" class="logo" />
+    <img src="ACM.png" alt="Company Logo" class="logo" />
     <h1>Welcome to the 2025 ACM/NSM</h1>
   </header>
 
@@ -80,24 +80,32 @@
       const themeTagline = document.getElementById("themeTagline");
       const body = document.body;
       const header = document.querySelector("header");
+      const headerImg = document.querySelector("header img");
 
       function applyTheme(name, colorClass, headline) {
         body.classList.add(colorClass);
         header.classList.add(colorClass);
-        themeTagline.innerHTML = `<h2 class="daily-theme">Today we're... <span>${headline}</span></h2>`;
+        themeTagline.innerHTML = `<h2 class=\"daily-theme\">Today we're... <span>${headline}</span></h2>`;
       }
 
       const themeSchedule = [
-        { start: new Date("2025-06-17T12:00:00"), end: new Date("2025-06-18T00:00:00"), name: "Process Proud", class: "theme-process" },
-        { start: new Date("2025-06-18T00:00:00"), end: new Date("2025-06-19T00:00:00"), name: "Market Proud", class: "theme-market" },
-        { start: new Date("2025-06-19T00:00:00"), end: new Date("2025-06-20T00:00:00"), name: "People Proud", class: "theme-people" },
+        { start: new Date("2025-06-17T12:00:00"), end: new Date("2025-06-18T00:00:00"), name: "Process Proud", class: "theme-process", img: "OTP1.png" },
+        { start: new Date("2025-06-18T00:00:00"), end: new Date("2025-06-19T00:00:00"), name: "Market Proud", class: "theme-market", img: "OTP2.png" },
+        { start: new Date("2025-06-19T00:00:00"), end: new Date("2025-06-20T00:00:00"), name: "People Proud", class: "theme-people", img: "OTP3.png" },
       ];
 
+      let themeApplied = false;
       for (let t of themeSchedule) {
         if (now >= t.start && now < t.end) {
           applyTheme(t.name, t.class, t.name);
+          headerImg.src = t.img;
+          themeApplied = true;
           break;
         }
+      }
+
+      if (!themeApplied) {
+        headerImg.src = "ACM.png";
       }
     });
   </script>
