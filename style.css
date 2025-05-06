@@ -1,5 +1,5 @@
 /* =========================
-   Conagra-Themed Style Sheet (With Watermark Support)
+   Conagra-Themed Style Sheet (With Theme Support)
    ========================= */
 
 /* General Styling */
@@ -14,10 +14,10 @@ body {
 
 /* Header Styling */
 header {
-    background-color: #E31837;
     padding: 20px;
     color: #ffffff;
     text-align: center;
+    transition: background-color 0.4s ease;
 }
 
 header img {
@@ -32,14 +32,14 @@ h1 {
     font-size: 2em;
 }
 
-/* Container for Content */
+/* Container */
 .container {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
 }
 
-/* Email Input Field */
+/* Email Input */
 input[type="email"] {
     width: 100%;
     max-width: 400px;
@@ -56,7 +56,18 @@ input[type="email"] {
     margin-top: 10px;
 }
 
-/* Agenda Container Styling */
+/* Theme Tagline */
+.daily-theme {
+    font-size: 1.5em;
+    margin: 10px 0 20px;
+    font-weight: bold;
+}
+
+.daily-theme span {
+    text-transform: uppercase;
+}
+
+/* Agenda Container */
 .agenda-container {
     padding: 0;
     margin-top: 20px;
@@ -65,7 +76,7 @@ input[type="email"] {
     border: none;
 }
 
-/* Day Section Styling */
+/* Day Section */
 .day-section {
     margin: 30px 0 10px;
     padding: 0;
@@ -77,9 +88,13 @@ input[type="email"] {
     border-bottom: 2px solid #E31837;
     padding-bottom: 4px;
     margin: 0 0 10px;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 5;
 }
 
-/* Agenda Item (Card) Styling */
+/* Agenda Item */
 .agenda-item {
     background-color: #ffffff;
     border-left: 4px solid #E31837;
@@ -102,7 +117,7 @@ input[type="email"] {
     color: #333333;
 }
 
-/* Highlight (Current) Event Styling */
+/* Highlight Current Session */
 .agenda-item.current {
     background-color: #e6f7ff;
     transform: scale(1.03);
@@ -132,7 +147,7 @@ input[type="email"] {
     height: auto;
 }
 
-/* Footer Styling */
+/* Footer */
 footer {
     background-color: #333333;
     color: #ffffff;
@@ -141,18 +156,53 @@ footer {
     margin-top: 20px;
 }
 
-/* Watermark Logo Styling */
+/* Watermark Logo */
 .watermark-logo {
     position: fixed;
     bottom: 10px;
     right: 0.5px;
-    width: 160px;
+    width: 200px;
     opacity: 0.9;
     pointer-events: none;
     z-index: 1000;
 }
 
-/* Mobile-Specific Enhancements */
+/* =========================
+   Theme Colors
+   ========================= */
+.theme-process header,
+.theme-process .daily-theme span {
+    background-color: #007acc;
+    color: #ffffff;
+}
+
+.theme-process .agenda-item {
+    border-left-color: #007acc;
+}
+
+.theme-market header,
+.theme-market .daily-theme span {
+    background-color: #cc0000;
+    color: #ffffff;
+}
+
+.theme-market .agenda-item {
+    border-left-color: #cc0000;
+}
+
+.theme-people header,
+.theme-people .daily-theme span {
+    background-color: #2e8b57;
+    color: #ffffff;
+}
+
+.theme-people .agenda-item {
+    border-left-color: #2e8b57;
+}
+
+/* =========================
+   Mobile
+   ========================= */
 @media (max-width: 600px) {
     .container {
         max-width: 95%;
@@ -184,5 +234,8 @@ footer {
         padding: 10px;
         margin: 6px 0;
     }
-}
 
+    .daily-theme {
+        font-size: 1.2em;
+    }
+}
