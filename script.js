@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (secondaryImageContainer) secondaryImageContainer.innerHTML = "";
   }
 
-  // === HIDE PAST DAY SECTIONS ===
+  // === HIDE PAST DAYS ONLY IF A FULL DAY HAS PASSED ===
   const daySections = {
     "day1": new Date(2025, 5, 16),
     "day2": new Date(2025, 5, 17),
@@ -75,7 +75,11 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   Object.entries(daySections).forEach(([id, date]) => {
-    if (now > date) {
+    const dayEnd = new Date(date);
+    dayEnd.setDate(dayEnd.getDate() + 1); // Next calendar day
+    dayEnd.setHours(0, 0, 0, 0); // Midnight start of next day
+
+    if (now >= dayEnd) {
       const section = document.getElementById(id);
       if (section) section.style.display = "none";
     }
