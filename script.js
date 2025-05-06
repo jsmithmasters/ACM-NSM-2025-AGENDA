@@ -4,69 +4,45 @@ document.addEventListener("DOMContentLoaded", function () {
   const previewParam = urlParams.get("previewDate");
   const now = getNow(previewParam);
 
-  // === THEME + HEADER LOGO + TAGLINE ===
   const themeTagline = document.getElementById("themeTagline");
   const body = document.body;
   const header = document.querySelector("header");
   const headerImg = document.querySelector("header img");
   const secondaryImageContainer = document.getElementById("secondaryImageContainer");
 
-  function applyTheme(name, colorClass, headline, imgSrc, secondaryImg) {
+  // === Set header image logic ===
+  const monday = new Date("2025-06-16T00:00:00");
+  const tuesdayNoon = new Date("2025-06-17T12:00:00");
+  const wednesday = new Date("2025-06-18T00:00:00");
+  const thursday = new Date("2025-06-19T00:00:00");
+
+  if (isSameDay(now, monday)) {
+    headerImg.src = "TWN.png";
+  } else {
+    headerImg.src = "ACM.png";
+  }
+
+  // === Secondary image and tagline (after Tuesday noon) ===
+  function setThemeDetails(name, colorClass, secondaryImg) {
     body.classList.add(colorClass);
     header.classList.add(colorClass);
     if (themeTagline) {
-      themeTagline.innerHTML = `<h2 class="daily-theme">Today we're... <span>${headline}</span></h2>`;
-    }
-    if (headerImg) {
-      headerImg.src = imgSrc;
+      themeTagline.innerHTML = `<h2 class="daily-theme">Today we're... <span>${name}</span></h2>`;
     }
     if (secondaryImageContainer) {
-      secondaryImageContainer.innerHTML = `<img src="${secondaryImg}" class="secondary-header" alt="Theme Visual">`;
+      secondaryImageContainer.innerHTML = `<img src="${secondaryImg}" class="secondary-header" alt="${name} Icon">`;
     }
   }
 
-  const themeSchedule = [
-    {
-      start: new Date("2025-06-17T12:00:00"),
-      end: new Date("2025-06-18T00:00:00"),
-      name: "Process Proud",
-      class: "theme-process",
-      img: "OTP1.png",
-      secondary: "OTP1.png"
-    },
-    {
-      start: new Date("2025-06-18T00:00:00"),
-      end: new Date("2025-06-19T00:00:00"),
-      name: "Market Proud",
-      class: "theme-market",
-      img: "OTP2.png",
-      secondary: "OTP2.png"
-    },
-    {
-      start: new Date("2025-06-19T00:00:00"),
-      end: new Date("2025-06-20T00:00:00"),
-      name: "People Proud",
-      class: "theme-people",
-      img: "OTP3.png",
-      secondary: "OTP3.png"
-    }
-  ];
-
-  let themeApplied = false;
-  for (let t of themeSchedule) {
-    if (now >= t.start && now < t.end) {
-      applyTheme(t.name, t.class, t.name, t.img, t.secondary);
-      themeApplied = true;
-      break;
-    }
+  if (now >= tuesdayNoon && now < wednesday) {
+    setThemeDetails("Process Proud", "theme-process", "OTP1.png");
+  } else if (now >= wednesday && now < thursday) {
+    setThemeDetails("Market Proud", "theme-market", "OTP2.png");
+  } else if (now >= thursday && now < new Date("2025-06-20T00:00:00")) {
+    setThemeDetails("People Proud", "theme-people", "OTP3.png");
   }
 
-  if (!themeApplied && headerImg) {
-    headerImg.src = "ACM.png";
-    if (secondaryImageContainer) secondaryImageContainer.innerHTML = "";
-  }
-
-  // === HIDE PAST DAYS ONLY IF A FULL DAY HAS PASSED ===
+  // === Hide past day sections (but keep current visible until end of day) ===
   const daySections = {
     "day1": new Date(2025, 5, 16),
     "day2": new Date(2025, 5, 17),
@@ -76,8 +52,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   Object.entries(daySections).forEach(([id, date]) => {
     const dayEnd = new Date(date);
-    dayEnd.setDate(dayEnd.getDate() + 1); // Next calendar day
-    dayEnd.setHours(0, 0, 0, 0); // Midnight start of next day
+    dayEnd.setDate(dayEnd.getDate() + 1);
+    dayEnd.setHours(0, 0, 0, 0);
 
     if (now >= dayEnd) {
       const section = document.getElementById(id);
@@ -85,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // === Load agenda ===
   if (userEmail) {
     userEmail = userEmail.toLowerCase();
     document.getElementById("emailInput").value = userEmail;
