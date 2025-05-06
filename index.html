@@ -67,6 +67,8 @@
     document.addEventListener("DOMContentLoaded", function () {
       const urlParams = new URLSearchParams(window.location.search);
       const userEmail = urlParams.get("email");
+      const previewParam = urlParams.get("previewDate");
+      const now = previewParam ? new Date(previewParam + "T12:00:00") : new Date();
 
       if (userEmail) {
         document.getElementById("emailInput").value = userEmail;
@@ -76,16 +78,16 @@
       }
 
       // === THEME + COLOR HANDLING ===
-      const now = new Date();
       const themeTagline = document.getElementById("themeTagline");
       const body = document.body;
       const header = document.querySelector("header");
       const headerImg = document.querySelector("header img");
 
-      function applyTheme(name, colorClass, headline) {
+      function applyTheme(name, colorClass, headline, imgSrc) {
         body.classList.add(colorClass);
         header.classList.add(colorClass);
         themeTagline.innerHTML = `<h2 class=\"daily-theme\">Today we're... <span>${headline}</span></h2>`;
+        headerImg.src = imgSrc;
       }
 
       const themeSchedule = [
@@ -97,8 +99,7 @@
       let themeApplied = false;
       for (let t of themeSchedule) {
         if (now >= t.start && now < t.end) {
-          applyTheme(t.name, t.class, t.name);
-          headerImg.src = t.img;
+          applyTheme(t.name, t.class, t.name, t.img);
           themeApplied = true;
           break;
         }
