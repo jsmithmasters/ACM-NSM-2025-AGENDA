@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
   let userEmail = urlParams.get("email");
   const previewParam = urlParams.get("previewDate");
-  const now = previewParam ? new Date(previewParam + "T12:00:00") : new Date();
+  const now = getNow(previewParam);
 
   // === THEME + HEADER LOGO + TAGLINE ===
   const themeTagline = document.getElementById("themeTagline");
@@ -67,7 +67,23 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// === Helper Functions ===
+// === HELPERS ===
+
+function getNow(previewParam) {
+  let now = new Date();
+  if (previewParam) {
+    const previewDate = new Date(previewParam + "T00:00:00");
+    const realNow = new Date();
+    return new Date(
+      previewDate.getFullYear(),
+      previewDate.getMonth(),
+      previewDate.getDate(),
+      realNow.getHours(),
+      realNow.getMinutes()
+    );
+  }
+  return now;
+}
 
 function parseTime(timeStr) {
   let now = new Date();
@@ -94,7 +110,7 @@ const dayMapping = {
 function updateCurrentEventHighlight() {
   const urlParams = new URLSearchParams(window.location.search);
   const previewParam = urlParams.get("previewDate");
-  const now = previewParam ? new Date(previewParam + "T12:00:00") : new Date();
+  const now = getNow(previewParam);
 
   const agendaItems = document.querySelectorAll('.agenda-item');
   agendaItems.forEach(item => item.classList.remove('current'));
@@ -103,16 +119,18 @@ function updateCurrentEventHighlight() {
   agendaItems.forEach(item => {
     let eventDay = item.getAttribute('data-day');
     if (!eventDay) return;
+
     let eventDate = dayMapping[eventDay];
     if (!isSameDay(now, eventDate)) return;
 
     let startStr = item.getAttribute('data-start');
     let endStr = item.getAttribute('data-end');
-    if (!startStr || !endStr) return;
+    if (!startStr) return;
 
     let startDate = parseTime(startStr);
-    let endDate = parseTime(endStr);
+    let endDate = endStr ? parseTime(endStr) : null;
     let adjustedStart = new Date(startDate.getTime() - 5 * 60000);
+
     events.push({ adjustedStart, endDate, element: item });
   });
 
@@ -120,14 +138,15 @@ function updateCurrentEventHighlight() {
 
   let currentEvent = null;
   for (let i = 0; i < events.length; i++) {
-    let event = events[i];
-    let nextEvent = events[i + 1];
-    if (now >= event.adjustedStart) {
+    const thisEvent = events[i];
+    const nextEvent = events[i + 1];
+
+    if (now >= thisEvent.adjustedStart) {
       if (nextEvent && now < nextEvent.adjustedStart) {
-        currentEvent = event;
+        currentEvent = thisEvent;
         break;
-      } else if (!nextEvent && now < event.endDate) {
-        currentEvent = event;
+      } else if (!nextEvent) {
+        currentEvent = thisEvent; // last event of the day
         break;
       }
     }
@@ -138,7 +157,7 @@ function updateCurrentEventHighlight() {
   }
 }
 
-// === Agenda Data Loader ===
+// === AGENDA LOADER ===
 
 function loadAgenda(userEmail) {
   const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
@@ -220,7 +239,7 @@ function loadAgenda(userEmail) {
     });
 }
 
-// === Nominee Logic ===
+// === NOMINEE VIDEO ===
 
 function showNomineeMessage(attendeeName, userEmail) {
   const nomineeEmails = {
