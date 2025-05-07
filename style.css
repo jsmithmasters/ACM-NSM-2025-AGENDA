@@ -34,10 +34,11 @@ h1 {
 
 /* Secondary Header Image */
 .secondary-header {
-  width: 200px;
-  max-width: 100%;
-  display: block;
-  margin: 10px auto;
+  height: 24px; /* Match Font Awesome icon height */
+  width: auto;
+  display: inline-block;
+  margin: 0 0 0 10px;
+  vertical-align: middle;
 }
 
 /* Container */
