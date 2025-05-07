@@ -8,38 +8,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const body = document.body;
   const header = document.querySelector("header");
   const headerImg = document.querySelector("header img");
-  const secondaryImageContainer = document.getElementById("secondaryImageContainer");
 
-  // === Set header image logic ===
-  const monday = new Date("2025-06-16T00:00:00");
-  const tuesdayNoon = new Date("2025-06-17T12:00:00");
-  const wednesday = new Date("2025-06-18T00:00:00");
-  const thursday = new Date("2025-06-19T00:00:00");
+  // === Main Header Image Logic (TWN → OTP1 → OTP2 → OTP3) ===
+  if (headerImg) {
+    const date = now;
 
-  if (isSameDay(now, monday)) {
-    headerImg.src = "TWN.png";
-  } else {
-    headerImg.src = "ACM.png";
-  }
+    const isBeforeNoonJune17 = date < new Date("2025-06-17T12:00:00");
+    const isJune17Afternoon = date >= new Date("2025-06-17T12:00:00") && date < new Date("2025-06-18T00:00:00");
+    const isJune18 = date >= new Date("2025-06-18T00:00:00") && date < new Date("2025-06-19T00:00:00");
+    const isJune19 = date >= new Date("2025-06-19T00:00:00") && date < new Date("2025-06-20T00:00:00");
 
-  // === Secondary image and tagline (after Tuesday noon) ===
-  function setThemeDetails(name, colorClass, secondaryImg) {
-    body.classList.add(colorClass);
-    header.classList.add(colorClass);
-    if (themeTagline) {
-      themeTagline.innerHTML = `<h2 class="daily-theme">Today we're... <span>${name}</span></h2>`;
+    if (isBeforeNoonJune17) {
+      headerImg.src = "TWN.png";
+    } else if (isJune17Afternoon) {
+      headerImg.src = "OTP1.png";
+    } else if (isJune18) {
+      headerImg.src = "OTP2.png";
+    } else if (isJune19) {
+      headerImg.src = "OTP3.png";
+    } else {
+      headerImg.src = "ACM.png";
     }
-    if (secondaryImageContainer) {
-      secondaryImageContainer.innerHTML = `<img src="${secondaryImg}" class="secondary-header" alt="${name} Icon">`;
-    }
-  }
-
-  if (now >= tuesdayNoon && now < wednesday) {
-    setThemeDetails("Process Proud", "theme-process", "OTP1.png");
-  } else if (now >= wednesday && now < thursday) {
-    setThemeDetails("Market Proud", "theme-market", "OTP2.png");
-  } else if (now >= thursday && now < new Date("2025-06-20T00:00:00")) {
-    setThemeDetails("People Proud", "theme-people", "OTP3.png");
   }
 
   // === Hide past day sections (but keep current visible until end of day) ===
@@ -61,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // === Load agenda ===
   if (userEmail) {
     userEmail = userEmail.toLowerCase();
     document.getElementById("emailInput").value = userEmail;
