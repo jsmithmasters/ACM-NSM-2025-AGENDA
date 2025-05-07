@@ -34,7 +34,7 @@ h1 {
 
 /* Secondary Header Image */
 .secondary-header {
-  height: 24px; /* Match Font Awesome icon height */
+  height: 48px; /* Match Font Awesome icon height */
   width: auto;
   display: inline-block;
   margin: 0 0 0 10px;
