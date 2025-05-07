@@ -1,241 +1,228 @@
 /* =========================
-   Conagra-Themed Style Sheet (With Theme Support)
+   Conagra-Themed Style Sheet (With Theme + Icon Support)
    ========================= */
 
 /* General Styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    color: #333333;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #333333;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 /* Header Styling */
 header {
-    padding: 20px;
-    color: #ffffff;
-    text-align: center;
-    transition: background-color 0.4s ease;
+  padding: 20px;
+  color: #ffffff;
+  text-align: center;
+  transition: background-color 0.4s ease;
 }
 
-header img {
-    width: 60%;
-    max-width: 400px;
-    display: block;
-    margin: 0 auto;
+header img.logo {
+  width: 50%;
+  max-width: 200px;
+  display: block;
+  margin: 0 auto;
 }
 
 h1 {
-    margin: 0;
-    font-size: 2em;
+  margin: 0;
+  font-size: 2em;
+}
+
+/* Secondary Header Image */
+.secondary-header {
+  width: 120px;
+  max-width: 100%;
+  display: block;
+  margin: 10px auto;
 }
 
 /* Container */
 .container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
 }
 
-/* Email Input */
+/* Email Input Field */
 input[type="email"] {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
 }
 
 /* Live Update Timestamp */
 #lastUpdated {
-    font-size: 14px;
-    color: gray;
-    margin-top: 10px;
+  font-size: 14px;
+  color: gray;
+  margin-top: 10px;
 }
 
-/* Theme Tagline */
+/* Tagline Styling */
 .daily-theme {
-    font-size: 1.5em;
-    margin: 10px 0 20px;
-    font-weight: bold;
+  font-size: 1.5em;
+  margin: 10px 0 20px;
+  font-weight: bold;
 }
 
 .daily-theme span {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 /* Agenda Container */
 .agenda-container {
-    padding: 0;
-    margin-top: 20px;
-    text-align: left;
-    background-color: transparent;
-    border: none;
+  padding: 0;
+  margin-top: 20px;
+  text-align: left;
+  background-color: transparent;
+  border: none;
 }
 
-/* Day Section */
+/* Day Section Styling */
 .day-section {
-    margin: 30px 0 10px;
-    padding: 0;
+  margin: 30px 0 10px;
+  padding: 0;
 }
 
 .day-section h3 {
-    color: #E31837;
-    font-size: 1.2em;
-    border-bottom: 2px solid #E31837;
-    padding-bottom: 4px;
-    margin: 0 0 10px;
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    z-index: 5;
+  color: #E31837;
+  font-size: 1.2em;
+  border-bottom: 2px solid #E31837;
+  padding-bottom: 4px;
+  margin: 0 0 10px;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 5;
 }
 
-/* Agenda Item */
+/* Inline Icon for Day Titles */
+.day-icon {
+  height: 20px;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+/* Agenda Item Styling */
 .agenda-item {
-    background-color: #ffffff;
-    border-left: 4px solid #E31837;
-    border: 1px solid #dddddd;
-    border-radius: 6px;
-    padding: 12px;
-    margin: 8px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
+  background-color: #ffffff;
+  border-left: 4px solid #E31837;
+  border: 1px solid #dddddd;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
 }
 
 .agenda-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
 .agenda-item p {
-    margin: 8px 0;
-    color: #333333;
+  margin: 8px 0;
+  color: #333333;
 }
 
 /* Highlight Current Session */
 .agenda-item.current {
-    background-color: #e6f7ff;
-    transform: scale(1.03);
-    border: 2px solid #007acc;
+  background-color: #e6f7ff;
+  transform: scale(1.03);
+  border: 2px solid #007acc;
 }
 
 .agenda-item.current h4 {
-    font-size: 1.1em;
+  font-size: 1.1em;
 }
 
-/* Agenda Header Icons (optional) */
-.agenda-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-}
-
-.agenda-icon {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-}
-
-.agenda-icon img {
-    width: 100%;
-    height: auto;
-}
-
-/* Footer */
+/* Footer Styling */
 footer {
-    background-color: #333333;
-    color: #ffffff;
-    padding: 10px;
-    text-align: center;
-    margin-top: 20px;
+  background-color: #333333;
+  color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  margin-top: 20px;
 }
 
-/* Watermark Logo */
+/* Watermark Logo Styling */
 .watermark-logo {
-    position: fixed;
-    bottom: 10px;
-    right: 0px;
-    width: 80px;
-    opacity: 0.7;
-    pointer-events: none;
-    z-index: 1000;
+  position: fixed;
+  bottom: 10px;
+  right: 0;
+  width: 80px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1000;
+  margin-right: 5px;
 }
 
-/* =========================
-   Theme Colors
-   ========================= */
-.theme-process header,
-.theme-process .daily-theme span {
-    background-color: #007acc;
-    color: #ffffff;
+/* Theme Color Classes */
+.theme-process header {
+  background-color: #007acc;
 }
 
 .theme-process .agenda-item {
-    border-left-color: #007acc;
+  border-left-color: #007acc;
 }
 
-.theme-market header,
-.theme-market .daily-theme span {
-    background-color: #cc0000;
-    color: #ffffff;
+.theme-market header {
+  background-color: #cc0000;
 }
 
 .theme-market .agenda-item {
-    border-left-color: #cc0000;
+  border-left-color: #cc0000;
 }
 
-.theme-people header,
-.theme-people .daily-theme span {
-    background-color: #2e8b57;
-    color: #ffffff;
+.theme-people header {
+  background-color: #2e8b57;
 }
 
 .theme-people .agenda-item {
-    border-left-color: #2e8b57;
+  border-left-color: #2e8b57;
 }
 
-/* =========================
-   Mobile
-   ========================= */
+/* Mobile Responsiveness */
 @media (max-width: 600px) {
-    .container {
-        max-width: 95%;
-        padding: 10px;
-    }
+  .container {
+    max-width: 95%;
+    padding: 10px;
+  }
 
-    header {
-        padding: 15px;
-    }
+  header {
+    padding: 15px;
+  }
 
-    header img {
-        width: 80%;
-        max-width: none;
-    }
+  header img.logo {
+    width: 80%;
+    max-width: none;
+  }
 
-    h1 {
-        font-size: 1.5em;
-    }
+  h1 {
+    font-size: 1.5em;
+  }
 
-    input[type="email"] {
-        padding: 8px;
-    }
+  input[type="email"] {
+    padding: 8px;
+  }
 
-    .day-section h3 {
-        font-size: 1.1em;
-    }
+  .day-section h3 {
+    font-size: 1.1em;
+  }
 
-    .agenda-item {
-        padding: 10px;
-        margin: 6px 0;
-    }
+  .agenda-item {
+    padding: 10px;
+    margin: 6px 0;
+  }
 
-    .daily-theme {
-        font-size: 1.2em;
-    }
+  .daily-theme {
+    font-size: 1.2em;
+  }
 }
