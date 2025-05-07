@@ -1,5 +1,5 @@
 /* =========================
-   Conagra-Themed Style Sheet (With Theme + Icon Support)
+   Conagra-Themed Style Sheet (Final Layout)
    ========================= */
 
 /* General Styling */
@@ -21,24 +21,25 @@ header {
 }
 
 header img.logo {
-  width: 50%;
-  max-width: 500px;
+  width: 500px;
+  max-width: 100%;
   display: block;
   margin: 0 auto;
 }
 
-h1 {
-  margin: 0;
+header h1 {
+  display: block;
+  color: #ffffff;
   font-size: 2em;
+  margin-top: 10px;
 }
 
 /* Secondary Header Image */
 .secondary-header {
-  height: 96px; /* Match Font Awesome icon height */
-  width: auto;
-  display: inline-block;
-  margin: 0 0 0 10px;
-  vertical-align: middle;
+  height: 96px;
+  max-height: 120px;
+  margin: 10px auto;
+  display: block;
 }
 
 /* Container */
@@ -202,8 +203,8 @@ footer {
   }
 
   header img.logo {
-    width: 80%;
-    max-width: none;
+    width: 100%;
+    max-width: 100%;
   }
 
   h1 {
