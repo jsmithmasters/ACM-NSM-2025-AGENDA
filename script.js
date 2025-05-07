@@ -262,4 +262,11 @@ function showNomineeMessage(attendeeName, userEmail) {
       </div>
     `;
   }
+  .secondary-header {
+  width: 120px;
+  max-width: 25%;
+  display: block;
+  margin: 10px auto;
+}
+
 }
