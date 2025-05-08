@@ -21,10 +21,11 @@ header {
 }
 
 header img.logo {
-  width: 500px;
-  max-width: 100%;
+  max-hight: 150px;
+  width: auto;
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 10px auto;
+  object-fit: conatain;
 }
 
 header h1 {
