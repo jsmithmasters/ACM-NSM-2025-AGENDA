@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const previewParam = urlParams.get("previewDate");
   const now = getNow(previewParam);
 
-  // === Hide past day sections after midnight ===
   const daySections = {
     "day1": new Date(2025, 5, 16),
     "day2": new Date(2025, 5, 17),
@@ -101,20 +100,12 @@ function updateCurrentEventHighlight() {
 
   let currentEvent = null;
   for (let i = 0; i < events.length; i++) {
-    const thisEvent = events[i];
-    const nextEvent = events[i + 1];
-
-    if (now >= thisEvent.adjustedStart) {
-      if (nextEvent && now < nextEvent.adjustedStart) {
-        currentEvent = thisEvent;
-        break;
-      } else if (!nextEvent && (!thisEvent.endDate || now < thisEvent.endDate)) {
-        currentEvent = thisEvent;
-        break;
-      } else if (thisEvent.endDate && now < thisEvent.endDate) {
-        currentEvent = thisEvent;
-        break;
-      }
+    const event = events[i];
+    if (
+      now >= event.adjustedStart &&
+      (!event.endDate || now < event.endDate)
+    ) {
+      currentEvent = event;
     }
   }
 
@@ -221,3 +212,4 @@ function showNomineeMessage(attendeeName, userEmail) {
     `;
   }
 }
+
