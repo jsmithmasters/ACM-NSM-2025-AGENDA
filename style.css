@@ -14,10 +14,13 @@ body {
 
 /* Header Styling */
 header {
+  background-color: #E31837;
   padding: 20px;
   color: #ffffff;
   text-align: center;
   transition: background-color 0.4s ease;
+}
+
 }
 
 header img.logo {
@@ -29,11 +32,13 @@ header img.logo {
 }
 
 header h1 {
+  header h1 {
   display: block;
   color: #ffffff;
   font-size: 2em;
   margin-top: 10px;
 }
+
 
 /* Secondary Header Image */
 .secondary-header {
