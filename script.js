@@ -108,7 +108,10 @@ function updateCurrentEventHighlight() {
       if (nextEvent && now < nextEvent.adjustedStart) {
         currentEvent = thisEvent;
         break;
-      } else if (!nextEvent) {
+      } else if (!nextEvent && (!thisEvent.endDate || now < thisEvent.endDate)) {
+        currentEvent = thisEvent;
+        break;
+      } else if (thisEvent.endDate && now < thisEvent.endDate) {
         currentEvent = thisEvent;
         break;
       }
