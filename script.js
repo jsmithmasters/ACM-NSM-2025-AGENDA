@@ -4,34 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const previewParam = urlParams.get("previewDate");
   const now = getNow(previewParam);
 
-  const themeTagline = document.getElementById("themeTagline");
-  const body = document.body;
-  const header = document.querySelector("header");
-  const headerImg = document.querySelector("header img");
-
-  // === Main Header Image Logic (TWN → OTP1 → OTP2 → OTP3) ===
-  if (headerImg) {
-    const date = now;
-
-    const isBeforeNoonJune17 = date < new Date("2025-06-17T12:00:00");
-    const isJune17Afternoon = date >= new Date("2025-06-17T12:00:00") && date < new Date("2025-06-18T00:00:00");
-    const isJune18 = date >= new Date("2025-06-18T00:00:00") && date < new Date("2025-06-19T00:00:00");
-    const isJune19 = date >= new Date("2025-06-19T00:00:00") && date < new Date("2025-06-20T00:00:00");
-
-    if (isBeforeNoonJune17) {
-      headerImg.src = "TWN.png";
-    } else if (isJune17Afternoon) {
-      headerImg.src = "OTP1.png";
-    } else if (isJune18) {
-      headerImg.src = "OTP2.png";
-    } else if (isJune19) {
-      headerImg.src = "OTP3.png";
-    } else {
-      headerImg.src = "ACM.png";
-    }
-  }
-
-  // === Hide past day sections (but keep current visible until end of day) ===
+  // === Hide past day sections after midnight ===
   const daySections = {
     "day1": new Date(2025, 5, 16),
     "day2": new Date(2025, 5, 17),
@@ -58,8 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(updateCurrentEventHighlight, 30000);
   }
 });
-
-// === HELPERS ===
 
 function getNow(previewParam) {
   let now = new Date();
@@ -149,8 +120,6 @@ function updateCurrentEventHighlight() {
   }
 }
 
-// === AGENDA LOADER ===
-
 function loadAgenda(userEmail) {
   const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
 
@@ -230,8 +199,6 @@ function loadAgenda(userEmail) {
         "<p>Error loading agenda. Please try again.</p>";
     });
 }
-
-// === NOMINEE VIDEO ===
 
 function showNomineeMessage(attendeeName, userEmail) {
   const nomineeEmails = {
