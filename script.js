@@ -47,13 +47,19 @@ function getNow(previewParam) {
   return now;
 }
 
-function parseTime(timeStr) {
-  let now = new Date();
+function parseTime(timeStr, referenceDate) {
   let [time, modifier] = timeStr.split(' ');
   let [hours, minutes] = time.split(':').map(Number);
   if (modifier?.toUpperCase() === 'PM' && hours !== 12) hours += 12;
   if (modifier?.toUpperCase() === 'AM' && hours === 12) hours = 0;
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes || 0);
+
+  return new Date(
+    referenceDate.getFullYear(),
+    referenceDate.getMonth(),
+    referenceDate.getDate(),
+    hours,
+    minutes || 0
+  );
 }
 
 function isSameDay(d1, d2) {
@@ -89,20 +95,19 @@ function updateCurrentEventHighlight() {
     let endStr = item.getAttribute('data-end');
     if (!startStr) return;
 
-    let startDate = parseTime(startStr);
-    let endDate = endStr ? parseTime(endStr) : null;
-    let adjustedStart = new Date(startDate.getTime() - 5 * 60000);
+    let startDate = parseTime(startStr, eventDate);
+    let endDate = endStr ? parseTime(endStr, eventDate) : null;
 
-    events.push({ adjustedStart, endDate, element: item });
+    events.push({ startDate, endDate, element: item });
   });
 
-  events.sort((a, b) => a.adjustedStart - b.adjustedStart);
+  events.sort((a, b) => a.startDate - b.startDate);
 
   let currentEvent = null;
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
     if (
-      now >= event.adjustedStart &&
+      now >= event.startDate &&
       (!event.endDate || now < event.endDate)
     ) {
       currentEvent = event;
@@ -212,4 +217,3 @@ function showNomineeMessage(attendeeName, userEmail) {
     `;
   }
 }
-
