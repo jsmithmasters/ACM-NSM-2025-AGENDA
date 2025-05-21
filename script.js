@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const dayEnd = new Date(date);
     dayEnd.setDate(dayEnd.getDate() + 1);
     dayEnd.setHours(0, 0, 0, 0);
+
     if (now >= dayEnd) {
       const section = document.getElementById(id);
       if (section) section.style.display = "none";
@@ -105,7 +106,10 @@ function updateCurrentEventHighlight() {
   let currentEvent = null;
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
-    if (now >= event.startDate && (!event.endDate || now < event.endDate)) {
+    if (
+      now >= event.startDate &&
+      (!event.endDate || now < event.endDate)
+    ) {
       currentEvent = event;
     }
   }
@@ -124,37 +128,22 @@ function loadAgenda(userEmail) {
       try {
         const jsonData = JSON.parse(data.substring(47).slice(0, -2));
         const rows = jsonData.table.rows;
-        const cols = jsonData.table.cols;
 
-        // Create column index map
-        const columnIndexes = {};
-        cols.forEach((col, idx) => {
-          const label = col.label?.trim();
-          if (label) columnIndexes[label] = idx;
-        });
-
-        // Required columns
-        const getCol = (label, fallbackIdx) => columnIndexes[label] ?? fallbackIdx;
-
-        const agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
         let found = false;
         let attendeeName = "Unknown Attendee";
-        let nomineeVideo = null;
+        let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
 
         rows.forEach(row => {
-          const email = row.c[getCol("ID", 0)]?.v?.toLowerCase();
-          console.log("Checking row email:", email);
-
+          const email = row.c[0]?.v?.toLowerCase();
           if (email === userEmail) {
             found = true;
-            attendeeName = row.c[getCol("Name", 1)]?.v || "Unknown Attendee";
-            let day = row.c[getCol("Day", 2)]?.v || "Other";
-            let session = row.c[getCol("Breakout Session", 3)]?.v || "TBD";
-            let time = row.c[getCol("Time", 4)]?.v || "TBD";
-            let room = row.c[getCol("Room", 5)]?.v || "TBD";
-            let table = row.c[getCol("Dinner Table", 6)]?.v || "";
-            let notes = row.c[getCol("Special Notes", 7)]?.v || "";
-            nomineeVideo = row.c[getCol("Nominee Video", cols.length - 1)]?.v || null;
+            attendeeName = row.c[1]?.v || "Unknown Attendee";
+            let day = row.c[2]?.v || "Other";
+            let session = row.c[3]?.v || "TBD";
+            let time = row.c[4]?.v || "TBD";
+            let room = row.c[5]?.v || "TBD";
+            let table = row.c[6]?.v || "";
+            let notes = row.c[7]?.v || "";
 
             let timeParts = time.split("-");
             let startTime = timeParts[0]?.trim() || "TBD";
@@ -163,11 +152,11 @@ function loadAgenda(userEmail) {
             if (!agendaData[day]) agendaData[day] = [];
 
             let tableHTML = table && table !== "Not Assigned"
-              ? `<p><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : "";
+              ? <p><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p> : "";
             let notesHTML = notes && notes !== "No Notes"
-              ? `<p><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : "";
+              ? <p><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p> : "";
 
-            agendaData[day].push(`
+            agendaData[day].push(
               <div class="agenda-item" data-start="${startTime}" data-end="${endTime}" data-day="${day}">
                 <p><strong>Session:</strong> ${session}</p>
                 <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
@@ -175,7 +164,7 @@ function loadAgenda(userEmail) {
                 ${tableHTML}
                 ${notesHTML}
               </div>
-            `);
+            );
           }
         });
 
@@ -183,7 +172,7 @@ function loadAgenda(userEmail) {
           document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
         } else {
           document.getElementById("attendeeName").innerHTML =
-            `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+            Welcome, ${attendeeName}! Your personalized agenda is ready.;
 
           document.getElementById("day1-content").innerHTML =
             (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
@@ -194,19 +183,7 @@ function loadAgenda(userEmail) {
           document.getElementById("day4-content").innerHTML =
             (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
 
-          if (nomineeVideo) {
-            document.getElementById("nomineeSection").innerHTML = `
-              <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
-              <p class="nominee-text">You are a nominee for an award!</p>
-              <div style="max-width:600px; margin: 0 auto;">
-                <video controls style="width:100%; aspect-ratio:16/9;">
-                  <source src="assets/video/${nomineeVideo}" type="video/mp4">
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            `;
-          }
-
+          showNomineeMessage(attendeeName, userEmail);
           updateCurrentEventHighlight();
         }
       } catch (error) {
@@ -220,4 +197,23 @@ function loadAgenda(userEmail) {
       document.getElementById("agenda").innerHTML =
         "<p>Error loading agenda. Please try again.</p>";
     });
+}
+
+function showNomineeMessage(attendeeName, userEmail) {
+  const nomineeEmails = {
+    "jesse.smith@conagra.com": "Ov6OeEutv_Q"
+  };
+
+  if (nomineeEmails[userEmail]) {
+    let videoID = nomineeEmails[userEmail];
+    let videoSrc = https://www.youtube.com/embed/${videoID}?autoplay=1;
+
+    document.getElementById("nomineeSection").innerHTML = 
+      <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
+      <p class="nominee-text">You are a nominee for an award!</p>
+      <div style="max-width:600px; margin: 0 auto;">
+        <iframe id="nomineeVideo" style="width:100%; aspect-ratio:16/9;" src="${videoSrc}" frameborder="0" allowfullscreen></iframe>
+      </div>
+    ;
+  }
 }
