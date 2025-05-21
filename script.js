@@ -128,22 +128,30 @@ function loadAgenda(userEmail) {
       try {
         const jsonData = JSON.parse(data.substring(47).slice(0, -2));
         const rows = jsonData.table.rows;
+        const cols = jsonData.table.cols;
 
         let found = false;
         let attendeeName = "Unknown Attendee";
+        let nomineeVideo = null;
         let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
 
+        const columnIndexes = {};
+        cols.forEach((col, idx) => {
+          if (col.label) columnIndexes[col.label] = idx;
+        });
+
         rows.forEach(row => {
-          const email = row.c[0]?.v?.toLowerCase();
+          const email = row.c[columnIndexes["ID"]]?.v?.toLowerCase();
           if (email === userEmail) {
             found = true;
-            attendeeName = row.c[1]?.v || "Unknown Attendee";
-            let day = row.c[2]?.v || "Other";
-            let session = row.c[3]?.v || "TBD";
-            let time = row.c[4]?.v || "TBD";
-            let room = row.c[5]?.v || "TBD";
-            let table = row.c[6]?.v || "";
-            let notes = row.c[7]?.v || "";
+            attendeeName = row.c[columnIndexes["Name"]]?.v || "Unknown Attendee";
+            let day = row.c[columnIndexes["Day"]]?.v || "Other";
+            let session = row.c[columnIndexes["Breakout Session"]]?.v || "TBD";
+            let time = row.c[columnIndexes["Time"]]?.v || "TBD";
+            let room = row.c[columnIndexes["Room"]]?.v || "TBD";
+            let table = row.c[columnIndexes["Dinner Table"]]?.v || "";
+            let notes = row.c[columnIndexes["Special Notes"]]?.v || "";
+            nomineeVideo = row.c[columnIndexes["Nominee Video"]]?.v || null;
 
             let timeParts = time.split("-");
             let startTime = timeParts[0]?.trim() || "TBD";
@@ -183,7 +191,19 @@ function loadAgenda(userEmail) {
           document.getElementById("day4-content").innerHTML =
             (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
 
-          showNomineeMessage(attendeeName, userEmail);
+          if (nomineeVideo) {
+            document.getElementById("nomineeSection").innerHTML = `
+              <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
+              <p class="nominee-text">You are a nominee for an award!</p>
+              <div style="max-width:600px; margin: 0 auto;">
+                <video controls style="width:100%; aspect-ratio:16/9;">
+                  <source src="assets/video/${nomineeVideo}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            `;
+          }
+
           updateCurrentEventHighlight();
         }
       } catch (error) {
@@ -197,23 +217,4 @@ function loadAgenda(userEmail) {
       document.getElementById("agenda").innerHTML =
         "<p>Error loading agenda. Please try again.</p>";
     });
-}
-
-function showNomineeMessage(attendeeName, userEmail) {
-  const nomineeEmails = {
-    "jesse.smith@conagra.com": "Ov6OeEutv_Q"
-  };
-
-  if (nomineeEmails[userEmail]) {
-    let videoID = nomineeEmails[userEmail];
-    let videoSrc = `https://www.youtube.com/embed/${videoID}?autoplay=1`;
-
-    document.getElementById("nomineeSection").innerHTML = `
-      <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
-      <p class="nominee-text">You are a nominee for an award!</p>
-      <div style="max-width:600px; margin: 0 auto;">
-        <iframe id="nomineeVideo" style="width:100%; aspect-ratio:16/9;" src="${videoSrc}" frameborder="0" allowfullscreen></iframe>
-      </div>
-    `;
-  }
 }
