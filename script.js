@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const dayEnd = new Date(date);
     dayEnd.setDate(dayEnd.getDate() + 1);
     dayEnd.setHours(0, 0, 0, 0);
-
     if (now >= dayEnd) {
       const section = document.getElementById(id);
       if (section) section.style.display = "none";
@@ -106,10 +105,7 @@ function updateCurrentEventHighlight() {
   let currentEvent = null;
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
-    if (
-      now >= event.startDate &&
-      (!event.endDate || now < event.endDate)
-    ) {
+    if (now >= event.startDate && (!event.endDate || now < event.endDate)) {
       currentEvent = event;
     }
   }
@@ -130,28 +126,35 @@ function loadAgenda(userEmail) {
         const rows = jsonData.table.rows;
         const cols = jsonData.table.cols;
 
+        // Create column index map
+        const columnIndexes = {};
+        cols.forEach((col, idx) => {
+          const label = col.label?.trim();
+          if (label) columnIndexes[label] = idx;
+        });
+
+        // Required columns
+        const getCol = (label, fallbackIdx) => columnIndexes[label] ?? fallbackIdx;
+
+        const agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
         let found = false;
         let attendeeName = "Unknown Attendee";
         let nomineeVideo = null;
-        let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
-
-        const columnIndexes = {};
-        cols.forEach((col, idx) => {
-          if (col.label) columnIndexes[col.label] = idx;
-        });
 
         rows.forEach(row => {
-          const email = row.c[columnIndexes["ID"]]?.v?.toLowerCase();
+          const email = row.c[getCol("ID", 0)]?.v?.toLowerCase();
+          console.log("Checking row email:", email);
+
           if (email === userEmail) {
             found = true;
-            attendeeName = row.c[columnIndexes["Name"]]?.v || "Unknown Attendee";
-            let day = row.c[columnIndexes["Day"]]?.v || "Other";
-            let session = row.c[columnIndexes["Breakout Session"]]?.v || "TBD";
-            let time = row.c[columnIndexes["Time"]]?.v || "TBD";
-            let room = row.c[columnIndexes["Room"]]?.v || "TBD";
-            let table = row.c[columnIndexes["Dinner Table"]]?.v || "";
-            let notes = row.c[columnIndexes["Special Notes"]]?.v || "";
-            nomineeVideo = row.c[columnIndexes["Nominee Video"]]?.v || null;
+            attendeeName = row.c[getCol("Name", 1)]?.v || "Unknown Attendee";
+            let day = row.c[getCol("Day", 2)]?.v || "Other";
+            let session = row.c[getCol("Breakout Session", 3)]?.v || "TBD";
+            let time = row.c[getCol("Time", 4)]?.v || "TBD";
+            let room = row.c[getCol("Room", 5)]?.v || "TBD";
+            let table = row.c[getCol("Dinner Table", 6)]?.v || "";
+            let notes = row.c[getCol("Special Notes", 7)]?.v || "";
+            nomineeVideo = row.c[getCol("Nominee Video", cols.length - 1)]?.v || null;
 
             let timeParts = time.split("-");
             let startTime = timeParts[0]?.trim() || "TBD";
