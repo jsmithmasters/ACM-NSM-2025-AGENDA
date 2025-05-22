@@ -157,7 +157,7 @@ function loadAgenda(userEmail) {
             const wrapper = document.getElementById("videoWrapper");
             const source = document.getElementById("nomineeVideoSrc");
 
-            source.src = `assets/video/${nomineeVideo}`;
+            source.src = `${nomineeVideo}`;
             section.style.display = "block";
 
             button.addEventListener("click", () => {
