@@ -89,10 +89,15 @@ function loadAgenda(userEmail) {
       try {
         const jsonData = JSON.parse(data.substring(47).slice(0, -2));
         const rows = jsonData.table.rows;
+        const cols = jsonData.table.cols;
+
+        // Find column index for Nominee Video
+        let nomineeVideoIndex = cols.findIndex(col => col.label === "Nominee Video");
 
         let found = false;
         let attendeeName = "Unknown Attendee";
         let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
+        let nomineeVideo = null;
 
         rows.forEach(row => {
           const email = row.c[0]?.v?.toLowerCase();
@@ -105,6 +110,7 @@ function loadAgenda(userEmail) {
             let room = row.c[5]?.v || "TBD";
             let table = row.c[6]?.v || "";
             let notes = row.c[7]?.v || "";
+            nomineeVideo = nomineeVideoIndex !== -1 ? row.c[nomineeVideoIndex]?.v : null;
 
             let timeParts = time.split("-");
             let startTime = timeParts[0]?.trim() || "TBD";
@@ -143,6 +149,24 @@ function loadAgenda(userEmail) {
             (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
           document.getElementById("day4-content").innerHTML =
             (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
+
+          // ✅ Show nominee video if one is assigned
+          if (nomineeVideo) {
+            const section = document.getElementById("nomineeSection");
+            const button = document.getElementById("playNomineeVideoBtn");
+            const wrapper = document.getElementById("videoWrapper");
+            const source = document.getElementById("nomineeVideoSrc");
+
+            source.src = `assets/video/${nomineeVideo}`;
+            section.style.display = "block";
+
+            button.addEventListener("click", () => {
+              wrapper.style.display = "block";
+              button.style.display = "none";
+            });
+          }
+
+          updateCurrentEventHighlight();
         }
       } catch (error) {
         console.error("Error processing agenda:", error);
