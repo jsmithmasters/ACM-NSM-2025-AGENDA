@@ -15,11 +15,27 @@
   </header>
 
   <div class="container">
+    <!-- Theme Tagline (optional placeholder) -->
     <div id="themeTagline"></div>
 
+    <!-- Personalized Greeting -->
     <h2 id="attendeeName">Welcome! Your personalized agenda is ready.</h2>
     <input type="email" id="emailInput" placeholder="Enter your email" readonly />
 
+    <!-- Nominee Section -->
+    <div id="nomineeSection" style="display:none; margin-top: 30px;">
+      <h2 class="nominee-title">🌟 You're a nominee! 🌟</h2>
+      <p class="nominee-text">Click below to view your nomination video.</p>
+      <button id="playNomineeVideoBtn">▶ Play Video</button>
+      <div id="videoWrapper" style="display: none; margin-top: 15px;">
+        <video controls width="100%">
+          <source id="nomineeVideoSrc" src="" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+    <!-- Agenda Container -->
     <div id="agenda" class="agenda-container">
       <div class="day-section" id="day1">
         <h3>Monday – All Company Meeting <img src="TWN.png" class="day-icon" alt="TWN"></h3>
@@ -42,6 +58,7 @@
       </div>
     </div>
 
+    <!-- Question Submission Section -->
     <div id="questionSection" style="display: none;">
       <h3>Submit a Question for <span id="questionSessionName"></span></h3>
       <p>Speaker: <span id="questionSpeaker"></span></p>
