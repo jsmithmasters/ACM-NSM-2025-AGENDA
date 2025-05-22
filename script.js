@@ -91,8 +91,11 @@ function loadAgenda(userEmail) {
         const rows = jsonData.table.rows;
         const cols = jsonData.table.cols;
 
-        // Find column index for Nominee Video
-        let nomineeVideoIndex = cols.findIndex(col => col.label === "Nominee Video");
+        // Safe match: lowercase and trim the column labels
+        let nomineeVideoIndex = cols.findIndex(
+          col => col.label?.trim().toLowerCase() === "nominee video"
+        );
+        console.log("Nominee video column index:", nomineeVideoIndex);
 
         let found = false;
         let attendeeName = "Unknown Attendee";
@@ -110,7 +113,11 @@ function loadAgenda(userEmail) {
             let room = row.c[5]?.v || "TBD";
             let table = row.c[6]?.v || "";
             let notes = row.c[7]?.v || "";
-            nomineeVideo = nomineeVideoIndex !== -1 ? row.c[nomineeVideoIndex]?.v : null;
+
+            // Only assign nomineeVideo once (first matching row)
+            if (!nomineeVideo && nomineeVideoIndex !== -1) {
+              nomineeVideo = row.c[nomineeVideoIndex]?.v || null;
+            }
 
             let timeParts = time.split("-");
             let startTime = timeParts[0]?.trim() || "TBD";
@@ -150,14 +157,15 @@ function loadAgenda(userEmail) {
           document.getElementById("day4-content").innerHTML =
             (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
 
-          // ✅ Show nominee video if one is assigned
+          // ✅ Show nominee video if assigned
           if (nomineeVideo) {
+            console.log("Matched nominee video value:", nomineeVideo);
             const section = document.getElementById("nomineeSection");
             const button = document.getElementById("playNomineeVideoBtn");
             const wrapper = document.getElementById("videoWrapper");
             const source = document.getElementById("nomineeVideoSrc");
 
-            source.src = `${nomineeVideo}`;
+            source.src = `${nomineeVideo}`; // From root
             section.style.display = "block";
 
             button.addEventListener("click", () => {
