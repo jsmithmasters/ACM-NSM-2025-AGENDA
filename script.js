@@ -1,26 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
   let userEmail = urlParams.get("email");
-  const previewParam = urlParams.get("previewDate");
-  const now = getNow(previewParam);
-
-  const daySections = {
-    "day1": new Date(2025, 5, 16),
-    "day2": new Date(2025, 5, 17),
-    "day3": new Date(2025, 5, 18),
-    "day4": new Date(2025, 5, 19)
-  };
-
-  Object.entries(daySections).forEach(([id, date]) => {
-    const dayEnd = new Date(date);
-    dayEnd.setDate(dayEnd.getDate() + 1);
-    dayEnd.setHours(0, 0, 0, 0);
-
-    if (now >= dayEnd) {
-      const section = document.getElementById(id);
-      if (section) section.style.display = "none";
-    }
-  });
 
   if (userEmail) {
     userEmail = userEmail.toLowerCase();
@@ -30,22 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(updateCurrentEventHighlight, 30000);
   }
 });
-
-function getNow(previewParam) {
-  let now = new Date();
-  if (previewParam) {
-    const previewDate = new Date(previewParam + "T00:00:00");
-    const realNow = new Date();
-    return new Date(
-      previewDate.getFullYear(),
-      previewDate.getMonth(),
-      previewDate.getDate(),
-      realNow.getHours(),
-      realNow.getMinutes()
-    );
-  }
-  return now;
-}
 
 function parseTime(timeStr, referenceDate) {
   let [time, modifier] = timeStr.split(' ');
@@ -62,12 +26,6 @@ function parseTime(timeStr, referenceDate) {
   );
 }
 
-function isSameDay(d1, d2) {
-  return d1.getFullYear() === d2.getFullYear() &&
-         d1.getMonth() === d2.getMonth() &&
-         d1.getDate() === d2.getDate();
-}
-
 const dayMapping = {
   "Day 1": new Date(2025, 5, 16),
   "Day 2": new Date(2025, 5, 17),
@@ -75,11 +33,14 @@ const dayMapping = {
   "Day 4": new Date(2025, 5, 19)
 };
 
-function updateCurrentEventHighlight() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const previewParam = urlParams.get("previewDate");
-  const now = getNow(previewParam);
+function isSameDay(d1, d2) {
+  return d1.getFullYear() === d2.getFullYear() &&
+         d1.getMonth() === d2.getMonth() &&
+         d1.getDate() === d2.getDate();
+}
 
+function updateCurrentEventHighlight() {
+  const now = new Date();
   const agendaItems = document.querySelectorAll('.agenda-item');
   agendaItems.forEach(item => item.classList.remove('current'));
 
@@ -152,11 +113,11 @@ function loadAgenda(userEmail) {
             if (!agendaData[day]) agendaData[day] = [];
 
             let tableHTML = table && table !== "Not Assigned"
-              ? <p><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p> : "";
+              ? `<p><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : "";
             let notesHTML = notes && notes !== "No Notes"
-              ? <p><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p> : "";
+              ? `<p><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : "";
 
-            agendaData[day].push(
+            agendaData[day].push(`
               <div class="agenda-item" data-start="${startTime}" data-end="${endTime}" data-day="${day}">
                 <p><strong>Session:</strong> ${session}</p>
                 <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
@@ -164,7 +125,7 @@ function loadAgenda(userEmail) {
                 ${tableHTML}
                 ${notesHTML}
               </div>
-            );
+            `);
           }
         });
 
@@ -172,7 +133,7 @@ function loadAgenda(userEmail) {
           document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
         } else {
           document.getElementById("attendeeName").innerHTML =
-            Welcome, ${attendeeName}! Your personalized agenda is ready.;
+            `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
 
           document.getElementById("day1-content").innerHTML =
             (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
@@ -182,9 +143,6 @@ function loadAgenda(userEmail) {
             (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
           document.getElementById("day4-content").innerHTML =
             (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
-
-          showNomineeMessage(attendeeName, userEmail);
-          updateCurrentEventHighlight();
         }
       } catch (error) {
         console.error("Error processing agenda:", error);
@@ -197,23 +155,4 @@ function loadAgenda(userEmail) {
       document.getElementById("agenda").innerHTML =
         "<p>Error loading agenda. Please try again.</p>";
     });
-}
-
-function showNomineeMessage(attendeeName, userEmail) {
-  const nomineeEmails = {
-    "jesse.smith@conagra.com": "Ov6OeEutv_Q"
-  };
-
-  if (nomineeEmails[userEmail]) {
-    let videoID = nomineeEmails[userEmail];
-    let videoSrc = https://www.youtube.com/embed/${videoID}?autoplay=1;
-
-    document.getElementById("nomineeSection").innerHTML = 
-      <h2 class="nominee-title">🌟 Congratulations, ${attendeeName}! 🌟</h2>
-      <p class="nominee-text">You are a nominee for an award!</p>
-      <div style="max-width:600px; margin: 0 auto;">
-        <iframe id="nomineeVideo" style="width:100%; aspect-ratio:16/9;" src="${videoSrc}" frameborder="0" allowfullscreen></iframe>
-      </div>
-    ;
-  }
 }
