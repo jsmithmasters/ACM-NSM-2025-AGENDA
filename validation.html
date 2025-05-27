@@ -75,7 +75,7 @@
       fetch(sheetURL)
         .then(response => response.json())
         .then(data => {
-          const validEmails = data.map(row => row.Email.toLowerCase().trim());
+          const validEmails = data.map(row => row.ID.toLowerCase().trim());
           if (validEmails.includes(email)) {
             message.innerHTML = "You're in luck, you made the cut! Redirecting...";
             setTimeout(() => {
@@ -93,3 +93,4 @@
   </script>
 </body>
 </html>
+
