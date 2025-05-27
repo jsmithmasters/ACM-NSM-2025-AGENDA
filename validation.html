@@ -1,137 +1,95 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Validation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-            background-color: #f9f9f9;
-        }
-        h2 {
-            margin-bottom: 20px;
-            font-size: 1.5em;
-        }
-        input[type="email"] {
-            width: 100%;
-            max-width: 400px;
-            padding: 14px;
-            font-size: 1.2em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-bottom: 15px;
-        }
-        button {
-            width: 100%;
-            max-width: 400px;
-            padding: 14px;
-            font-size: 1.2em;
-            background-color: #E31837;
-            color: #ffffff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #c41531;
-        }
-        #message {
-            margin-top: 20px;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Validation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
+    input[type="email"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 14px;
+      font-size: 1.2em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+    }
+    button {
+      width: 100%;
+      max-width: 400px;
+      padding: 14px;
+      font-size: 1.2em;
+      background-color: #E31837;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #c41531;
+    }
+    #message {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+  </style>
 </head>
 <body>
-    <h2>Enter Your Email to Access the Agenda</h2>
-    <input type="email" id="emailInput" placeholder="Enter your email" required>
-    <button onclick="validateEmail()">Submit</button>
-    <p id="message"></p>
+  <h2>Enter Your Email to Access the Agenda</h2>
+  <input type="email" id="emailInput" placeholder="Enter your email" required>
+  <button onclick="validateEmail()">Submit</button>
+  <p id="message"></p>
 
-    <script>
-        const validEmails = new Set([
-            "aashna.khetani@conagra.com","albert.hutton@conagra.com","andrea.fung@conagra.com",
-            "andrea.scott@conagra.com","anoopjitsingh.sahota@conagra.com","anthony.salvador@conagra.com",
-            "barbara.harrison@conagra.com","catherine.dube@conagra.com","darren.lang@conagra.com",
-            "david.dasilva@conagra.com","elise.nicholson@conagra.com","faizan.khan@conagra.com",
-            "giulliano.pappi@conagra.com","humza.syed@conagra.com","jack.nicholl@conagra.com",
-            "jeremy.griffin@conagra.com","jesse.smith@conagra.com","jonathan.dufresne@conagra.com",
-            "josie.cats@conagra.com","julie.ball@conagra.com","sheikhjunaid.nayyer@conagra.com",
-            "karen.demetriou@conagra.com","lauren.gilpin@conagra.com","melissa.martinmcgraw@conagra.com",
-            "michelle.squibb@conagra.com","michael.fazio@conagra.com","nick.abdo@conagra.com",
-            "mackenzie.clark@conagra.com","kim.westenbrink@conagra.com","darryl.percival@conagra.com",
-            "raymond.lau@conagra.com","robin.poulain@conagra.com","ryon.cheng@conagra.com",
-            "shaun.andrade@conagra.com","sonia.tremblay@conagra.com","tyler.collins@conagra.com",
-            "william.cascone@conagra.com","anupama.shukla@conagra.com","brian.vergeldedios@conagra.com",
-            "christina.darby@conagra.com","christine.batke@conagra.com","giuseppe.franze@conagra.com",
-            "jeffery.ha@conagra.com","kim.mcnaught@conagra.com","peter.mandarino@conagra.com",
-            "ray.vandenbossche@conagra.com","reid.fenwick@conagra.com","santiago.ardila@conagra.com",
-            "shrirang.kumbhojkar@conagra.com","spencer.chan@conagra.com","susan.hornsby@conagra.com",
-            "terence.chan@conagra.com","tim.lute@conagra.com","touria.daoudi@conagra.com",
-            "adebayo.akinleye@conagra.com","analuiza.rangel@conagra.com","christianna.boers@conagra.com",
-            "elisa.eskedjian@conagra.com","johanna.saavedra@conagra.com","jonathan.tosti@conagra.com",
-            "kaitlin.dowsett@conagra.com","kate.esztelecky@conagra.com","kevin.lamb@conagra.com",
-            "laura.bermudez@conagra.com","lynne.strickler@conagra.com","myriam.ouaiss@conagra.com",
-            "anthonia.udemeh@conagra.com","abitha.pathmanathan@conagra.com","priyank.kapoor@conagra.com",
-            "susan.whyte@conagra.com","haleema.irfan@conagra.com","emily.forester@conagra.com",
-            "teresa.blakney@conagra.com","tolulope.olaoye@conagra.com","veronika.popkova@conagra.com",
-            "zora.crowder@conagra.com","aletha.jones@conagra.com","alfonso.coxcarlin@conagra.com",
-            "laura.campos1@conagra.com","monia.staropoli@conagra.com","gurveen.gill@conagra.com",
-            "maria.herrera@conagra.com","dinah.martinez@conagra.com","jason.blyth@conagra.com",
-            "ahsan.khan@conagra.com","aamir.sakarwala@conagra.com","akshaya.muralidharan@conagra.com",
-            "cheikh.kamara@conagra.com","deena.khan@conagra.com","mahbub.rashid@conagra.com",
-            "kathy.goode@conagra.com","muddassir.hashmani@conagra.com","ruide.bai@conagra.com",
-            "michael.klaas@conagra.com","mohit.mohan@conagra.com","aakash.savla@conagra.com",
-            "vivek.kathuria@conagra.com","chris.marshall@encoreengage.com","karen.lubaszka@encoreengage.com",
-            "brent.popek@encoreengage.com","france.dugon@encoreengage.com","heidi.sauerwein@encoreengage.com",
-            "kate.doak-davison@encoreengage.com","melissa.murphyd@encoreengage.com","michael.cressman@encoreengage.com",
-            "tlhunter@acosta.com","squenneville@acosta.com","eleni.tsimpragos@affinitysales.ca",
-            "mirela.gedja@conagra.com","pierre.belanger@conagra.com","alejandra.rivas@conagra.com",
-            "purnima.sharma@conagra.com","tonya.moncrieiffe@conagra.com","hali.burness@conagra.com",
-            "paul.hogan@conagra.com","alberta.clapp@conagra.com","lisa.cranstoun@conagra.com",
-            "alma.mercado@conagra.com","caroline.nadeau@conagra.com","maureen.borges@conagra.com",
-            "amy.nguyen@conagra.com","rohan.gupta@conagra.com","rania.elloulou@conagra.com",
-            "tuhin.majumdar@conagra.com","frank.cianchetti@conagra.com","megha.patel@conagra.com",
-            "rabya.qazi@conagra.com","andriy.yelisyeyenko@conagra.com","leonid.andrusenko@conagra.com",
-            "lianne.lai@conagra.com","steven.lee@conagra.com","shawn.pink@conagra.com",
-            "nicole.cocirla@conagra.com","edward.qiang.li@conagra.com","maurine.varathan@conagra.com",
-            "alan.kombiyikyan@conagra.com","nancy.mclean@conagra.com","jennifer.milo@conagra.com",
-            "zahraan.backus@conagra.com","paula.sur@conagra.com","lucy.d'amato@conagra.com",
-            "omair.baig@conagra.com","sutha.suntharesu@conagra.com","arun.kukna@conagra.com",
-            "evelyn.vivas@conagra.com","sharmin.islam@conagra.com","angel.liang@conagra.com",
-            "mridula.nana@conagra.com","marko.kostic@conagra.com","chiuming.kwan@conagra.com","gabriela.hroch@conagra.com",
-            "yolanda.lee@conagra.com","kalindu.somatilaka@conagra.com","himabindu.rao@conagra.com",
-            "patty.li@conagra.com","andrew.orr@conagra.com","marco.garcia@conagra.com",
-            "niveditha.ramakrishnan@conagra.com","joanna.caba@conagra.com","paulien.leynes@conagra.com",
-            "rehan.arif@conagra.com","amy.marion@conagra.com","natalie.welc@conagra.com",
-            "gisel.murillo@conagra.com","caroline.benoit@conagra.com","paule.caron@conagra.com",
-            "gabrielle.bedard@conagra.com","nadine.bourgoin@conagra.com","alexis.laliberte@conagra.com",
-            "jesse.lang@conagra.com","thor.sorensen@conagra.com","shaka.david@conagra.com"
-        ]);
+  <script>
+    const sheetURL = "https://opensheet.elk.sh/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/Sheet1";
 
-        function validateEmail() {
-            const email = document.getElementById("emailInput").value.trim().toLowerCase();
-            const message = document.getElementById("message");
+    function validateEmail() {
+      const input = document.getElementById("emailInput");
+      const email = input.value.trim().toLowerCase();
+      const message = document.getElementById("message");
 
-            if (validEmails.has(email)) {
-                message.innerHTML = "You're in luck, you made the cut! Redirecting...";
-                setTimeout(() => {
-                    window.location.href = `index.html?email=${encodeURIComponent(email)}`;
-                }, 1000);
-            } else {
-                message.innerHTML = "Invalid email. Please try again.";
-            }
-        }
-    </script>
+      if (!email) {
+        message.innerHTML = "Please enter a valid email.";
+        return;
+      }
+
+      fetch(sheetURL)
+        .then(response => response.json())
+        .then(data => {
+          const validEmails = data.map(row => row.Email.toLowerCase().trim());
+          if (validEmails.includes(email)) {
+            message.innerHTML = "You're in luck, you made the cut! Redirecting...";
+            setTimeout(() => {
+              window.location.href = `index.html?email=${encodeURIComponent(email)}`;
+            }, 1000);
+          } else {
+            message.innerHTML = "Invalid email. Please try again.";
+          }
+        })
+        .catch(error => {
+          console.error("Validation error:", error);
+          message.innerHTML = "Error validating email. Please try again later.";
+        });
+    }
+  </script>
 </body>
 </html>
