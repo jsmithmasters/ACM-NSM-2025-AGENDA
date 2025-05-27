@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Email Validation</title>
   <style>
     body {
@@ -55,7 +55,7 @@
 </head>
 <body>
   <h2>Enter Your Email to Access the Agenda</h2>
-  <input type="email" id="emailInput" placeholder="Enter your email" required>
+  <input type="email" id="emailInput" placeholder="Enter your email" required />
   <button onclick="validateEmail()">Submit</button>
   <p id="message"></p>
 
@@ -73,9 +73,16 @@
       }
 
       fetch(sheetURL)
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
         .then(data => {
-          const validEmails = data.map(row => row.ID.toLowerCase().trim());
+          console.log("Fetched data:", data.slice(0, 3));  // log first 3 entries
+          const validEmails = data.map(row => row.ID?.toLowerCase().trim()).filter(Boolean);
+          console.log("Valid emails:", validEmails);
           if (validEmails.includes(email)) {
             message.innerHTML = "You're in luck, you made the cut! Redirecting...";
             setTimeout(() => {
@@ -93,4 +100,3 @@
   </script>
 </body>
 </html>
-
