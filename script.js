@@ -81,106 +81,85 @@ function updateCurrentEventHighlight() {
 }
 
 function loadAgenda(userEmail) {
-  const sheetURL = "https://docs.google.com/spreadsheets/d/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/gviz/tq?tqx=out:json";
+  const apiUrl = `https://script.google.com/macros/s/AKfycby0OVCPk5e3Fzx29zf7BB0JS8YvJvXithiGcwgYqIooKEAvk0dqR8XgBRbWJ1tR7-9GFA/exec?email=${encodeURIComponent(userEmail)}`;
 
-  fetch(sheetURL)
-    .then(res => res.text())
-    .then(data => {
-      try {
-        const jsonData = JSON.parse(data.substring(47).slice(0, -2));
-        const rows = jsonData.table.rows;
-        const cols = jsonData.table.cols;
-
-        let nomineeVideoIndex = cols.findIndex(
-          col => col.label?.trim().toLowerCase() === "nominee video"
-        );
-
-        let found = false;
-        let attendeeName = "Unknown Attendee";
-        let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
-        let nomineeVideo = null;
-
-        rows.forEach(row => {
-          const email = row.c[0]?.v?.toLowerCase();
-          if (email === userEmail) {
-            found = true;
-            attendeeName = row.c[1]?.v || "Unknown Attendee";
-            let day = row.c[2]?.v || "Other";
-            let session = row.c[3]?.v || "TBD";
-            let time = row.c[4]?.v || "TBD";
-            let room = row.c[5]?.v || "TBD";
-            let table = row.c[6]?.v || "";
-            let notes = row.c[7]?.v || "";
-
-            if (!nomineeVideo && nomineeVideoIndex !== -1) {
-              nomineeVideo = row.c[nomineeVideoIndex]?.v || null;
-            }
-
-            let timeParts = time.split("-");
-            let startTime = timeParts[0]?.trim() || "TBD";
-            let endTime = timeParts[1] ? timeParts[1].trim() : "TBD";
-
-            if (!agendaData[day]) agendaData[day] = [];
-
-            let tableHTML = table && table !== "Not Assigned"
-              ? `<p><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : "";
-            let notesHTML = notes && notes !== "No Notes"
-              ? `<p><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : "";
-
-            agendaData[day].push(`
-              <div class="agenda-item" data-start="${startTime}" data-end="${endTime}" data-day="${day}">
-                <p><strong>Session:</strong> ${session}</p>
-                <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
-                <p><i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}</p>
-                ${tableHTML}
-                ${notesHTML}
-              </div>
-            `);
-          }
-        });
-
-        if (!found) {
-          document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
-        } else {
-          document.getElementById("attendeeName").innerHTML =
-            `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
-
-          document.getElementById("day1-content").innerHTML =
-            (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
-          document.getElementById("day2-content").innerHTML =
-            (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
-          document.getElementById("day3-content").innerHTML =
-            (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
-          document.getElementById("day4-content").innerHTML =
-            (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
-
-          // ✅ Show nominee video if assigned
-          if (nomineeVideo) {
-            console.log("Matched nominee video value:", nomineeVideo);
-            const section = document.getElementById("nomineeSection");
-            const button = document.getElementById("playNomineeVideoBtn");
-            const wrapper = document.getElementById("videoWrapper");
-            const source = document.getElementById("nomineeVideoSrc");
-            const video = source.closest("video");
-
-            source.src = nomineeVideo;
-            section.style.display = "block";
-
-            button.addEventListener("click", () => {
-              video.load(); // refresh the video
-              video.play(); // autoplay
-              wrapper.style.display = "block";
-              button.style.display = "none";
-            });
-          }
-
-          updateCurrentEventHighlight();
-        }
-      } catch (error) {
-        console.error("Error processing agenda:", error);
-        document.getElementById("agenda").innerHTML =
-          "<p>Error loading agenda. Please try again.</p>";
+  fetch(apiUrl)
+    .then(res => res.json())
+    .then(rows => {
+      if (!rows || rows.length === 0) {
+        document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
+        return;
       }
+
+      let attendeeName = rows[0]["Name"] || "Unknown Attendee";
+      let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
+      let nomineeVideo = null;
+
+      rows.forEach(row => {
+        let day = row["Day"] || "Other";
+        let session = row["Breakout Session"] || "TBD";
+        let time = row["Time"] || "TBD";
+        let room = row["Room"] || "TBD";
+        let table = row["Dinner Table"] || "";
+        let notes = row["Special Notes"] || "";
+
+        if (!nomineeVideo && row["Nominee Video"]) {
+          nomineeVideo = row["Nominee Video"];
+        }
+
+        let timeParts = time.split("-");
+        let startTime = timeParts[0]?.trim() || "TBD";
+        let endTime = timeParts[1] ? timeParts[1].trim() : "TBD";
+
+        if (!agendaData[day]) agendaData[day] = [];
+
+        let tableHTML = table && table !== "Not Assigned"
+          ? `<p><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : "";
+        let notesHTML = notes && notes !== "No Notes"
+          ? `<p><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : "";
+
+        agendaData[day].push(`
+          <div class="agenda-item" data-start="${startTime}" data-end="${endTime}" data-day="${day}">
+            <p><strong>Session:</strong> ${session}</p>
+            <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
+            <p><i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}</p>
+            ${tableHTML}
+            ${notesHTML}
+          </div>
+        `);
+      });
+
+      document.getElementById("attendeeName").innerHTML =
+        `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+
+      document.getElementById("day1-content").innerHTML =
+        (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
+      document.getElementById("day2-content").innerHTML =
+        (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
+      document.getElementById("day3-content").innerHTML =
+        (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
+      document.getElementById("day4-content").innerHTML =
+        (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
+
+      if (nomineeVideo) {
+        const section = document.getElementById("nomineeSection");
+        const button = document.getElementById("playNomineeVideoBtn");
+        const wrapper = document.getElementById("videoWrapper");
+        const source = document.getElementById("nomineeVideoSrc");
+        const video = source.closest("video");
+
+        source.src = nomineeVideo;
+        section.style.display = "block";
+
+        button.addEventListener("click", () => {
+          video.load(); // refresh the video
+          video.play(); // autoplay
+          wrapper.style.display = "block";
+          button.style.display = "none";
+        });
+      }
+
+      updateCurrentEventHighlight();
     })
     .catch(error => {
       console.error("Error fetching agenda:", error);
