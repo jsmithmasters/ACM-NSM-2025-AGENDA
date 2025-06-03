@@ -50,6 +50,13 @@
       font-weight: bold;
       font-size: 1.1em;
     }
+    #spinner {
+      display: none;
+      margin-top: 20px;
+    }
+    #spinner img {
+      width: 100px;
+    }
   </style>
 </head>
 <body>
@@ -57,6 +64,9 @@
   <input type="email" id="emailInput" placeholder="Enter your email" required />
   <button onclick="validateEmail()">Submit</button>
   <p id="message"></p>
+  <div id="spinner">
+    <img src="popcorn-spinner.gif" alt="Loading..." />
+  </div>
 
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycby0OVCPk5e3Fzx29zf7BB0JS8YvJvXithiGcwgYqIooKEAvk0dqR8XgBRbWJ1tR7-9GFA/exec";
@@ -65,6 +75,7 @@
       const input = document.getElementById("emailInput");
       const email = input.value.trim().toLowerCase();
       const message = document.getElementById("message");
+      const spinner = document.getElementById("spinner");
 
       if (!email) {
         message.innerHTML = "Please enter a valid email.";
@@ -72,10 +83,12 @@
       }
 
       message.innerHTML = "Validating...";
+      spinner.style.display = "block";
 
       fetch(`${scriptURL}?email=${encodeURIComponent(email)}`)
         .then(res => res.json())
         .then(data => {
+          spinner.style.display = "none";
           if (data && data.length > 0) {
             message.innerHTML = "You're in luck, you made the cut! Redirecting...";
             setTimeout(() => {
@@ -86,6 +99,7 @@
           }
         })
         .catch(error => {
+          spinner.style.display = "none";
           console.error("Validation error:", error);
           message.innerHTML = "Error validating email. Please try again later.";
         });
