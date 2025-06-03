@@ -59,7 +59,7 @@
   <p id="message"></p>
 
   <script>
-    const sheetURL = "https://opensheet.elk.sh/1TOi1FJbyBpCUZ0RL9XgH8Kvl9R3VspUcmD0XWUQubuE/Sheet5";
+    const scriptURL = "https://script.google.com/macros/s/AKfycby0OVCPk5e3Fzx29zf7BB0JS8YvJvXithiGcwgYqIooKEAvk0dqR8XgBRbWJ1tR7-9GFA/exec";
 
     function validateEmail() {
       const input = document.getElementById("emailInput");
@@ -71,17 +71,12 @@
         return;
       }
 
-      fetch(sheetURL)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
+      message.innerHTML = "Validating...";
+
+      fetch(`${scriptURL}?email=${encodeURIComponent(email)}`)
+        .then(res => res.json())
         .then(data => {
-          const validEmails = data.map(row => row.Email?.toLowerCase().trim()).filter(Boolean);
-          console.log("Valid emails (first 5):", validEmails.slice(0, 5)); // optional debug
-          if (validEmails.includes(email)) {
+          if (data && data.length > 0) {
             message.innerHTML = "You're in luck, you made the cut! Redirecting...";
             setTimeout(() => {
               window.location.href = `index.html?email=${encodeURIComponent(email)}`;
