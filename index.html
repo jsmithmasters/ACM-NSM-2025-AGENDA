@@ -27,14 +27,22 @@
       <h2 class="nominee-title">🌟 Conagratulations!! You've been nominated! 🌟</h2>
       <p class="nominee-text">Click below to view a special message.</p>
       <button id="playNomineeVideoBtn" style="
-  font-size: 1.4em;
-  padding: 16px 32px;
+  font-size: 1.5em;
+  padding: 16px 36px;
   background-color: #E31837;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-">Play Nominee Video</button>
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+">
+  <span style="font-size: 1.3em;">▶</span>
+  <span>Hit Play!</span>
+</button>
 
       <div id="videoWrapper" style="display: none; margin-top: 15px;">
         <video controls width="100%">
