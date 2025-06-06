@@ -132,14 +132,20 @@ function loadAgenda(userEmail) {
       document.getElementById("attendeeName").innerHTML =
         `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
 
-      document.getElementById("day1-content").innerHTML =
-        (agendaData["Day 1"] || []).join("") || "<p>No events scheduled.</p>";
-      document.getElementById("day2-content").innerHTML =
-        (agendaData["Day 2"] || []).join("") || "<p>No events scheduled.</p>";
-      document.getElementById("day3-content").innerHTML =
-        (agendaData["Day 3"] || []).join("") || "<p>No events scheduled.</p>";
-      document.getElementById("day4-content").innerHTML =
-        (agendaData["Day 4"] || []).join("") || "<p>No events scheduled.</p>";
+      ["Day 1", "Day 2", "Day 3", "Day 4"].forEach((day, index) => {
+        const contentId = `day${index + 1}-content`;
+        const sectionId = `day${index + 1}`;
+        const content = document.getElementById(contentId);
+        const section = document.getElementById(sectionId);
+        const items = agendaData[day] || [];
+
+        if (items.length === 0) {
+          section.style.display = "none";
+        } else {
+          content.innerHTML = items.join("");
+          section.style.display = "block";
+        }
+      });
 
       if (nomineeVideo) {
         const section = document.getElementById("nomineeSection");
@@ -152,8 +158,8 @@ function loadAgenda(userEmail) {
         section.style.display = "block";
 
         button.addEventListener("click", () => {
-          video.load(); // refresh the video
-          video.play(); // autoplay
+          video.load();
+          video.play();
           wrapper.style.display = "block";
           button.style.display = "none";
         });
