@@ -159,12 +159,14 @@ function loadAgenda(userEmail) {
         source.src = nomineeVideo;
         section.style.display = "block";
 
-        button.addEventListener("click", () => {
-          video.load();
-          video.play();
+        button.onclick = () => {
           wrapper.style.display = "block";
           button.style.display = "none";
-        });
+          video.load();
+          video.play().catch(err => {
+            console.warn("Video play failed or was blocked:", err);
+          });
+        };
       }
 
       updateCurrentEventHighlight();
