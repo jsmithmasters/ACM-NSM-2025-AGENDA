@@ -95,7 +95,7 @@ function loadAgenda(userEmail) {
       let firstName = attendeeName.split(" ")[0];
 
       let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
-      let nomineeVideo = null;
+      let nomineeVideoExists = rows.some(row => row["Nominee Video"]);
 
       rows.forEach(row => {
         let day = row["Day"] || "Other";
@@ -104,10 +104,6 @@ function loadAgenda(userEmail) {
         let room = row["Room"] || "TBD";
         let table = row["Dinner Table"] || "";
         let notes = row["Special Notes"] || "";
-
-        if (!nomineeVideo && row["Nominee Video"]) {
-          nomineeVideo = row["Nominee Video"];
-        }
 
         let timeParts = time.split("-");
         let startTime = timeParts[0]?.trim() || "TBD";
@@ -149,14 +145,13 @@ function loadAgenda(userEmail) {
         }
       });
 
-      if (nomineeVideo) {
+      // Play nominee video if it exists
+      if (nomineeVideoExists) {
         const section = document.getElementById("nomineeSection");
         const button = document.getElementById("playNomineeVideoBtn");
         const wrapper = document.getElementById("videoWrapper");
-        const source = document.getElementById("nomineeVideoSrc");
-        const video = source.closest("video");
+        const video = document.getElementById("nomineeVideo");
 
-        source.src = nomineeVideo;
         section.style.display = "block";
 
         button.onclick = () => {
