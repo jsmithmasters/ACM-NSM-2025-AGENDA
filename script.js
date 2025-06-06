@@ -92,6 +92,8 @@ function loadAgenda(userEmail) {
       }
 
       let attendeeName = rows[0]["Name"] || "Unknown Attendee";
+      let firstName = attendeeName.split(" ")[0];
+
       let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
       let nomineeVideo = null;
 
@@ -130,7 +132,7 @@ function loadAgenda(userEmail) {
       });
 
       document.getElementById("attendeeName").innerHTML =
-        `Welcome, ${attendeeName}! Your personalized agenda is ready.`;
+        `Welcome, ${firstName}! Your personalized agenda is ready.`;
 
       ["Day 1", "Day 2", "Day 3", "Day 4"].forEach((day, index) => {
         const contentId = `day${index + 1}-content`;
