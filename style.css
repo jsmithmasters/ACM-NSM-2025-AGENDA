@@ -131,6 +131,13 @@ input[type="email"] {
   color: #333333;
 }
 
+/* Hide Notes, Table, and Room if Empty */
+.agenda-item .notes:empty,
+.agenda-item .table:empty,
+.agenda-item .room:empty {
+  display: none;
+}
+
 /* Highlight Current Session */
 .agenda-item.current {
   background-color: #e6f7ff;
