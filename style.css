@@ -1,5 +1,5 @@
 /* =========================
-   Conagra-Themed Style Sheet (Final Clean Version)
+   Conagra-Themed Style Sheet (Final Clean Version - Blue Themed)
    ========================= */
 
 /* General Styling */
@@ -14,7 +14,7 @@ body {
 
 /* Header Styling */
 header {
-  background-color: #E31837;
+  background-color: #0078D4;
   padding: 20px;
   color: #ffffff;
   text-align: center;
@@ -27,7 +27,7 @@ header img.logo {
   display: block;
   margin: 0 auto 10px auto;
   object-fit: contain;
-  background-color: #ffffff; /* makes image visible on red */
+  background-color: #ffffff;
   padding: 10px;
   border-radius: 8px;
 }
@@ -90,9 +90,9 @@ input[type="email"] {
 }
 
 .day-section h3 {
-  color: #E31837;
+  color: #0078D4;
   font-size: 1.2em;
-  border-bottom: 2px solid #E31837;
+  border-bottom: 2px solid #0078D4;
   padding-bottom: 4px;
   margin: 0 0 10px;
   position: sticky;
@@ -111,7 +111,7 @@ input[type="email"] {
 /* Agenda Item Styling */
 .agenda-item {
   background-color: #ffffff;
-  border-left: 4px solid #E31837;
+  border-left: 4px solid #0078D4;
   border: 1px solid #dddddd;
   border-radius: 6px;
   padding: 12px;
@@ -233,7 +233,7 @@ footer {
 #playNomineeVideoBtn {
   font-size: 1.5em;
   padding: 16px 36px;
-  background-color: #E31837;
+  background-color: #0078D4;
   color: white;
   border: none;
   border-radius: 10px;
@@ -248,5 +248,5 @@ footer {
 
 #playNomineeVideoBtn:hover {
   transform: scale(1.05);
-  background-color: #c41531;
+  background-color: #005ea6;
 }
