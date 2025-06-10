@@ -101,7 +101,7 @@ function loadAgenda(userEmail) {
         let day = row["Day"] || "Other";
         let session = row["Breakout Session"] || "TBD";
         let time = row["Time"] || "TBD";
-        let room = row["Room"] || "TBD";
+        let room = row["Room"] && row["Room"].trim() !== "" ? row["Room"] : null;
         let table = row["Dinner Table"] || "";
         let notes = row["Special Notes"] || "";
 
@@ -111,16 +111,17 @@ function loadAgenda(userEmail) {
 
         if (!agendaData[day]) agendaData[day] = [];
 
+        let roomHTML = room ? `<p class="room"><i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}</p>` : "";
         let tableHTML = table && table !== "Not Assigned"
-          ? `<p><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : "";
+          ? `<p class="table"><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : "";
         let notesHTML = notes && notes !== "No Notes"
-          ? `<p><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : "";
+          ? `<p class="notes"><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : "";
 
         agendaData[day].push(`
           <div class="agenda-item" data-start="${startTime}" data-end="${endTime}" data-day="${day}">
             <p><strong>Session:</strong> ${session}</p>
             <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
-            <p><i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}</p>
+            ${roomHTML}
             ${tableHTML}
             ${notesHTML}
           </div>
