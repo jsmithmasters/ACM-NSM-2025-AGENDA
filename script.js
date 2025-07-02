@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Toggle collapse for day sections
 function toggleDay(header) {
   const content = header.nextElementSibling;
   const icon = header.querySelector('i');
@@ -170,6 +169,13 @@ function loadAgenda(userEmail) {
           section.style.display = "block";
           content.classList.add('expanded');
           content.style.maxHeight = content.scrollHeight + "px";
+
+          // 💡 Reset chevron state
+          const header = section.querySelector('h3');
+          const icon = header.querySelector('i');
+          header.classList.remove('collapsed');
+          icon.classList.remove('fa-chevron-down');
+          icon.classList.add('fa-chevron-up');
         }
       });
 
