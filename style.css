@@ -1,8 +1,7 @@
 /* =========================
-   Conagra-Themed Style Sheet (Final Clean Version - Blue Themed)
+   Conagra-Themed Style Sheet (Blue Theme)
    ========================= */
 
-/* General Styling */
 body {
   font-family: Arial, sans-serif;
   background-color: #ffffff;
@@ -12,12 +11,10 @@ body {
   padding: 0;
 }
 
-/* Header Styling */
 header {
   background-color: #0078D4;
   padding: 20px;
   color: #ffffff;
-  text-align: center;
   transition: background-color 0.4s ease;
 }
 
@@ -33,20 +30,17 @@ header img.logo {
 }
 
 header h1 {
-  display: block;
   color: #ffffff;
   font-size: 2em;
   margin-top: 10px;
 }
 
-/* Container */
 .container {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
 }
 
-/* Email Input Field */
 input[type="email"] {
   width: 100%;
   max-width: 400px;
@@ -56,14 +50,12 @@ input[type="email"] {
   border-radius: 4px;
 }
 
-/* Live Update Timestamp */
 #lastUpdated {
   font-size: 14px;
   color: gray;
   margin-top: 10px;
 }
 
-/* Tagline Styling */
 .daily-theme {
   font-size: 1.5em;
   margin: 10px 0 20px;
@@ -74,7 +66,6 @@ input[type="email"] {
   text-transform: uppercase;
 }
 
-/* Agenda Container */
 .agenda-container {
   padding: 0;
   margin-top: 20px;
@@ -83,7 +74,6 @@ input[type="email"] {
   border: none;
 }
 
-/* Day Section Styling */
 .day-section {
   margin: 30px 0 10px;
   padding: 0;
@@ -113,14 +103,12 @@ input[type="email"] {
   transform: rotate(180deg);
 }
 
-/* Inline Icon for Day Titles */
 .day-icon {
   height: 20px;
   vertical-align: middle;
   margin-left: 8px;
 }
 
-/* Agenda Item Styling */
 .agenda-item {
   background-color: #ffffff;
   border-left: 4px solid #0078D4;
@@ -143,36 +131,18 @@ input[type="email"] {
   color: #333333;
 }
 
-/* Hide Notes, Table, and Room if Empty */
 .agenda-item .notes:empty,
 .agenda-item .table:empty,
 .agenda-item .room:empty {
   display: none;
 }
 
-/* Highlight Current Session */
 .agenda-item.current {
   background-color: #e6f7ff;
   transform: scale(1.03);
   border: 2px solid #007acc;
 }
 
-.agenda-item.current h4 {
-  font-size: 1.1em;
-}
-
-/* Collapsible Panel Styling */
-.collapsible {
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
-  max-height: 1000px;
-}
-
-.collapsible:not(.expanded) {
-  max-height: 0;
-}
-
-/* Footer Styling */
 footer {
   background-color: #333333;
   color: #ffffff;
@@ -181,7 +151,6 @@ footer {
   margin-top: 20px;
 }
 
-/* Watermark Logo Styling */
 .watermark-logo {
   position: fixed;
   bottom: 10px;
@@ -193,32 +162,18 @@ footer {
   margin-right: 5px;
 }
 
-/* Theme Color Classes */
-.theme-process header {
-  background-color: #007acc;
+/* COLLAPSIBLE LOGIC */
+.collapsible {
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  max-height: 1000px;
 }
 
-.theme-process .agenda-item {
-  border-left-color: #007acc;
+.collapsible:not(.expanded) {
+  max-height: 0;
 }
 
-.theme-market header {
-  background-color: #cc0000;
-}
-
-.theme-market .agenda-item {
-  border-left-color: #cc0000;
-}
-
-.theme-people header {
-  background-color: #2e8b57;
-}
-
-.theme-people .agenda-item {
-  border-left-color: #2e8b57;
-}
-
-/* Mobile Responsiveness */
+/* Responsive */
 @media (max-width: 600px) {
   .container {
     max-width: 95%;
@@ -256,10 +211,7 @@ footer {
   }
 }
 
-/* =========================
-   Play Video Button Styling
-   ========================= */
-
+/* Play Button Styling */
 #playNomineeVideoBtn {
   font-size: 1.5em;
   padding: 16px 36px;
