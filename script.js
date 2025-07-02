@@ -77,7 +77,7 @@ let endStr = item.getAttribute('data-end');
 if (!startStr) return;
 
 let startDate = parseTime(startStr, eventDate);
-let endDate = endStr ? parseTime(endStr, eventDate) : null;
+let endDate = endStr && endStr !== "TBD" ? parseTime(endStr, eventDate) : null;
 
 events.push({ startDate, endDate, element: item });
 ```
@@ -150,7 +150,7 @@ return;
           ${notesHTML}
         </div>
       `,
-      endTime: parseTime(endTime, dayMapping[day])
+      endTime: endTime !== "TBD" ? parseTime(endTime, dayMapping[day]) : null
     });
   });
 
@@ -167,6 +167,7 @@ return;
     if (items.length === 0) {
       section.style.display = "none";
     } else {
+      console.log(`Agenda for ${day}`, items);
       content.innerHTML = items.map(i => i.html).join("");
       section.style.display = "block";
       content.classList.add('expanded');
