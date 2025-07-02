@@ -99,6 +99,18 @@ input[type="email"] {
   top: 0;
   background-color: #fff;
   z-index: 5;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.day-section h3 i {
+  transition: transform 0.3s ease;
+}
+
+.day-section h3.collapsed i {
+  transform: rotate(180deg);
 }
 
 /* Inline Icon for Day Titles */
@@ -147,6 +159,17 @@ input[type="email"] {
 
 .agenda-item.current h4 {
   font-size: 1.1em;
+}
+
+/* Collapsible Panel Styling */
+.collapsible {
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  max-height: 1000px;
+}
+
+.collapsible:not(.expanded) {
+  max-height: 0;
 }
 
 /* Footer Styling */
