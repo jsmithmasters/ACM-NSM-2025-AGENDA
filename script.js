@@ -9,26 +9,27 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(() => loadAgenda(userEmail), 30000);
     setInterval(updateCurrentEventHighlight, 30000);
   }
-
-  const toggles = document.querySelectorAll('.day-section h3');
-  toggles.forEach(header => {
-    header.addEventListener('click', function () {
-      const content = this.nextElementSibling;
-      const icon = this.querySelector('i');
-      if (!content.classList.contains('expanded')) {
-        content.style.maxHeight = content.scrollHeight + "px";
-        content.classList.add('expanded');
-        icon.classList.remove('fa-chevron-down');
-        icon.classList.add('fa-chevron-up');
-      } else {
-        content.style.maxHeight = null;
-        content.classList.remove('expanded');
-        icon.classList.remove('fa-chevron-up');
-        icon.classList.add('fa-chevron-down');
-      }
-    });
-  });
 });
+
+// Toggle collapse for day sections
+function toggleDay(header) {
+  const content = header.nextElementSibling;
+  const icon = header.querySelector('i');
+
+  if (content.classList.contains('expanded')) {
+    content.classList.remove('expanded');
+    header.classList.add('collapsed');
+    icon.classList.remove('fa-chevron-up');
+    icon.classList.add('fa-chevron-down');
+    content.style.maxHeight = null;
+  } else {
+    content.classList.add('expanded');
+    header.classList.remove('collapsed');
+    icon.classList.remove('fa-chevron-down');
+    icon.classList.add('fa-chevron-up');
+    content.style.maxHeight = content.scrollHeight + "px";
+  }
+}
 
 function parseTime(timeStr, referenceDate) {
   let [time, modifier] = timeStr.split(' ');
@@ -87,8 +88,8 @@ function updateCurrentEventHighlight() {
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
     if (
-      now >= event.startDate &&
-      (!event.endDate || now < event.endDate)
+      new Date() >= event.startDate &&
+      (!event.endDate || new Date() < event.endDate)
     ) {
       currentEvent = event;
     }
