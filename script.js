@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// Collapse/expand toggle with icon rotation
 function toggleDay(header) {
   const content = header.nextElementSibling;
   const icon = header.querySelector('i');
@@ -164,13 +165,11 @@ function loadAgenda(userEmail) {
         if (items.length === 0) {
           section.style.display = "none";
         } else {
-          console.log(`Agenda for ${day}`, items);
           content.innerHTML = items.map(i => i.html).join("");
           section.style.display = "block";
           content.classList.add('expanded');
           content.style.maxHeight = content.scrollHeight + "px";
 
-          // 💡 Reset chevron state
           const header = section.querySelector('h3');
           const icon = header.querySelector('i');
           header.classList.remove('collapsed');
