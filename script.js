@@ -15,19 +15,13 @@ function toggleDay(header) {
   const content = header.nextElementSibling;
   const icon = header.querySelector('i');
 
-  const isExpanded = content.classList.contains('expanded');
-
-  if (isExpanded) {
+  if (content.classList.contains('expanded')) {
     content.classList.remove('expanded');
     header.classList.add('collapsed');
-    icon.classList.remove('fa-chevron-up');
-    icon.classList.add('fa-chevron-down');
     content.style.maxHeight = null;
   } else {
     content.classList.add('expanded');
     header.classList.remove('collapsed');
-    icon.classList.remove('fa-chevron-down');
-    icon.classList.add('fa-chevron-up');
     content.style.maxHeight = content.scrollHeight + "px";
   }
 }
@@ -37,14 +31,7 @@ function parseTime(timeStr, referenceDate) {
   let [hours, minutes] = time.split(':').map(Number);
   if (modifier?.toUpperCase() === 'PM' && hours !== 12) hours += 12;
   if (modifier?.toUpperCase() === 'AM' && hours === 12) hours = 0;
-
-  return new Date(
-    referenceDate.getFullYear(),
-    referenceDate.getMonth(),
-    referenceDate.getDate(),
-    hours,
-    minutes || 0
-  );
+  return new Date(referenceDate.getFullYear(), referenceDate.getMonth(), referenceDate.getDate(), hours, minutes || 0);
 }
 
 const dayMapping = {
@@ -69,7 +56,6 @@ function updateCurrentEventHighlight() {
   agendaItems.forEach(item => {
     let eventDay = item.getAttribute('data-day');
     if (!eventDay) return;
-
     let eventDate = dayMapping[eventDay];
     if (!isSameDay(now, eventDate)) return;
 
@@ -85,16 +71,10 @@ function updateCurrentEventHighlight() {
 
   events.sort((a, b) => a.startDate - b.startDate);
 
-  let currentEvent = null;
-  for (let i = 0; i < events.length; i++) {
-    const event = events[i];
-    if (
-      new Date() >= event.startDate &&
-      (!event.endDate || new Date() < event.endDate)
-    ) {
-      currentEvent = event;
-    }
-  }
+  let currentEvent = events.find(event =>
+    new Date() >= event.startDate &&
+    (!event.endDate || new Date() < event.endDate)
+  );
 
   if (currentEvent) {
     currentEvent.element.classList.add('current');
@@ -107,17 +87,13 @@ function loadAgenda(userEmail) {
   fetch(apiUrl)
     .then(res => res.json())
     .then(rows => {
-      console.log("Fetched rows:", rows);
-
       if (!rows || rows.length === 0) {
         document.getElementById("agenda").innerHTML = "<p>No agenda found for this email.</p>";
         return;
       }
 
       let attendeeName = rows[0]["Name"] || "Unknown Attendee";
-      let firstName = attendeeName.split(" ")[0];
-      document.getElementById("attendeeName").innerHTML =
-        `Welcome, ${firstName}! Your personalized agenda is ready.`;
+      document.getElementById("attendeeName").innerHTML = `Welcome, ${attendeeName.split(" ")[0]}! Your personalized agenda is ready.`;
 
       let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
       let nomineeVideoExists = rows.some(row => row["Nominee Video"]);
@@ -126,55 +102,40 @@ function loadAgenda(userEmail) {
         let day = row["Day"] || "Other";
         let session = row["Breakout Session"] || "TBD";
         let time = row["Time"] || "TBD";
-        let room = row["Room"] && row["Room"].trim() !== "" ? row["Room"] : null;
+        let room = row["Room"]?.trim() || "";
         let table = row["Dinner Table"] || "";
         let notes = row["Special Notes"] || "";
 
-        let timeParts = time.split("-");
-        let startTime = timeParts[0]?.trim() || "TBD";
-        let endTime = timeParts[1] ? timeParts[1].trim() : "TBD";
+        let [startTime, endTime] = time.split("-").map(t => t?.trim() || "TBD");
 
         if (!agendaData[day]) agendaData[day] = [];
 
         let roomHTML = room ? `<p class="room"><i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}</p>` : "";
-        let tableHTML = table && table !== "Not Assigned"
-          ? `<p class="table"><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : "";
-        let notesHTML = notes && notes !== "No Notes"
-          ? `<p class="notes"><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : "";
+        let tableHTML = table && table !== "Not Assigned" ? `<p class="table"><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : "";
+        let notesHTML = notes && notes !== "No Notes" ? `<p class="notes"><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : "";
 
-        agendaData[day].push({
-          html: `
-            <div class="agenda-item" data-start="${startTime}" data-end="${endTime}" data-day="${day}">
-              <p><strong>Session:</strong> ${session}</p>
-              <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
-              ${roomHTML}
-              ${tableHTML}
-              ${notesHTML}
-            </div>
-          `
-        });
+        agendaData[day].push(`
+          <div class="agenda-item" data-start="${startTime}" data-end="${endTime}" data-day="${day}">
+            <p><strong>Session:</strong> ${session}</p>
+            <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
+            ${roomHTML}${tableHTML}${notesHTML}
+          </div>
+        `);
       });
 
       ["Day 1", "Day 2", "Day 3", "Day 4"].forEach((day, index) => {
-        const contentId = `day${index + 1}-content`;
-        const sectionId = `day${index + 1}`;
-        const content = document.getElementById(contentId);
-        const section = document.getElementById(sectionId);
-        const header = section.querySelector('h3');
-        const icon = header.querySelector('i');
+        const section = document.getElementById(`day${index + 1}`);
+        const content = document.getElementById(`day${index + 1}-content`);
+        const header = section.querySelector("h3");
         const items = agendaData[day] || [];
 
         if (items.length === 0) {
           section.style.display = "none";
         } else {
-          content.innerHTML = items.map(i => i.html).join("");
+          content.innerHTML = items.join("");
           section.style.display = "block";
-
-          // Always expand by default
-          content.classList.add('expanded');
-          header.classList.remove('collapsed');
-          icon.classList.remove('fa-chevron-down');
-          icon.classList.add('fa-chevron-up');
+          content.classList.add("expanded");
+          header.classList.remove("collapsed");
           content.style.maxHeight = content.scrollHeight + "px";
         }
       });
@@ -186,14 +147,11 @@ function loadAgenda(userEmail) {
         const video = document.getElementById("nomineeVideo");
 
         section.style.display = "block";
-
         button.onclick = () => {
           wrapper.style.display = "block";
           button.style.display = "none";
           video.load();
-          video.play().catch(err => {
-            console.warn("Video play failed or was blocked:", err);
-          });
+          video.play().catch(err => console.warn("Video play failed:", err));
         };
       }
 
@@ -201,7 +159,6 @@ function loadAgenda(userEmail) {
     })
     .catch(error => {
       console.error("Error fetching agenda:", error);
-      document.getElementById("agenda").innerHTML =
-        "<p>Error loading agenda. Please try again.</p>";
+      document.getElementById("agenda").innerHTML = "<p>Error loading agenda. Please try again.</p>";
     });
 }
