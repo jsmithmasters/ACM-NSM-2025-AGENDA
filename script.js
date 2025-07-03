@@ -15,7 +15,9 @@ function toggleDay(header) {
   const content = header.nextElementSibling;
   const icon = header.querySelector('i');
 
-  if (content.classList.contains('expanded')) {
+  const isExpanded = content.classList.contains('expanded');
+
+  if (isExpanded) {
     content.classList.remove('expanded');
     header.classList.add('collapsed');
     icon.classList.remove('fa-chevron-up');
@@ -149,8 +151,7 @@ function loadAgenda(userEmail) {
               ${tableHTML}
               ${notesHTML}
             </div>
-          `,
-          endTime: endTime !== "TBD" ? parseTime(endTime, dayMapping[day]) : null
+          `
         });
       });
 
@@ -169,19 +170,12 @@ function loadAgenda(userEmail) {
           content.innerHTML = items.map(i => i.html).join("");
           section.style.display = "block";
 
-          const isCollapsed = header.classList.contains('collapsed');
-
-          if (isCollapsed) {
-            content.classList.remove('expanded');
-            content.style.maxHeight = null;
-            icon.classList.remove('fa-chevron-up');
-            icon.classList.add('fa-chevron-down');
-          } else {
-            content.classList.add('expanded');
-            content.style.maxHeight = content.scrollHeight + "px";
-            icon.classList.remove('fa-chevron-down');
-            icon.classList.add('fa-chevron-up');
-          }
+          // Always expand by default
+          content.classList.add('expanded');
+          header.classList.remove('collapsed');
+          icon.classList.remove('fa-chevron-down');
+          icon.classList.add('fa-chevron-up');
+          content.style.maxHeight = content.scrollHeight + "px";
         }
       });
 
