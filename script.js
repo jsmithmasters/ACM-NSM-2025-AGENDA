@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Collapse/expand toggle with icon rotation
 function toggleDay(header) {
   const content = header.nextElementSibling;
   const icon = header.querySelector('i');
@@ -160,6 +159,8 @@ function loadAgenda(userEmail) {
         const sectionId = `day${index + 1}`;
         const content = document.getElementById(contentId);
         const section = document.getElementById(sectionId);
+        const header = section.querySelector('h3');
+        const icon = header.querySelector('i');
         const items = agendaData[day] || [];
 
         if (items.length === 0) {
@@ -167,14 +168,20 @@ function loadAgenda(userEmail) {
         } else {
           content.innerHTML = items.map(i => i.html).join("");
           section.style.display = "block";
-          content.classList.add('expanded');
-          content.style.maxHeight = content.scrollHeight + "px";
 
-          const header = section.querySelector('h3');
-          const icon = header.querySelector('i');
-          header.classList.remove('collapsed');
-          icon.classList.remove('fa-chevron-down');
-          icon.classList.add('fa-chevron-up');
+          const isCollapsed = header.classList.contains('collapsed');
+
+          if (isCollapsed) {
+            content.classList.remove('expanded');
+            content.style.maxHeight = null;
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+          } else {
+            content.classList.add('expanded');
+            content.style.maxHeight = content.scrollHeight + "px";
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+          }
         }
       });
 
