@@ -9,22 +9,22 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(() => loadAgenda(userEmail), 30000);
     setInterval(updateCurrentEventHighlight, 30000);
   }
+
+  const toggles = document.querySelectorAll('.day-section h3');
+  toggles.forEach(header => {
+    header.addEventListener('click', function () {
+      const content = this.nextElementSibling;
+      const icon = this.querySelector('i');
+      if (!content.classList.contains('expanded')) {
+        content.style.maxHeight = content.scrollHeight + "px";
+        content.classList.add('expanded');
+      } else {
+        content.style.maxHeight = null;
+        content.classList.remove('expanded');
+      }
+    });
+  });
 });
-
-function toggleDay(header) {
-  const content = header.nextElementSibling;
-  const icon = header.querySelector('i');
-
-  if (content.classList.contains('expanded')) {
-    content.classList.remove('expanded');
-    header.classList.add('collapsed');
-    content.style.maxHeight = null;
-  } else {
-    content.classList.add('expanded');
-    header.classList.remove('collapsed');
-    content.style.maxHeight = content.scrollHeight + "px";
-  }
-}
 
 function parseTime(timeStr, referenceDate) {
   let [time, modifier] = timeStr.split(' ');
@@ -56,6 +56,7 @@ function updateCurrentEventHighlight() {
   agendaItems.forEach(item => {
     let eventDay = item.getAttribute('data-day');
     if (!eventDay) return;
+
     let eventDate = dayMapping[eventDay];
     if (!isSameDay(now, eventDate)) return;
 
@@ -92,41 +93,38 @@ function loadAgenda(userEmail) {
         return;
       }
 
-      let attendeeName = rows[0]["Name"] || "Unknown Attendee";
-      document.getElementById("attendeeName").innerHTML = `Welcome, ${attendeeName.split(" ")[0]}! Your personalized agenda is ready.`;
+      let firstName = (rows[0]["Name"] || "Unknown Attendee").split(" ")[0];
+      document.getElementById("attendeeName").innerHTML = `Welcome, ${firstName}! Your personalized agenda is ready.`;
 
       let agendaData = { "Day 1": [], "Day 2": [], "Day 3": [], "Day 4": [] };
       let nomineeVideoExists = rows.some(row => row["Nominee Video"]);
 
       rows.forEach(row => {
-        let day = row["Day"] || "Other";
-        let session = row["Breakout Session"] || "TBD";
-        let time = row["Time"] || "TBD";
-        let room = row["Room"]?.trim() || "";
-        let table = row["Dinner Table"] || "";
-        let notes = row["Special Notes"] || "";
+        const day = row["Day"] || "Other";
+        const session = row["Breakout Session"] || "TBD";
+        const time = row["Time"] || "TBD";
+        const room = row["Room"]?.trim() || "";
+        const table = row["Dinner Table"] || "";
+        const notes = row["Special Notes"] || "";
 
-        let [startTime, endTime] = time.split("-").map(t => t?.trim() || "TBD");
+        const [startTime, endTime] = time.split("-").map(t => t?.trim() || "TBD");
 
         if (!agendaData[day]) agendaData[day] = [];
-
-        let roomHTML = room ? `<p class="room"><i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}</p>` : "";
-        let tableHTML = table && table !== "Not Assigned" ? `<p class="table"><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : "";
-        let notesHTML = notes && notes !== "No Notes" ? `<p class="notes"><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : "";
 
         agendaData[day].push(`
           <div class="agenda-item" data-start="${startTime}" data-end="${endTime}" data-day="${day}">
             <p><strong>Session:</strong> ${session}</p>
             <p><i class="fa-regular fa-clock"></i> <strong>Time:</strong> ${time}</p>
-            ${roomHTML}${tableHTML}${notesHTML}
+            ${room ? `<p class="room"><i class="fa-solid fa-map-marker-alt"></i> <strong>Room:</strong> ${room}</p>` : ""}
+            ${table && table !== "Not Assigned" ? `<p class="table"><i class="fa-solid fa-chair"></i> <strong>Table:</strong> ${table}</p>` : ""}
+            ${notes && notes !== "No Notes" ? `<p class="notes"><i class="fa-solid fa-comment-dots"></i> <strong>Notes:</strong> ${notes}</p>` : ""}
           </div>
         `);
       });
 
       ["Day 1", "Day 2", "Day 3", "Day 4"].forEach((day, index) => {
-        const section = document.getElementById(`day${index + 1}`);
         const content = document.getElementById(`day${index + 1}-content`);
-        const header = section.querySelector("h3");
+        const section = document.getElementById(`day${index + 1}`);
         const items = agendaData[day] || [];
 
         if (items.length === 0) {
@@ -135,7 +133,6 @@ function loadAgenda(userEmail) {
           content.innerHTML = items.join("");
           section.style.display = "block";
           content.classList.add("expanded");
-          header.classList.remove("collapsed");
           content.style.maxHeight = content.scrollHeight + "px";
         }
       });
