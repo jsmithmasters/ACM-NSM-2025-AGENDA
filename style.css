@@ -1,40 +1,183 @@
-.day-section h3 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  font-size: 1.2em;
-  color: #0078D4;
-  border-bottom: 2px solid #0078D4;
-  margin: 0 0 10px;
-  padding-bottom: 4px;
-  background-color: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 5;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  color: #333333;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
-.day-icons {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+header {
+  background-color: #0078D4;
+  padding: 20px;
+  color: #ffffff;
+}
+
+header img.logo {
+  width: 500px;
+  max-width: 100%;
+  margin: 0 auto 10px;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+header h1 {
+  font-size: 2em;
+  margin-top: 10px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: left;
+}
+
+input[type="email"] {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+
+.day-section {
+  margin: 30px 0 10px;
+}
+
+.day-section h3 {
+  color: #0078D4;
+  font-size: 1.2em;
+  border-bottom: 2px solid #0078D4;
+  padding-bottom: 4px;
+  margin: 0 0 10px;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 5;
+  cursor: pointer;
 }
 
 .day-icon {
   height: 20px;
   vertical-align: middle;
+  margin-left: 8px;
 }
 
-.day-section h3 i {
-  transition: transform 0.3s ease;
+.agenda-item {
+  background-color: #ffffff;
+  border-left: 4px solid #0078D4;
+  border: 1px solid #dddddd;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 8px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.day-section h3.collapsed i {
-  transform: rotate(180deg);
+.agenda-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* collapsible animation */
+.agenda-item p {
+  margin: 8px 0;
+  color: #333333;
+}
+
+.agenda-item .notes:empty,
+.agenda-item .table:empty,
+.agenda-item .room:empty {
+  display: none;
+}
+
+.agenda-item.current {
+  background-color: #e6f7ff;
+  transform: scale(1.03);
+  border: 2px solid #007acc;
+}
+
+footer {
+  background-color: #333333;
+  color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.watermark-logo {
+  position: fixed;
+  bottom: 10px;
+  right: 0;
+  width: 80px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1000;
+  margin-right: 5px;
+}
+
+#playNomineeVideoBtn {
+  font-size: 1.5em;
+  padding: 16px 36px;
+  background-color: #0078D4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#playNomineeVideoBtn:hover {
+  transform: scale(1.05);
+  background-color: #005ea6;
+}
+
+/* Optional collapsible block — no icon flip logic here */
 .collapsible {
   overflow: hidden;
   transition: max-height 0.3s ease-out;
+  max-height: 1000px;
+}
+
+.collapsible:not(.expanded) {
+  max-height: 0;
+}
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 95%;
+    padding: 10px;
+  }
+
+  header {
+    padding: 15px;
+  }
+
+  header img.logo {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  input[type="email"] {
+    padding: 8px;
+  }
+
+  .day-section h3 {
+    font-size: 1.1em;
+  }
+
+  .agenda-item {
+    padding: 10px;
+    margin: 6px 0;
+  }
 }
