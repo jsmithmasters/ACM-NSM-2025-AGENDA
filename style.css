@@ -1,7 +1,8 @@
 /* =========================
-   Conagra-Themed Style Sheet (Blue Theme)
+   Conagra-Themed Style Sheet (Final Polished)
    ========================= */
 
+/* General Styling */
 body {
   font-family: Arial, sans-serif;
   background-color: #ffffff;
@@ -11,17 +12,18 @@ body {
   padding: 0;
 }
 
+/* Header Styling */
 header {
   background-color: #0078D4;
   padding: 20px;
   color: #ffffff;
   transition: background-color 0.4s ease;
+  text-align: center;
 }
 
 header img.logo {
   width: 500px;
   max-width: 100%;
-  display: block;
   margin: 0 auto 10px auto;
   object-fit: contain;
   background-color: #ffffff;
@@ -30,17 +32,18 @@ header img.logo {
 }
 
 header h1 {
-  color: #ffffff;
   font-size: 2em;
   margin-top: 10px;
 }
 
+/* Container */
 .container {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
 }
 
+/* Email Input Field */
 input[type="email"] {
   width: 100%;
   max-width: 400px;
@@ -50,33 +53,17 @@ input[type="email"] {
   border-radius: 4px;
 }
 
-#lastUpdated {
-  font-size: 14px;
-  color: gray;
-  margin-top: 10px;
-}
-
-.daily-theme {
-  font-size: 1.5em;
-  margin: 10px 0 20px;
-  font-weight: bold;
-}
-
-.daily-theme span {
-  text-transform: uppercase;
-}
-
+/* Agenda Container */
 .agenda-container {
-  padding: 0;
   margin-top: 20px;
   text-align: left;
   background-color: transparent;
   border: none;
 }
 
+/* Day Section Styling */
 .day-section {
   margin: 30px 0 10px;
-  padding: 0;
 }
 
 .day-section h3 {
@@ -89,12 +76,14 @@ input[type="email"] {
   top: 0;
   background-color: #fff;
   z-index: 5;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
+  gap: 10px;
 }
 
+/* Chevron Rotation */
 .day-section h3 i {
   transition: transform 0.3s ease;
 }
@@ -103,12 +92,13 @@ input[type="email"] {
   transform: rotate(180deg);
 }
 
+/* Icon beside header */
 .day-icon {
   height: 20px;
   vertical-align: middle;
-  margin-left: 8px;
 }
 
+/* Agenda Item Styling */
 .agenda-item {
   background-color: #ffffff;
   border-left: 4px solid #0078D4;
@@ -137,12 +127,47 @@ input[type="email"] {
   display: none;
 }
 
+/* Highlight Current Session */
 .agenda-item.current {
   background-color: #e6f7ff;
   transform: scale(1.03);
   border: 2px solid #007acc;
 }
 
+/* COLLAPSIBLE ANIMATION */
+.collapsible {
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  max-height: 1000px;
+}
+
+.collapsible:not(.expanded) {
+  max-height: 0;
+}
+
+/* Nominee Section */
+#playNomineeVideoBtn {
+  font-size: 1.5em;
+  padding: 16px 36px;
+  background-color: #0078D4;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#playNomineeVideoBtn:hover {
+  transform: scale(1.05);
+  background-color: #005ea6;
+}
+
+/* Footer */
 footer {
   background-color: #333333;
   color: #ffffff;
@@ -151,6 +176,7 @@ footer {
   margin-top: 20px;
 }
 
+/* Watermark Logo */
 .watermark-logo {
   position: fixed;
   bottom: 10px;
@@ -162,15 +188,24 @@ footer {
   margin-right: 5px;
 }
 
-/* COLLAPSIBLE LOGIC */
-.collapsible {
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
-  max-height: 1000px;
+/* Theme Color Variants */
+.theme-process header {
+  background-color: #007acc;
 }
-
-.collapsible:not(.expanded) {
-  max-height: 0;
+.theme-process .agenda-item {
+  border-left-color: #007acc;
+}
+.theme-market header {
+  background-color: #cc0000;
+}
+.theme-market .agenda-item {
+  border-left-color: #cc0000;
+}
+.theme-people header {
+  background-color: #2e8b57;
+}
+.theme-people .agenda-item {
+  border-left-color: #2e8b57;
 }
 
 /* Responsive */
@@ -209,26 +244,4 @@ footer {
   .daily-theme {
     font-size: 1.2em;
   }
-}
-
-/* Play Button Styling */
-#playNomineeVideoBtn {
-  font-size: 1.5em;
-  padding: 16px 36px;
-  background-color: #0078D4;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, background-color 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-#playNomineeVideoBtn:hover {
-  transform: scale(1.05);
-  background-color: #005ea6;
 }
