@@ -1,89 +1,30 @@
-/* =========================
-   Conagra-Themed Style Sheet (Final Polished)
-   ========================= */
-
-/* General Styling */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  color: #333333;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-/* Header Styling */
-header {
-  background-color: #0078D4;
-  padding: 20px;
-  color: #ffffff;
-  transition: background-color 0.4s ease;
-  text-align: center;
-}
-
-header img.logo {
-  width: 500px;
-  max-width: 100%;
-  margin: 0 auto 10px auto;
-  object-fit: contain;
-  background-color: #ffffff;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-header h1 {
-  font-size: 2em;
-  margin-top: 10px;
-}
-
-/* Container */
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
-}
-
-/* Email Input Field */
-input[type="email"] {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-}
-
-/* Agenda Container */
-.agenda-container {
-  margin-top: 20px;
-  text-align: left;
-  background-color: transparent;
-  border: none;
-}
-
-/* Day Section Styling */
-.day-section {
-  margin: 30px 0 10px;
-}
-
 .day-section h3 {
-  color: #0078D4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
   font-size: 1.2em;
+  color: #0078D4;
   border-bottom: 2px solid #0078D4;
-  padding-bottom: 4px;
   margin: 0 0 10px;
+  padding-bottom: 4px;
+  background-color: #fff;
   position: sticky;
   top: 0;
-  background-color: #fff;
   z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  gap: 10px;
 }
 
-/* Chevron Rotation */
+.day-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.day-icon {
+  height: 20px;
+  vertical-align: middle;
+}
+
 .day-section h3 i {
   transition: transform 0.3s ease;
 }
@@ -92,156 +33,8 @@ input[type="email"] {
   transform: rotate(180deg);
 }
 
-/* Icon beside header */
-.day-icon {
-  height: 20px;
-  vertical-align: middle;
-}
-
-/* Agenda Item Styling */
-.agenda-item {
-  background-color: #ffffff;
-  border-left: 4px solid #0078D4;
-  border: 1px solid #dddddd;
-  border-radius: 6px;
-  padding: 12px;
-  margin: 8px 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-}
-
-.agenda-item:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-}
-
-.agenda-item p {
-  margin: 8px 0;
-  color: #333333;
-}
-
-.agenda-item .notes:empty,
-.agenda-item .table:empty,
-.agenda-item .room:empty {
-  display: none;
-}
-
-/* Highlight Current Session */
-.agenda-item.current {
-  background-color: #e6f7ff;
-  transform: scale(1.03);
-  border: 2px solid #007acc;
-}
-
-/* COLLAPSIBLE ANIMATION */
+/* collapsible animation */
 .collapsible {
   overflow: hidden;
   transition: max-height 0.3s ease-out;
-  max-height: 1000px;
-}
-
-.collapsible:not(.expanded) {
-  max-height: 0;
-}
-
-/* Nominee Section */
-#playNomineeVideoBtn {
-  font-size: 1.5em;
-  padding: 16px 36px;
-  background-color: #0078D4;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, background-color 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-#playNomineeVideoBtn:hover {
-  transform: scale(1.05);
-  background-color: #005ea6;
-}
-
-/* Footer */
-footer {
-  background-color: #333333;
-  color: #ffffff;
-  padding: 10px;
-  text-align: center;
-  margin-top: 20px;
-}
-
-/* Watermark Logo */
-.watermark-logo {
-  position: fixed;
-  bottom: 10px;
-  right: 0;
-  width: 80px;
-  opacity: 0.4;
-  pointer-events: none;
-  z-index: 1000;
-  margin-right: 5px;
-}
-
-/* Theme Color Variants */
-.theme-process header {
-  background-color: #007acc;
-}
-.theme-process .agenda-item {
-  border-left-color: #007acc;
-}
-.theme-market header {
-  background-color: #cc0000;
-}
-.theme-market .agenda-item {
-  border-left-color: #cc0000;
-}
-.theme-people header {
-  background-color: #2e8b57;
-}
-.theme-people .agenda-item {
-  border-left-color: #2e8b57;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .container {
-    max-width: 95%;
-    padding: 10px;
-  }
-
-  header {
-    padding: 15px;
-  }
-
-  header img.logo {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  h1 {
-    font-size: 1.5em;
-  }
-
-  input[type="email"] {
-    padding: 8px;
-  }
-
-  .day-section h3 {
-    font-size: 1.1em;
-  }
-
-  .agenda-item {
-    padding: 10px;
-    margin: 6px 0;
-  }
-
-  .daily-theme {
-    font-size: 1.2em;
-  }
 }
